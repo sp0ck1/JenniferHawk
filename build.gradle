@@ -1,0 +1,91 @@
+plugins {
+    // Add a shadowJar task to build a fatJar: build/libs/twitch4j-chatbot-all.jar
+    id 'com.github.johnrengelman.shadow' version '2.0.2'
+    id 'java'
+    id 'application'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+// Sets the Main-Class in the shadowJar manifest
+mainClassName = 'com.JenniferHawk.Launcher'
+
+// Repositories
+
+
+// Dependencies
+allprojects {
+    repositories {
+        jcenter()
+        maven { url "https://oss.jfrog.org/artifactory/libs-release" }
+        maven { url "https://jitpack.io/" }
+    }
+}
+dependencies {
+    // Twitch4J
+    compile "com.github.twitch4j:twitch4j:1.0.0-alpha.18"
+
+    // YAML Parser
+    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.0"
+
+    // Logging
+    compile "ch.qos.logback:logback-classic:1.1.8"
+    compile "com.jcabi:jcabi-log:0.17.2"
+
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    implementation "commons-io:commons-io:2.6"
+
+    //Discord4J (removed for now)
+    //implementation 'com.discord4j:discord4j-core:3.0.12'
+
+    //JDA
+    compile group: 'net.dv8tion', name: 'JDA', version: '4.1.1_101'
+
+    // MySQL Driver
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.6'
+
+    // https://mvnrepository.com/artifact/org.jsoup/jsoup
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.12.1'
+
+    // https://mvnrepository.com/artifact/org.springframework/spring-core
+    compile group: 'org.springframework', name: 'spring-core', version: '5.2.3.RELEASE'
+
+    // https://mvnrepository.com/artifact/org.springframework/spring-context
+    compile group: 'org.springframework', name: 'spring-context', version: '5.2.3.RELEASE'
+
+    // https://mvnrepository.com/artifact/org.springframework/spring-web
+    compile group: 'org.springframework', name: 'spring-web', version: '5.2.3.RELEASE'
+
+    // https://mvnrepository.com/artifact/io.dropwizard.metrics/metrics-core
+    compile group: 'io.dropwizard.metrics', name: 'metrics-core', version: '4.1.2'
+
+    // https://mvnrepository.com/artifact/com.mashape.unirest/unirest-java
+    compile group: 'com.mashape.unirest', name: 'unirest-java', version: '1.4.9'
+
+    // https://mvnrepository.com/artifact/org.springframework.hateoas/spring-hateoas
+    compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '1.0.3.RELEASE'
+
+    // https://mvnrepository.com/artifact/dev.valora.commons/spring-hateoas-resources-assembler
+    compile group: 'dev.valora.commons', name: 'spring-hateoas-resources-assembler', version: '1.1.0'
+
+    // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
+    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    	annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    	testCompileOnly 'org.projectlombok:lombok:1.18.12'
+    	testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+
+    // jUnit
+    testImplementation('junit:junit:4.13')
+
+
+
+
+
+
+}
