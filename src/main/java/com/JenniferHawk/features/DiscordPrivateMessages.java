@@ -24,7 +24,10 @@ public class DiscordPrivateMessages extends ListenerAdapter {
             String link = vimm.getLink();
             String download = vimm.getDownload();
             String otherDownload = vimm.getOtherDownload();
-            author.openPrivateChannel().queue((privateChannel) -> {privateChannel.sendMessage("It's either " + download + " or " + otherDownload + ". If it's neither of those, check " + link).queue();});
+            String fileName = vimm.getFileName();
+            String otherFileName = vimm.getOtherFileName();
+
+            author.openPrivateChannel().queue((privateChannel) -> {privateChannel.sendMessage(fileName + ": " + download + " \n" + otherFileName + ": " + otherDownload + ". ").queue();});
             //channel.sendMessage(link).queue();
         }
     }

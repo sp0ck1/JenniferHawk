@@ -22,6 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -73,9 +74,45 @@ public class VimmTests {
             System.out.println(fileName);
         }
 
+        @Test
+        public void VimmEqualityCheck() {
+        VimmN64 result = new VimmN64("bug");
+            // TODO: I really should be taking the game name from the link and comparing it to these rather than my search term
+        String fileName = result.getFileName().toLowerCase();
+        String otherFileName = result.getOtherFileName().toLowerCase();
+        String searchTerm = result.getSearchTerm().toLowerCase();
 
+        String[] parsedSearchTerm = searchTerm.replace("\"","").replace(",","").split(" ");
+        //String[] parsedOtherFileName = otherFileName.replace("\"","").replace(",","").split(" ");
+        System.out.println(Arrays.toString(parsedSearchTerm));
 
-    }
+        // Which one of them has more in common with "A Bug's Life" ?
 
+            int i;
+
+            int wordsInCommon = 0;
+            int otherWordsInCommon = 0;
+
+            for (i = 0; i < parsedSearchTerm.length; i++) {
+                System.out.println("Does " + fileName + " contain " + parsedSearchTerm[i]);
+                if (fileName.contains(parsedSearchTerm[i])) {
+
+                    wordsInCommon = wordsInCommon + 1;
+                }
+            }
+
+            for (i = 0; i < parsedSearchTerm.length; i++) {
+                System.out.println("Does " + otherFileName + " contain " + parsedSearchTerm[i]);
+                if (otherFileName.contains(parsedSearchTerm[i])) {
+
+                    otherWordsInCommon = otherWordsInCommon + 1;
+                }
+            }
+
+            System.out.println(fileName + " contains " + wordsInCommon + " words in common with " + searchTerm);
+            System.out.println(otherFileName + " contains " + otherWordsInCommon + " words in common with " + searchTerm);
+            }
+
+            }
 
 

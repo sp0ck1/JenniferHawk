@@ -3,7 +3,9 @@ package com.JenniferHawk.VimmParser;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -21,8 +23,22 @@ public class VimmN64 {
     private String otherDownload;
     private String fileName;
     private String otherFileName;
+    private String searchTerm;
 
-    private String getVimmResultsPage(String gameName) {
+
+    public VimmN64(String gameName) {
+        String VIMM = "https://vimm.net";
+        String link = VIMM + parseVimmResultsPage(getVimmResultsPage(gameName));
+        String vimmId = link.substring(23);  // TODO: Make this number dynamic to safeguard against future URL changes
+
+        setLink(link);
+        setDownloads(vimmId);
+        setFilename(parseFilename(getDownload()));
+        setOtherFileName(parseFilename(getOtherDownload()));
+        setSearchTerm(gameName);
+    }
+
+    private String getVimmResultsPage(@NotNull String gameName) {
         String VIMM_SEARCH_URL = "https://vimm.net/vault/?p=list&system=N64&q=" + gameName.replace(' ', '+');
 
         HttpResponse<String> response;
@@ -47,33 +63,6 @@ public class VimmN64 {
         Elements link = odd.first().getElementsByAttribute("href");
 
         return link.attr("href");
-    }
-
-    public VimmN64(String gameName) {
-        String VIMM = "https://vimm.net";
-        String link = VIMM + parseVimmResultsPage(getVimmResultsPage(gameName));
-        String vimmId = link.substring(23);  // TODO: Make this number dynamic to safeguard against future URL changes
-
-        setLink(link);
-        setDownloads(vimmId);
-        setFilename(parseFilename(getDownload()));
-        setOtherFileName(parseFilename(getOtherDownload()));
-    }
-
-    private void setLink(String link) {
-        this.link = link;
-    }
-
-    public String getLink() {
-        return this.link;
-    }
-
-    public String getDownload() {
-        return this.download;
-    }
-
-    public String getOtherDownload() {
-        return this.otherDownload;
     }
 
     private void setDownloads(String vimmId) {
@@ -108,20 +97,31 @@ public class VimmN64 {
         return fileName;
     }
 
-    private void setFilename(String fileName) {
-        this.fileName = fileName;
+    private void setFilename(String fileName) { this.fileName = fileName; }
 
+    private void setOtherFileName(String fileName) { this.otherFileName = fileName; }
+
+    public String getFileName() { return this.fileName; }
+
+    public String getOtherFileName() { return this.otherFileName; }
+
+    private void setSearchTerm(String gameName) { this.searchTerm = gameName; }
+
+    public String getSearchTerm() { return this.searchTerm; }
+
+    private void setLink(String link) {
+        this.link = link;
     }
 
-    private void setOtherFileName(String fileName) {
-        this.otherFileName = fileName;
+    public String getLink() {
+        return this.link;
     }
 
-    public String getFileName() {
-        return this.fileName;
+    public String getDownload() {
+        return this.download;
     }
 
-    public String getOtherFileName() {
-        return this.otherFileName;
+    public String getOtherDownload() {
+        return this.otherDownload;
     }
 }
