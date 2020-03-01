@@ -1,4 +1,4 @@
-package com.JenniferHawk.features;
+package com.JenniferHawk.Layout;
 
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
@@ -8,6 +8,11 @@ import java.io.IOException;
 
 public class FileWriters {
 
+    File game = new File("D:\\JenniferUtils\\Game.txt");
+    File year = new File("D:/JenniferUtils/Year.txt");
+    File count = new File("D:/JenniferUtils/Number.txt");
+    File gameid = new File("D:/JenniferUtils/GameID.txt");
+
     public void writeChatToFile(@NotNull String message) throws IOException {
         File chatlog = new File("D:/JenniferUtils/Chatlog.txt");
         if (!message.equals("")) {
@@ -16,11 +21,8 @@ public class FileWriters {
     }
 
     public void writeN64InfoToFile(int GameID, String Game, String Year, int Count) throws IOException, NullPointerException {
-        File gameid = new File("D:/JenniferUtils/GameID.txt");
+
         System.out.println(gameid.getAbsolutePath());
-        File game = new File("D:\\JenniferUtils\\Game.txt");
-        File year = new File("D:/JenniferUtils/Year.txt");
-        File count = new File("D:/JenniferUtils/Number.txt");
 
         FileUtils.writeStringToFile(gameid, String.valueOf(GameID), "UTF-8", false);
         FileUtils.writeStringToFile(game, Game, "UTF-8", false);
@@ -35,7 +37,7 @@ public class FileWriters {
 
     }
 
-    public void clearN64Placements() throws IOException {
+    public void clearN64Layout() throws IOException {
         String s = "";
         for (int i=0; i <= 5; i++) {
             System.out.println(i);
@@ -44,7 +46,13 @@ public class FileWriters {
             else if (i == 3) s = "Third";
             else if (i == 4) s = "Fourth";
             else if (i == 5) s = "Fifth";
-            writeN64PlaceToFile(s, "Unclaimed");
+            writeN64PlaceToFile(s, "Unclaimed"); // write "Unclaimed" to file
+
+            FileUtils.writeStringToFile(gameid, "", "UTF-8", false);
+            FileUtils.writeStringToFile(game, "", "UTF-8", false);
+            FileUtils.writeStringToFile(year, "", "UTF-8", false);
+            FileUtils.writeStringToFile(count, "", "UTF-8", false);
+        }
         }
     }
-}
+

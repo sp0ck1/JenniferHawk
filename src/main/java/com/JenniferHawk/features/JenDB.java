@@ -2,7 +2,7 @@ package com.JenniferHawk.features;
 
 
 
-import com.mysql.jdbc.UpdatableResultSet;
+import com.JenniferHawk.Layout.FileWriters;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -15,10 +15,6 @@ public class JenDB {
     public static String user = "sp0ck1"; // TODO: Put these values in config.yaml and load them from there
     public static String password = "AHawk15AB1rd";
     private static String url = "jdbc:mysql://db-jenniferhawk.cullqcykoe1e.us-east-2.rds.amazonaws.com:3306?useUnicode=true&characterEncoding=utf8";
-
-
-
-
 
 
     /**
@@ -352,7 +348,7 @@ public class JenDB {
             con.close();
 
             FileWriters writer = new FileWriters();
-            writer.writeN64PlaceToFile(Column,Runner); //Update stream layout
+            writer.writeN64PlaceToFile(Column,Runner); //Update stream layout  (Move to layout package?)
         } catch (SQLException | ClassNotFoundException | IOException e) {
             System.out.println("Runner may not have been inserted.");
             e.printStackTrace(System.err);
@@ -418,6 +414,14 @@ public class JenDB {
     public static void N64Complete() {
         String[] result = new String[8];
         int[] GameID = new int[1];
+        FileWriters writer = new FileWriters();
+
+        try {
+            writer.clearN64Layout();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         try { Connection con = DriverManager.getConnection(url, user, password);
             Class.forName("com.mysql.jdbc.Driver");
             Statement stmt = con.createStatement();
@@ -432,13 +436,29 @@ public class JenDB {
                 result[5] = rs.getString("FIFTH");
                 result[6] = rs.getString("URL");
             }
-          //  System.out.println("INSERT INTO JenniferHawk.n64_results(GameID, GAME, FIRST, SECOND, THIRD, FOURTH, FIFTH, URL) VALUES(" + GameID[0] + "," + "\'" + result[1] + "," + "\'" + result[2] + "\'" + "," + "\'" + result[3] + "\'" + "," + "\'" + result[4]+ "\'" + "," + "\'" + result[5] + "\'" +  "," + "\'" + result[6] + "\'" + "," + "\'" + result[7] + "\'" + ")" );
-           System.out.printf("GameID[0] is %s, result[0] is %s, 1 is %s, 2 is %s, 3 is %s, 4 is %s, 5 is %s, 6 is %s",GameID[0],result[0],result[1],result[2],result[3],result[4],result[5],result[6],result[7]);
-            stmt.executeUpdate("INSERT INTO JenniferHawk.n64_results(GameID, GAME, FIRST, SECOND, THIRD, FOURTH, FIFTH, URL) VALUES("+ GameID[0] + "," + "\'" + result[0] + "\'" + "," + "\'" + result[1] + "\'" + "," + "\'" + result[2] + "\'" + "," + "\'" + result[3]+ "\'" + "," + "\'" + result[4] + "\'" +  "," + "\'" + result[5] + "\'" + "," + "\'" + result[6] + "\'" + ")" );
+
+            System.out.printf("GameID[0] is %s, result[0] is %s, result[1] is %s, result[2] is %s, result[3] is %s, result[4] is %s, result[5] is %s, result[6] is %s",GameID[0],result[0],result[1],result[2],result[3],result[4],result[5],result[6]);
+
+            if (result[6] == null) {result[6] = "";}
+            PreparedStatement preparedStatement = con.prepareStatement(
+                    "INSERT INTO JenniferHawk.n64_results(GameID, GAME, FIRST, SECOND, THIRD, FOURTH, FIFTH, URL) VALUES( ?,?,?,?,?,?,?,?)");
+
+            preparedStatement.setInt(1,GameID[0]);
+            preparedStatement.setString(2,result[0]);
+            preparedStatement.setString(3,result[1]);
+            preparedStatement.setString(4,result[2]);
+            preparedStatement.setString(5,result[3]);
+            preparedStatement.setString(6,result[4]);
+            preparedStatement.setString(7,result[5]);
+            preparedStatement.setString(8,result[6]);
+
+            preparedStatement.executeUpdate();
+
             int deleted = stmt.executeUpdate("DELETE FROM JenniferHawk.n64_current WHERE GameID = " + GameID[0]);
-                con.close();
-                if ( deleted > 0 ) { System.out.println(deleted + " records deleted.");} else {System.out.println("Nothing was deleted!");}
-            } catch(SQLException | ClassNotFoundException e){
+                    con.close();
+                    if ( deleted > 0 ) { System.out.println(deleted + " records deleted.");} else {System.out.println("Nothing was deleted!");}
+
+        } catch(SQLException | ClassNotFoundException e){
                 System.out.println("Error when inserting results into n64_results table.");
                 e.printStackTrace(System.err);
                 System.err.println("SQLState: " +
@@ -453,7 +473,11 @@ public class JenDB {
             }
         }
 
-    public static void N64Clear() { /* Add FileWriter here */
+    /**
+     * Delete the current game and metadata from n64_current table
+     */
+
+    public static void N64Clear() {
 
         try {
 

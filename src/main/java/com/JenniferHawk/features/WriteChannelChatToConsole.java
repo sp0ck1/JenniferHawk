@@ -1,6 +1,7 @@
 package com.JenniferHawk.features;
 
-import com.github.philippheuer.events4j.EventManager;
+import com.github.philippheuer.events4j.core.EventManager;
+import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -19,7 +20,7 @@ public class WriteChannelChatToConsole extends ListenerAdapter {
      * @param eventManager EventManager
      */
     public WriteChannelChatToConsole(EventManager eventManager) {
-        eventManager.onEvent(ChannelMessageEvent.class).subscribe(event -> onChannelMessage(event));
+        eventManager.getEventHandler(SimpleEventHandler.class).onEvent(ChannelMessageEvent.class, event -> onChannelMessage(event));
     }
 
     public WriteChannelChatToConsole(MessageReceivedEvent event) {

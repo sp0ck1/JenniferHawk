@@ -6,29 +6,41 @@ import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.annotation.Nonnull;
+import javax.validation.constraints.Null;
 
 public class DiscordPrivateMessages extends ListenerAdapter {
+
+    VimmN64 vimm;
+    String message;
 
     @Override
     public void onPrivateMessageReceived(@Nonnull PrivateMessageReceivedEvent event) {
         super.onPrivateMessageReceived(event);
         User author = event.getAuthor();
         String original = event.getMessage().getContentDisplay();
-        
-        if (original.toLowerCase().startsWith("!gamestop"))
-        {
+
+        if (original.toLowerCase().startsWith("!gamestop")) {
             String searchTerm = original.substring(original.lastIndexOf("!gamestop") + 10);
             System.out.println("Search term is: " + searchTerm);
 
-            VimmN64 vimm = new VimmN64(searchTerm);
-            String link = vimm.getLink();
-            String download = vimm.getDownload();
-            String otherDownload = vimm.getOtherDownload();
-            String fileName = vimm.getFileName();
-            String otherFileName = vimm.getOtherFileName();
+            vimm = new VimmN64(searchTerm);
+            vimm.searchVimm();
+            if (vimm.hasResults()) {
+                vimm.getResults();
+                String download = vimm.getDownload();
+                String otherDownload = vimm.getOtherDownload();
+                String fileName = vimm.getFileName();
+                String otherFileName = vimm.getOtherFileName();
+                message = fileName + ": " + download + " \n" + otherFileName + ": " + otherDownload + ". ";
 
-            author.openPrivateChannel().queue((privateChannel) -> {privateChannel.sendMessage(fileName + ": " + download + " \n" + otherFileName + ": " + otherDownload + ". ").queue();});
-            //channel.sendMessage(link).queue();
+                author.openPrivateChannel().queue((privateChannel) -> privateChannel.sendMessage(message).queue());
+            } else {
+                message = "Couldn't find " + searchTerm + " on Vimm. Try it with any missing apostrophes or punctuation. If it's a long name, like Xena: Warrior Princess: The Talisman of Fate, try searching with a keyword, like \"Xena\"";
+                author.openPrivateChannel().queue((privateChannel) -> privateChannel.sendMessage(message).queue());
+            }
         }
     }
 }
+
+
+

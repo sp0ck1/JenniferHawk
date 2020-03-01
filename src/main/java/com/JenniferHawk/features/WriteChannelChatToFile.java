@@ -1,10 +1,11 @@
 package com.JenniferHawk.features;
 
-import com.github.philippheuer.events4j.EventManager;
+import com.JenniferHawk.Layout.FileWriters;
+import com.github.philippheuer.events4j.core.EventManager;
+import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
-import org.apache.commons.io.FileUtils;
+
 import java.io.IOException;
-import java.io.File;
 
 
 public class WriteChannelChatToFile {
@@ -15,7 +16,7 @@ public class WriteChannelChatToFile {
      * @param eventManager EventManager
      */
     public WriteChannelChatToFile(EventManager eventManager) {
-        eventManager.onEvent(ChannelMessageEvent.class).subscribe(event -> {
+        eventManager.getEventHandler(SimpleEventHandler.class).onEvent(ChannelMessageEvent.class, event -> {
             try {
                 onChannelMessage(event);
             } catch (IOException e) {
@@ -35,14 +36,14 @@ public class WriteChannelChatToFile {
     public void onChannelMessage(ChannelMessageEvent event) throws IOException {
 
         String message = String.format(
-                "Channel: %s | %s: %s ham \r\n",
+                "Channel: %s | %s: %s \r\n",
                 event.getChannel().getName(),
                 event.getUser().getName(),
                 event.getMessage()
         );
-      //  System.out.println(message);
-        //FileWriters writer = new FileWriters();
-        //writer.writeChatToFile(message);
+        System.out.println(message);
+        FileWriters writer = new FileWriters();
+        writer.writeChatToFile(message);
 
     }
 }

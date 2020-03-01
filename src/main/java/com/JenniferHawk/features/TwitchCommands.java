@@ -1,6 +1,7 @@
 package com.JenniferHawk.features;
 
-import com.github.philippheuer.events4j.EventManager;
+import com.github.philippheuer.events4j.core.EventManager;
+import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 import com.netflix.hystrix.HystrixCommandMetrics;
 import org.apache.commons.lang3.StringUtils;
@@ -25,20 +26,9 @@ public class TwitchCommands {
      */
 
     public TwitchCommands(EventManager eventManager) {
-        eventManager.onEvent(ChannelMessageEvent.class).subscribe(event -> {
-            try {
-                onChannelMessage(event);
-            } catch (InterruptedException | IOException e) {
-                e.printStackTrace();
-            }
-        });
-
+        eventManager.getEventHandler(SimpleEventHandler.class).onEvent(ChannelMessageEvent.class, this::onChannelMessage);
     }
 
-    public HystrixCommandMetrics getMetrics() {
-        HystrixCommandMetrics helix = twitchClient.getHelix().getStreams("oauth:124tkcsi4od4062r3i9q63pjs5qwr5",null,null,null,null,null,null,null, Collections.singletonList("sp0ck1")).getMetrics();
-        return helix;
-    }
 
 
 
@@ -46,9 +36,9 @@ public class TwitchCommands {
      * Subscribe to the ChannelMessage Event and write the output to the console
      */
 
-    private void onChannelMessage(ChannelMessageEvent event) throws ArrayIndexOutOfBoundsException, InterruptedException, IOException {
+    private void onChannelMessage(ChannelMessageEvent event) throws ArrayIndexOutOfBoundsException {
         //Initializing a variable with word[1] or higher causes a fatal error if message is shorter than two words.
-        TimerToggle timerToggle = new TimerToggle();
+   //     TimerToggle timerToggle = new TimerToggle();
 
         String Author = String.format("%s", event.getUser().getName());
         char bang = '!';
@@ -102,24 +92,24 @@ public class TwitchCommands {
             }
             else if ( (isSp0ck1) && messagein.equals("timeron")) {
 
-                timerToggle.TimerOn();
+      //          timerToggle.TimerOn();
 
                 twitchClient.getChat().sendMessage("sp0ck1","Timed Commands method active!");}
             else if ( (isSp0ck1) && messagein.equals("timeroff")) {
 
-                timerToggle.TimerOff();
+      //          timerToggle.TimerOff();
             } else if  (messagein.equals("uptime")) {
            //     timerToggle.sendUptime();
                // System.out.println(chatters);
                 event.getTwitchChat().sendMessage(event.getChannel().getName(),"uptime");
             }
             else if (messagein.equals("poke") ) {
-                timerToggle.sendPokeFact();
+      //          timerToggle.sendPokeFact();
 
                 System.out.println(event.getPermissions());
             }
             else if (messagein.equals("25") && event.getChannel().getName().equals("sg4e")) { //
-            timerToggle.send24();
+      //      timerToggle.send24();
             }
 
             else if (isCommand) {

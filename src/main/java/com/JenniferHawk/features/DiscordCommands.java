@@ -70,7 +70,9 @@ public class DiscordCommands extends ListenerAdapter {
                         chatter +
                                 ", you are responsible for suggesting " +
                                 game +
-                                ". " + jenQuip(game) + " HLTB says " + hltbGame + " takes " + HLTB + " hours to beat the main story. " + gameImage).queue(); // Add "This trash is from YEAR, published by PUBLISHER." If HLTB has an API, add "It takes HH:mm to beat on average"
+                                ". " + jenQuip(game) +
+                                " HLTB says " + hltbGame + " takes " + HLTB + " hours to beat the main story, if that's relevant. ")
+                        .queue();
             } else {
                 channel.sendMessage(chatter + ", you are responsible for suggesting " + game + ". " + jenQuip(game) + ". ").queue();
             }

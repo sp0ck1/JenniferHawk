@@ -24,7 +24,7 @@ allprojects {
 }
 dependencies {
     // Twitch4J
-    compile "com.github.twitch4j:twitch4j:1.0.0-alpha.18"
+    compile "com.github.twitch4j:twitch4j:1.0.0-alpha.19"
 
     // YAML Parser
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.0"

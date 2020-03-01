@@ -1,6 +1,7 @@
 package com.JenniferHawk.features;
 
-import com.github.philippheuer.events4j.EventManager;
+import com.github.philippheuer.events4j.core.EventManager;
+import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.chat.events.channel.DonationEvent;
 
 public class ChannelNotificationOnDonation {
@@ -12,7 +13,7 @@ public class ChannelNotificationOnDonation {
 */
 
     public ChannelNotificationOnDonation(EventManager eventManager) {
-        eventManager.onEvent(DonationEvent.class).subscribe(event -> onDonation(event));
+        eventManager.getEventHandler(SimpleEventHandler.class).onEvent(DonationEvent.class, event -> onDonation(event));
     }
 
 /*

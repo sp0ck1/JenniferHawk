@@ -1,6 +1,8 @@
 package com.JenniferHawk;
 
 
+import com.JenniferHawk.JenniferGUI.JenniferGUI;
+
 import javax.security.auth.login.LoginException;
 import javax.swing.*;
 

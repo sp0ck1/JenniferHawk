@@ -1,6 +1,8 @@
 package com.JenniferHawk.features;
 
-import com.github.philippheuer.events4j.EventManager;
+import com.JenniferHawk.Layout.FileWriters;
+import com.github.philippheuer.events4j.core.EventManager;
+import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 import com.github.twitch4j.common.enums.CommandPermission;
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +23,7 @@ public class N64 {
      */
 
     public N64(EventManager eventManager) {
-        eventManager.onEvent(ChannelMessageEvent.class).subscribe(event -> N64Commands(event));
+        eventManager.getEventHandler(SimpleEventHandler.class).onEvent(ChannelMessageEvent.class, event -> N64Commands(event));
     }
 
     /**
@@ -87,10 +89,12 @@ if (isCommand)
                                     case "complete":
                                         JenDB.N64Complete();
                                         break;
-                                    case "clear":
+                                    case "clear": // Clears layout and n64_current table
+                                        FileWriters writer = new FileWriters();
+                                        try {
+                                            writer.clearN64Layout();
+                                        } catch (IOException e) {e.printStackTrace();}
                                         JenDB.N64Clear();
-                                        event.getTwitchChat().sendMessage(channel, "Current game has been cleared!");
-                                        break;
                                     case "first":
                                     case "second":
                                     case "third":

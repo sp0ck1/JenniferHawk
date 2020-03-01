@@ -1,6 +1,7 @@
-package com.JenniferHawk;
+package com.JenniferHawk.JenniferGUI;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +14,9 @@ import static com.JenniferHawk.Bot.twitchClient;
 public class JenniferGUI extends JFrame implements ActionListener {
 
     private TimerToggle timer = new TimerToggle();
+    private JTextArea messageEntry = new JTextArea();
+    private JTextArea channelName = new JTextArea();
+
 
     public JenniferGUI() {
         //setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -20,6 +24,11 @@ public class JenniferGUI extends JFrame implements ActionListener {
 
 
         JFrame frame = new JFrame("JenniferGUI");
+//        JTable table = new JTable(new DefaultTableModel(new Object[]{"Column1", "Column2"}, 20));
+//        DefaultTableModel model = (DefaultTableModel) table.getModel();
+//        model.addRow(new Object[]{"Column 1", "Column 2", "Column 3"});
+//        frame.add(table);
+
         JButton button,button1, button2, button3,button4, button5, textButton, byeSG;
         button = new JButton("Timer On");
         button1 = new JButton("Timer Off");
@@ -77,11 +86,12 @@ public class JenniferGUI extends JFrame implements ActionListener {
                             gameid);
                 break;
             case "Poke Facts":
-                timer.pokeOn();
-                break;
             case "Poke Stop":
-                timer.pokeStop();
+                //   timer.pokeOn();
+                System.out.println("PokeFacts are currently disabled due to changes in the PubSub Scheduler Service." +
+                        " Fix ASAP or remove this button until redesign of the GUI.");
                 break;
+            //  timer.pokeStop();
             case "Pyramid":
                 try {
                     JTextArea channelName = new JTextArea();
@@ -93,8 +103,7 @@ public class JenniferGUI extends JFrame implements ActionListener {
                 }
                 break;
             case "Send A Message":
-                JTextArea messageEntry = new JTextArea();
-                JTextArea channelName = new JTextArea();
+
                 messageEntry.setEditable(true);
                 channelName.setEditable(true);
                 JScrollPane scrollPane = new JScrollPane(messageEntry);

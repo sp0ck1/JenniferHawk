@@ -1,13 +1,9 @@
 package com.JenniferHawk.features;
 
-import com.JenniferHawk.JenniferGUI;
 import com.github.twitch4j.helix.domain.*;
-import com.netflix.hystrix.HystrixCommand;
-import com.github.twitch4j.chat.enums.CommandSource;
-import reactor.core.Disposable;
+
 
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -19,7 +15,7 @@ public class TimerToggle {
 
     private static boolean value;
     private ScheduledThreadPoolExecutor scheduler = new ScheduledThreadPoolExecutor(1);
-    private Disposable pokeFacts;
+   // private Disposable pokeFacts;
     SimpleDateFormat sdf = new SimpleDateFormat("h:mm a z 'on' MMMM d");
 
     public void TimerOn() {
@@ -51,12 +47,8 @@ public class TimerToggle {
             String gameName = game.getName();// gameInfo.substring(gameInfo.indexOf("name=")+5,gameInfo.indexOf(", b"));
             Calendar j = stream.getStartedAt();
 
-    //        String id = stream.getUserId();
-    //        System.out.println(id);
             String startTime = sdf.format(j.getTime());
-            //Duration uptime = stream.getUptime();
-          //  uptime.getUnits();
-            //twitchClient.getHelix().getUsers("oauth:124tkcsi4od4062r3i9q63pjs5qwr5",)
+
             twitchClient.getChat().sendMessage("sg4e",
             "Starting at "+startTime+", sg4e will be doing a 24 hour stream marathon. We'll start with everyone's favorite: "+gameName+"! " +
                     "Then we'll move on to YOUR Mario Maker 2 levels! Type !mm submit <level code> <comment> to add a level to the queue, " +
@@ -70,14 +62,14 @@ public class TimerToggle {
         twitchClient.getChat().sendMessage("sp0ck1",fact);
     }
 
-    public void pokeOn() {
-        Runnable pokeTimer = () -> sendPokeFact();
-        pokeFacts = twitchClient.getPubSub().getEventManager().getScheduler().schedulePeriodically(pokeTimer, 0, 4, SECONDS);
-    }
+//    public void pokeOn() {
+//        Runnable pokeTimer = () -> sendPokeFact();
+//        pokeFacts = twitchClient.getPubSub().getEventManager().getEventHandler(ReactorEventHandler.class).getScheduler().schedulePeriodically(pokeTimer, 0, 4, SECONDS);
+//    }
 
-    public void pokeStop() {
-        pokeFacts.dispose();
-    }
+//    public void pokeStop() {
+//        pokeFacts.dispose();
+//    }
 
     private ScheduledFuture TimedCommands() {
         System.out.println("Starting timed commands.");
