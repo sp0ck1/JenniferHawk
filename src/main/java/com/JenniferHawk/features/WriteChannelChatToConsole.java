@@ -3,16 +3,14 @@ package com.JenniferHawk.features;
 import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import com.JenniferHawk.JenniferGUI.JChatPane;
 
+import javax.swing.*;
 
-import java.math.BigInteger;
+public class WriteChannelChatToConsole {
 
-import static com.JenniferHawk.Bot.discordClient;
-
-public class WriteChannelChatToConsole extends ListenerAdapter {
+    JChatPane status;
 
     /**
      * Register events of this class with the EventManager
@@ -20,21 +18,22 @@ public class WriteChannelChatToConsole extends ListenerAdapter {
      * @param eventManager EventManager
      */
     public WriteChannelChatToConsole(EventManager eventManager) {
-        eventManager.getEventHandler(SimpleEventHandler.class).onEvent(ChannelMessageEvent.class, event -> onChannelMessage(event));
+        eventManager.getEventHandler(SimpleEventHandler.class).onEvent(ChannelMessageEvent.class, this::onChannelMessage);
     }
 
-    public WriteChannelChatToConsole(MessageReceivedEvent event) {
-        System.out.println(event.getMessage().getContentDisplay());
-    }
     /**
      * Subscribe to the ChannelMessage Event and write the output to the console
      */
-    public void onChannelMessage(ChannelMessageEvent event) {
-        System.out.printf(
-                "Channel: %s | %s: %s \n",
-                event.getChannel().getName(),
-                event.getUser().getName(),
-                event.getMessage()
-        );
+
+        public void onChannelMessage(ChannelMessageEvent event) {
+
+            status.appendText(event.getUser().getName() + " says: " + event.getMessage());
+
+            System.out.printf(
+                    "Channel: %s | %s: %s \n",
+                    event.getChannel().getName(),
+                    event.getUser().getName(),
+                    event.getMessage()
+            );
+        }
     }
-}

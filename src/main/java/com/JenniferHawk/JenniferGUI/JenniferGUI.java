@@ -140,8 +140,4 @@ public class JenniferGUI extends JFrame implements ActionListener {
         }
         }
 
-
-    public void myMethod() {
-        JOptionPane.showMessageDialog(this, "Hello, World!");
-    }
 }

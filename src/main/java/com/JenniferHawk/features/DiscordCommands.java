@@ -29,7 +29,7 @@ public class DiscordCommands extends ListenerAdapter {
 
     public void onMessageReceived(MessageReceivedEvent event) {
         System.out.println(event.getAuthor().getName() + ": " + event.getMessage().getContentDisplay());
-
+        System.out.println(event.getChannel().getIdLong());
         //Initializing a variable with segments[1] or higher causes a fatal error if message is shorter than two words.
         String chatter = String.format("%s", event.getAuthor().getName()); //Name of chatter
         String original = event.getMessage().getContentDisplay(); //Original message, preserving caps

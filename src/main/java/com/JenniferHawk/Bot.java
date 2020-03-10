@@ -1,5 +1,6 @@
 package com.JenniferHawk;
 
+import com.JenniferHawk.JenniferGUI.JChatPane;
 import com.JenniferHawk.features.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -12,6 +13,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 
 import javax.security.auth.login.LoginException;
+import javax.swing.*;
 import java.io.InputStream;
 
 public class Bot {
@@ -96,15 +98,21 @@ public class Bot {
     /**
      * Method to register all features
      */
+
     public void registerFeatures() {
        // Register Event-based features
-//        ChannelNotificationOnDonation channelNotificationOnDonation = new ChannelNotificationOnDonation(twitchClient.getEventManager());
-//        ChannelNotificationOnFollow channelNotificationOnFollow = new ChannelNotificationOnFollow(twitchClient.getEventManager());
-          TwitchCommands TwitchCommands = new TwitchCommands(twitchClient.getEventManager());
-          WriteChannelChatToFile WriteChannelChatToFile = new WriteChannelChatToFile(twitchClient.getEventManager());
-          N64 N64 = new N64(twitchClient.getEventManager());
-          WriteChannelChatToConsole writeChannelChatToConsole = new WriteChannelChatToConsole(twitchClient.getEventManager());
+          new TwitchCommands(twitchClient.getEventManager());
+          new WriteChannelChatToFile(twitchClient.getEventManager());
+          new N64(twitchClient.getEventManager());
+          new WriteChannelChatToConsole(twitchClient.getEventManager());
+    }
 
+    public JChatPane createChatPane() {
+        JChatPane jChatPane = new JChatPane("Highly","Appreciated!");
+
+        jChatPane.initChat(twitchClient.getEventManager());
+
+        return jChatPane;
     }
 
     /**
@@ -128,6 +136,7 @@ public class Bot {
 
     public void start() {
         // Connect to all channels
+
         for (String channel : configuration.getChannels()) {
             twitchClient.getChat().joinChannel(channel);
         }

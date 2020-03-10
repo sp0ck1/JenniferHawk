@@ -1,6 +1,9 @@
 package com.JenniferHawk.features;
 
 import com.JenniferHawk.VimmParser.VimmN64;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -38,6 +41,11 @@ public class DiscordPrivateMessages extends ListenerAdapter {
                 message = "Couldn't find " + searchTerm + " on Vimm. Try it with any missing apostrophes or punctuation. If it's a long name, like Xena: Warrior Princess: The Talisman of Fate, try searching with a keyword, like \"Xena\"";
                 author.openPrivateChannel().queue((privateChannel) -> privateChannel.sendMessage(message).queue());
             }
+        } else if (original.toLowerCase().startsWith("!tellthem")) {
+            String message = original.substring(9);
+            TextChannel channel =  event.getJDA().getTextChannelById("673055022501855253");
+            assert channel != null;
+            channel.sendMessage(message).queue();
         }
     }
 }

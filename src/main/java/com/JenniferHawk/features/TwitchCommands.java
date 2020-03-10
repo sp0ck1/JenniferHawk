@@ -93,8 +93,9 @@ public class TwitchCommands {
             else if ( (isSp0ck1) && messagein.equals("timeron")) {
 
       //          timerToggle.TimerOn();
-
-                twitchClient.getChat().sendMessage("sp0ck1","Timed Commands method active!");}
+twitchClient.getChat().sendPrivateMessage("sp0ck1","A whisper from JenniferHawk");
+               // twitchClient.getChat().sendMessage("sp0ck1","Timed Commands method active!");
+                }
             else if ( (isSp0ck1) && messagein.equals("timeroff")) {
 
       //          timerToggle.TimerOff();
