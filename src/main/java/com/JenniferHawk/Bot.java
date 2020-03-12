@@ -21,7 +21,7 @@ public class Bot {
     /**
      * Holds the Bot Configuration
      */
-    private Configuration configuration;
+    public static Configuration configuration;
 
     /**
      * Twitch4J API

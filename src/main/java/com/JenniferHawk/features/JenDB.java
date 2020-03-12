@@ -2,6 +2,7 @@ package com.JenniferHawk.features;
 
 
 
+import com.JenniferHawk.Bot;
 import com.JenniferHawk.Layout.FileWriters;
 
 import java.io.IOException;
@@ -12,9 +13,9 @@ import java.util.Random;
 
 
 public class JenDB {
-    public static String user = "sp0ck1"; // TODO: Put these values in config.yaml and load them from there
-    public static String password = "AHawk15AB1rd";
-    private static String url = "jdbc:mysql://db-jenniferhawk.cullqcykoe1e.us-east-2.rds.amazonaws.com:3306?useUnicode=true&characterEncoding=utf8";
+    public static String username = Bot.configuration.getDatabase().get("username"); //"sp0ck1"; // TODO: Put these values in config.yaml and load them from there
+    public static String password = Bot.configuration.getDatabase().get("password");
+    private static String url = Bot.configuration.getDatabase().get("url");
 
 
     /**
@@ -25,7 +26,7 @@ public class JenDB {
         String result = "";
 
             try {
-                Connection con = DriverManager.getConnection(url, user, password);
+                Connection con = DriverManager.getConnection(url, username, password);
                 Class.forName("com.mysql.jdbc.Driver");
                 PreparedStatement stmt = con.prepareStatement("select * from JenniferHawk.COMMANDS WHERE COMMAND = ? ");
                 stmt.setString(1,whereClause);
@@ -55,7 +56,7 @@ public class JenDB {
     public static void addToHer(String Command, String Text, String Author) { //Add to Jennifer's commands list
         try {
 
-            Connection con = DriverManager.getConnection(url, user, password);
+            Connection con = DriverManager.getConnection(url, username, password);
             Class.forName("com.mysql.jdbc.Driver");
             PreparedStatement stmt = con.prepareStatement("INSERT INTO JenniferHawk.COMMANDS(COMMAND, TEXT, AUTHOR) VALUES (?,?,?)");
             PrintStream out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
@@ -82,7 +83,7 @@ public class JenDB {
                 System.err.println("That one already exists. Attempting an update...");
                 try {
 
-                    Connection con = DriverManager.getConnection(url, user, password);
+                    Connection con = DriverManager.getConnection(url, username, password);
                     Class.forName("com.mysql.jdbc.Driver");
                     PreparedStatement stmt = con.prepareStatement("UPDATE JenniferHawk.COMMANDS SET TEXT = ? WHERE COMMAND = ? ");
                     stmt.setString(1,Text);
@@ -109,7 +110,7 @@ public class JenDB {
     public static void deleteFromHer(String whereClause) { // Delete a command. Only accessible by sp0ck1
         try {
 
-            Connection con = DriverManager.getConnection(url, user, password);
+            Connection con = DriverManager.getConnection(url, username, password);
             Class.forName("com.mysql.jdbc.Driver");
             Statement stmt = con.createStatement();
             stmt.executeUpdate("DELETE FROM JenniferHawk.COMMANDS WHERE COMMAND = '" + whereClause + "'");
@@ -132,7 +133,7 @@ public class JenDB {
         String result = "";
         try {
 
-            Connection con = DriverManager.getConnection(url, user, password);
+            Connection con = DriverManager.getConnection(url, username, password);
             Class.forName("com.mysql.jdbc.Driver");
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("select * from JenniferHawk.forbidden WHERE COMMAND = '" + whereClause + "'");
@@ -162,7 +163,7 @@ public class JenDB {
         System.out.println("Timed message called.");
         try {
 
-            Connection con = DriverManager.getConnection(url,user,password);
+            Connection con = DriverManager.getConnection(url, username,password);
             Class.forName("com.mysql.jdbc.Driver");
             int id = random.nextInt(5) + 1;
             Statement stmt = con.createStatement();
@@ -193,7 +194,7 @@ public class JenDB {
         int FactID = random.nextInt(231);
         try {
             System.out.println("PokeFact sent.");
-                 Connection con = DriverManager.getConnection(url, user, password);
+                 Connection con = DriverManager.getConnection(url, username, password);
             Class.forName("com.mysql.jdbc.Driver");
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("select JenniferHawk.pokefacts.FACT from JenniferHawk.pokefacts WHERE FactID = " + FactID);
@@ -234,7 +235,7 @@ public class JenDB {
 
         try {
             System.out.println("rolln64 command fired.");
-                 Connection con = DriverManager.getConnection(url, user, password);
+                 Connection con = DriverManager.getConnection(url, username, password);
             Class.forName("com.mysql.jdbc.Driver");
             Statement stmt = con.createStatement();
             boolean sports = true;
@@ -274,7 +275,7 @@ public class JenDB {
     public static String[] n64Info(Integer GameID) {
         String[] result = new String[7];
         try {
-            Connection con = DriverManager.getConnection(url, user, password);
+            Connection con = DriverManager.getConnection(url, username, password);
             Class.forName("com.mysql.jdbc.Driver");
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("select * from JenniferHawk.n64_games WHERE GameID = " + GameID);
@@ -308,7 +309,7 @@ public class JenDB {
 
         try {
 
-            Connection con = DriverManager.getConnection(url, user, password);
+            Connection con = DriverManager.getConnection(url, username, password);
             Class.forName("com.mysql.jdbc.Driver");
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("select * from JenniferHawk.n64_current");
@@ -338,7 +339,7 @@ public class JenDB {
 
         try {
 
-            Connection con = DriverManager.getConnection(url, user, password);
+            Connection con = DriverManager.getConnection(url, username, password);
             Class.forName("com.mysql.jdbc.Driver");
             PreparedStatement stmt = con.prepareStatement("UPDATE JenniferHawk.n64_current SET "+Column+" = ?");
             stmt.setString(1,Runner);
@@ -370,7 +371,7 @@ public class JenDB {
         int count = 0;
         try {
 
-            Connection con = DriverManager.getConnection(url, user, password);
+            Connection con = DriverManager.getConnection(url, username, password);
             Class.forName("com.mysql.jdbc.Driver");
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT GAME, YEAR FROM JenniferHawk.n64_games WHERE GameID = " + GameID);
@@ -422,7 +423,7 @@ public class JenDB {
             e.printStackTrace();
         }
 
-        try { Connection con = DriverManager.getConnection(url, user, password);
+        try { Connection con = DriverManager.getConnection(url, username, password);
             Class.forName("com.mysql.jdbc.Driver");
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * from JenniferHawk.n64_current");
@@ -481,7 +482,7 @@ public class JenDB {
 
         try {
 
-            Connection con = DriverManager.getConnection(url, user, password);
+            Connection con = DriverManager.getConnection(url, username, password);
             Class.forName("com.mysql.jdbc.Driver");
             Statement stmt = con.createStatement();
             int deleted = stmt.executeUpdate("DELETE FROM JenniferHawk.n64_current WHERE TRUE");
@@ -506,7 +507,7 @@ public class JenDB {
         String[] result = new String[2];
         try {
 System.out.println("Lookup phrase: "+Lookup);
-            Connection con = DriverManager.getConnection(url, user, password);
+            Connection con = DriverManager.getConnection(url, username, password);
             Class.forName("com.mysql.jdbc.Driver");
             Lookup = Lookup
                     .replace("!", "!!")
@@ -546,7 +547,7 @@ System.out.println("Lookup phrase: "+Lookup);
             int count = 0;
             try {
 
-                       Connection con = DriverManager.getConnection(url, user, password);
+                       Connection con = DriverManager.getConnection(url, username, password);
                 Class.forName("com.mysql.jdbc.Driver");
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery("select GameID from JenniferHawk.n64_current");

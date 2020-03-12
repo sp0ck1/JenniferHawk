@@ -101,31 +101,4 @@ public class TimerToggle {
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //Every 10 minutes, send a random message from the timed_commands table WHERE TIMER = 1:
-
-
-
-
-
-
-
-
-

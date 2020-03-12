@@ -19,6 +19,8 @@ public class Configuration {
 
     private Map<String, String> credentials;
 
+    private Map<String,String> database;
+
     private List<String> channels;
 
     private Map<String, String> discord;
@@ -63,6 +65,8 @@ public class Configuration {
         return discord;
     }
 
+    public Map<String, String> getDatabase() { return database; }
+
     public void setChannels(List<String> channels) {
         this.channels = channels;
     }
@@ -75,6 +79,7 @@ public class Configuration {
                 ", credentials=" + credentials +
                 ", channels=" + channels +
                 ", discord =" + discord +
+                ", database ="+ database +
                 '}';
     }
 }
