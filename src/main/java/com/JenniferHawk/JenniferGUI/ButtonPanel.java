@@ -1,33 +1,44 @@
 package com.JenniferHawk.JenniferGUI;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import com.JenniferHawk.features.JenDB;
 import com.JenniferHawk.features.TimerToggle;
+import jdk.nashorn.internal.runtime.regexp.joni.Config;
+
 import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.URL;
 
 import static com.JenniferHawk.Bot.twitchClient;
 
-public class JenniferGUI extends JFrame implements ActionListener {
+public class ButtonPanel extends JPanel implements ActionListener {
 
     private TimerToggle timer = new TimerToggle();
     private JTextArea messageEntry = new JTextArea();
     private JTextArea channelName = new JTextArea();
 
 
-    public JenniferGUI() {
-        //setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+    public ButtonPanel() {
+        super(new GridLayout(4,2));
+        //setBorder(BorderFactory.createTitledBorder("Press Jennifer's Buttons"));
+        setBorder(BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED),
+                BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+                        "Press Jennifer's Buttons")));
+        setPreferredSize(new Dimension(400, 800));
 
-
-
-        JFrame frame = new JFrame("JenniferGUI");
 //        JTable table = new JTable(new DefaultTableModel(new Object[]{"Column1", "Column2"}, 20));
 //        DefaultTableModel model = (DefaultTableModel) table.getModel();
 //        model.addRow(new Object[]{"Column 1", "Column 2", "Column 3"});
 //        frame.add(table);
+
 
         JButton button,button1, button2, button3,button4, button5, textButton, byeSG;
         button = new JButton("Timer On");
@@ -38,14 +49,14 @@ public class JenniferGUI extends JFrame implements ActionListener {
         button5 = new JButton("Pyramid");
         textButton = new JButton("Send A Message");
         byeSG = new JButton("Close Jennifer");
-        frame.add(button);
-        frame.add(button1);
-        frame.add(button2);
-        frame.add(button3);
-        frame.add(button4);
-        frame.add(button5);
-        frame.add(textButton);
-        frame.add(byeSG);
+        add(button);
+        add(button1);
+        add(button2);
+        add(button3);
+        add(button4);
+        add(button5);
+        add(textButton);
+        add(byeSG);
         button.addActionListener(this);
         button1.addActionListener(this);
         button2.addActionListener(this);
@@ -54,11 +65,22 @@ public class JenniferGUI extends JFrame implements ActionListener {
         button5.addActionListener(this);
         textButton.addActionListener(this);
         byeSG.addActionListener(this);
-        frame.setLayout(new GridLayout(2,4));
-        frame.setSize(600,300);
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
+//            BufferedImage image = null;
+//            JFileChooser chooser = new JFileChooser();
+//            chooser.showOpenDialog(null);
+//            String path = chooser.getSelectedFile().getAbsolutePath();
+//            try {
+//                FileInputStream file = new FileInputStream(path);
+//                image = ImageIO.read(file);
+//                System.out.println("Are we loading?");
+//            } catch (IOException ioex) {
+//                System.err.println("load error: " + ioex.getMessage());
+//            }
+//            ImageIcon icon = new ImageIcon(image);
+//            button2.setIcon(icon);
+        setVisible(true);
+
         //button.setSize(,10);
 
           }

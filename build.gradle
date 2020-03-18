@@ -13,7 +13,6 @@ mainClassName = 'com.JenniferHawk.Launcher'
 
 // Repositories
 
-
 // Dependencies
 allprojects {
     repositories {
@@ -74,10 +73,12 @@ dependencies {
     compile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
 
     compileOnly 'org.projectlombok:lombok:1.18.12'
-    	annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
 
     	testCompileOnly 'org.projectlombok:lombok:1.18.12'
     	testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    compile group: 'javazoom', name: 'jlayer', version: '1.0.1'
 
 
     // jUnit

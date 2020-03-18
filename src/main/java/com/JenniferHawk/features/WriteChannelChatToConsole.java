@@ -10,7 +10,7 @@ import javax.swing.*;
 
 public class WriteChannelChatToConsole {
 
-    JChatPane status;
+ //   JChatPane status;
 
     /**
      * Register events of this class with the EventManager
@@ -27,7 +27,7 @@ public class WriteChannelChatToConsole {
 
         public void onChannelMessage(ChannelMessageEvent event) {
 
-            status.appendText(event.getUser().getName() + " says: " + event.getMessage());
+           // status.appendText(event.getUser().getName() + " says: " + event.getMessage());
 
             System.out.printf(
                     "Channel: %s | %s: %s \n",
