@@ -33,7 +33,7 @@ public class JChatPane extends JPanel {
     }
 
     public void onChannelMessage(ChannelMessageEvent event) {
-        System.out.println("Someone sent a message!");
+
         appendText(event.getUser().getName() + " says: " + event.getMessage());
     }
 
@@ -145,6 +145,14 @@ public class JChatPane extends JPanel {
         }
         scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
         ta.setCaretPosition(ta.getDocument().getLength());
+    }
+
+    public void appendMessage(String username,String message) {
+            //TODO: Add attribute sets for username
+            //  Create map of usernames and colors
+            //  Check map get("username") and return color
+            //  if color not present, create new color
+            //  associate with username, and put("username",color)
     }
 
     public void appendError(String msg) {

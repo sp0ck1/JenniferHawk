@@ -15,6 +15,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import javax.security.auth.login.LoginException;
 import javax.swing.*;
 import java.io.InputStream;
+import java.net.URL;
 
 public class Bot {
 
@@ -38,6 +39,14 @@ public class Bot {
      * Constructor
      */
     public Bot() throws LoginException, InterruptedException {
+
+        URL localPackage = this.getClass().getResource("");
+        URL urlLoader = Bot.class.getProtectionDomain().getCodeSource().getLocation();
+        String localDir = localPackage.getPath();
+        String loaderDir = urlLoader.getPath();
+        System.out.printf("loaderDir = %s\n localDir = %s\n", loaderDir, localDir);
+
+
         // Load Configuration
         loadConfiguration();
 

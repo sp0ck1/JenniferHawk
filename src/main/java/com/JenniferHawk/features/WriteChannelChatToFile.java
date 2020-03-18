@@ -30,6 +30,7 @@ public class WriteChannelChatToFile {
      */
 //TODO: Separate string into three variables and add to either csv or database instead of .txt,
 // keep timestamp and then find method for downloading chatlog where match given date or IS BETWEEN two dates.
+    // Do I still want to do this? I don't know.
 
 
 

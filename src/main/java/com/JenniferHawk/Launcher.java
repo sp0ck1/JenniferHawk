@@ -9,14 +9,20 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 
 public class Launcher {
 
-    public static void main(String[] args) throws LoginException, InterruptedException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+    public static void main(String[] args) throws LoginException, InterruptedException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, URISyntaxException {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         Bot bot = new Bot();
         bot.registerFeatures();
         bot.start();
+
+
+
 
         // Load the GUI
         JChatPane chatPane = bot.createChatPane();

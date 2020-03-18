@@ -13,7 +13,7 @@ import java.util.Random;
 
 
 public class JenDB {
-    public static String username = Bot.configuration.getDatabase().get("username"); //"sp0ck1"; // TODO: Put these values in config.yaml and load them from there
+    public static String username = Bot.configuration.getDatabase().get("username");
     public static String password = Bot.configuration.getDatabase().get("password");
     private static String url = Bot.configuration.getDatabase().get("url");
 
@@ -59,10 +59,10 @@ public class JenDB {
             Connection con = DriverManager.getConnection(url, username, password);
             Class.forName("com.mysql.jdbc.Driver");
             PreparedStatement stmt = con.prepareStatement("INSERT INTO JenniferHawk.COMMANDS(COMMAND, TEXT, AUTHOR) VALUES (?,?,?)");
-            PrintStream out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-            out.println("Attempting to add this: " + Text);
+
+            System.out.println("Attempting to add this: " + Text);
             System.out.println("Attempting to add command: " + Text);
-            stmt.execute("SET NAMES utf8mb4");
+            stmt.execute("SET NAMES utf8mb4"); // This is the only way the database will accept UNICODE characters like 
             stmt.setString(1,Command);
             stmt.setString(2,Text);
             stmt.setString(3,Author);
@@ -94,6 +94,7 @@ public class JenDB {
                 } catch (SQLException | ClassNotFoundException f) {
                     System.out.println("There was still an error.");
                     e.printStackTrace(System.err);
+                    assert f instanceof SQLException;
                     System.err.println("SQLState: " +
                             ((SQLException) f).getSQLState());
 
@@ -305,7 +306,7 @@ public class JenDB {
     }
 
     public static String[] N64Current() {
-        String result[] = new String[2];
+        String[] result = new String[2];
 
         try {
 

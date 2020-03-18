@@ -43,7 +43,7 @@ local.properties
 !gradle/wrapper/*.jar
 
 # Config files
-*.yaml
+config.yaml
 
 # Logs / Save Files
 config/*
