@@ -6,7 +6,6 @@ import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
-import javax.swing.border.EmptyBorder;
 import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -15,10 +14,10 @@ import static com.JenniferHawk.Bot.twitchClient;
 
 public class JChatPane extends JPanel {
 
-    private JTextPane ta = new JTextPane();
-    private Color color = new Color(24,24,27); // Twitch Dark Mode color
+    private static JTextPane ta = new JTextPane();
+
     private JTextField chatEntry = new JTextField();
-    private JScrollPane scrollPane;
+    private static JScrollPane scrollPane;
     // A JChatPane prints its width and height on resize.
         @Override
         protected void paintComponent(Graphics g) {
@@ -35,7 +34,7 @@ public class JChatPane extends JPanel {
     public void onChannelMessage(ChannelMessageEvent event) {
 
         appendText(event.getUser().getName() + " says: " + event.getMessage());
-        ;
+
     }
 
 
@@ -60,7 +59,7 @@ public class JChatPane extends JPanel {
         ta.setEditable(false);
         //ta.setBorder(BorderFactory.createTitledBorder("Text Area"));
         //ta.setBorder(BorderFactory.createBevelBorder(1));
-        ta.setBackground(color);
+        ta.setBackground(TwitchColors.DARK_MODE_BACKGROUND);
         scrollPane = new JScrollPane(ta);
 
         scrollPane.setPreferredSize(new Dimension(420,700));
@@ -121,13 +120,13 @@ public class JChatPane extends JPanel {
 
     }
 
-    public void appendText(String msg)  {
+    public static void appendText(String msg)  {
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY,
                 StyleConstants.Foreground, Color.WHITE);
 
 
-        aset = sc.addAttribute(aset, StyleConstants.Background, color);
+        aset = sc.addAttribute(aset, StyleConstants.Background, TwitchColors.DARK_MODE_BACKGROUND);
 
         aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Arial");
         aset = sc.addAttribute(aset, StyleConstants.Alignment,

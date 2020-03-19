@@ -1,8 +1,12 @@
 package com.JenniferHawk.features;
 
+import com.JenniferHawk.JenniferGUI.JChatPane;
 import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
+import com.github.twitch4j.helix.domain.Game;
+import com.github.twitch4j.helix.domain.GameList;
+import com.github.twitch4j.helix.domain.StreamList;
 import com.netflix.hystrix.HystrixCommandMetrics;
 import org.apache.commons.lang3.StringUtils;
 import static com.JenniferHawk.Bot.twitchClient;
@@ -11,7 +15,9 @@ import static com.JenniferHawk.Bot.twitchClient;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 
@@ -58,6 +64,7 @@ public class TwitchCommands {
                 String time = sdf.format(timestamp);
                 message = "It's " + time + " for sp0ck1.";
                 event.getTwitchChat().sendMessage(event.getChannel().getName(), message);
+                JChatPane.appendText("JenniferHawk: " + message);
             }
             else if ((event.getUser().getName().equals("maikachan")) && (random.nextInt(5) == 3)) {
                 message = "Thanks, Maika! TehePelo";
@@ -66,6 +73,7 @@ public class TwitchCommands {
             else if ((original.equals("Daro stop"))) {
                 message = "Daro please don't eat your wet shoe.";
                 event.getTwitchChat().sendMessage(event.getChannel().getName(), message);
+                JChatPane.appendText("JenniferHawk: " + message);
             }
             else if ((messagein.equals("insert")) && (splitLength > 2)) {
                 String Text = phrase[2];
@@ -75,20 +83,25 @@ public class TwitchCommands {
                 else {
                 message = "I set the command! ...Probably TehePelo";
                 JenDB.addToHer(Command, Text, Author);
-                event.getTwitchChat().sendMessage(event.getChannel().getName(), message);}
+                event.getTwitchChat().sendMessage(event.getChannel().getName(), message);
+                    JChatPane.appendText("JenniferHawk: " + message);}
             }
             else if ((messagein.equals("insert"))) {
                 message = "To add a command to my repertoire, use the sequence !insert [command] [text] (without brackets).";
                 event.getTwitchChat().sendMessage(event.getChannel().getName(), message);
+                JChatPane.appendText("JenniferHawk: " + message);
+
             }
             else if ((isSp0ck1) && (messagein.equals("clear")) && (splitLength > 1)) {
                 JenDB.deleteFromHer(word[1]);
                 message = "I deleted it, I think!";
                 event.getTwitchChat().sendMessage(event.getChannel().getName(), message);
+                JChatPane.appendText("JenniferHawk: " + message);
             }
             else if ( (isSp0ck1) && (messagein.equals("clear")) && (splitLength < 2)) {
                 message = "Clear what?";
                 event.getTwitchChat().sendMessage(event.getChannel().getName(), message);
+                JChatPane.appendText("JenniferHawk: " + message);
             }
             else if ( (isSp0ck1) && messagein.equals("timeron")) {
 
@@ -103,6 +116,7 @@ twitchClient.getChat().sendPrivateMessage("sp0ck1","A whisper from JenniferHawk"
            //     timerToggle.sendUptime();
                // System.out.println(chatters);
                 event.getTwitchChat().sendMessage(event.getChannel().getName(),"uptime");
+                JChatPane.appendText("JenniferHawk: " + message);
             }
             else if (messagein.equals("poke") ) {
       //          timerToggle.sendPokeFact();
@@ -116,11 +130,31 @@ twitchClient.getChat().sendPrivateMessage("sp0ck1","A whisper from JenniferHawk"
             else if (isCommand) {
                 message = JenDB.queryHer(whereClause);
                 event.getTwitchChat().sendMessage(event.getChannel().getName(), message);
+                JChatPane.appendText("JenniferHawk: " + message);
 
             }
 
 
         }
+
+    public void send24() {
+        List<String> sg4e = Collections.singletonList("sg4e");
+        StreamList resultList = twitchClient.getHelix().getStreams("oauth:124tkcsi4od4062r3i9q63pjs5qwr5",null,  null, 1, null, null, null, null, Collections.singletonList("sg4e")).execute();
+        resultList.getStreams().forEach(stream -> {
+            GameList gameList = twitchClient.getHelix().getGames("oauth:124tkcsi4od4062r3i9q63pjs5qwr5", Collections.singletonList(stream.getGameId()),null).execute();
+            Game game = gameList.getGames().get(0);
+            String gameInfo = String.valueOf(game);
+            String gameName = game.getName();// gameInfo.substring(gameInfo.indexOf("name=")+5,gameInfo.indexOf(", b"));
+            Calendar j = stream.getStartedAt();
+
+            String startTime = sdf.format(j.getTime());
+
+            twitchClient.getChat().sendMessage("sg4e",
+                    "Starting at "+startTime+", sg4e will be doing a 24 hour stream marathon. We'll start with everyone's favorite: "+gameName+"! " +
+                            "Then we'll move on to YOUR Mario Maker 2 levels! Type !mm submit <level code> <comment> to add a level to the queue, " +
+                            "use !queue to see what's next, and use !bully to get the latest information on whose records are being bopped. See you there! NoaGamba");
+        });
+    }
 
 }
 

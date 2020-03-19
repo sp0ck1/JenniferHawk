@@ -28,7 +28,7 @@ public class Launcher {
         // Load the GUI
         JChatPane chatPane = bot.createChatPane();
         ButtonPanel buttonPanel = new ButtonPanel();
-        JFrame frame = new JFrame("This is Jennifer's frame");
+        JFrame frame = new JFrame("JenniferHawk 2.0 WIP");
         GridBagLayout gridBagLayout = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         frame.setLayout(new BorderLayout());
@@ -43,6 +43,8 @@ public class Launcher {
                 streamInfo.getWidth(),
                 buttonPanel.getHeight()));
 
+       // streamInfo.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(),BorderFactory.createTitledBorder("stream info panel")));
+
         chatPane.setBorder(BorderFactory.createRaisedBevelBorder());
         frame.getContentPane().add(raisedPanel);
         c.gridx = 0;
@@ -53,7 +55,7 @@ public class Launcher {
         c.gridx = 1;
         raisedPanel.add(buttonPanel,c);
         c.gridx = 2;
-        raisedPanel.add(streamInfo);
+        raisedPanel.add(streamInfo,c);
         frame.pack();
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);

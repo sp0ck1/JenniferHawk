@@ -110,7 +110,7 @@ public class Bot {
 
     public void registerFeatures() {
        // Register Event-based features
-          new TwitchCommands(twitchClient.getEventManager());
+          new TwitchCommands(twitchClient.getEventManager()); //
           new WriteChannelChatToFile(twitchClient.getEventManager());
           new N64(twitchClient.getEventManager());
           new WriteChannelChatToConsole(twitchClient.getEventManager());

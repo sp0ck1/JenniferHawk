@@ -44,7 +44,7 @@ public class ButtonPanel extends JPanel implements ActionListener {
         JButton button,button1, button2, button3,button4, button5, textButton, byeSG;
         button = new JButton("Timer On");
         button1 = new JButton("Timer Off");
-        button2 = new JButton("Roll N64");
+        button2 = new JButton();
         button3 = new JButton("Poke Facts");
         button4 = new JButton("Poke Stop");
         button5 = new JButton("Pyramid");
@@ -67,16 +67,9 @@ public class ButtonPanel extends JPanel implements ActionListener {
         textButton.addActionListener(this);
         byeSG.addActionListener(this);
 
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        InputStream is = classloader.getResourceAsStream("n64mania.png");
-        BufferedImage image = null;
-        try {
-            image = ImageIO.read(is);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        ImageIcon icon = new ImageIcon(image);
-        button2.setIcon(icon);
+        JenniferImages n64ManiaIcon = new JenniferImages();
+
+        button2.setIcon(n64ManiaIcon.getN64ManiaIcon());
 
         setVisible(true);
 
