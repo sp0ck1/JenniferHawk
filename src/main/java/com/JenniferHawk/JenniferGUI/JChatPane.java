@@ -35,6 +35,7 @@ public class JChatPane extends JPanel {
     public void onChannelMessage(ChannelMessageEvent event) {
 
         appendText(event.getUser().getName() + " says: " + event.getMessage());
+        ;
     }
 
 

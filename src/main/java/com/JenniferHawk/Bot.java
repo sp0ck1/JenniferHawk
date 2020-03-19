@@ -149,7 +149,7 @@ public class Bot {
         for (String channel : configuration.getChannels()) {
             twitchClient.getChat().joinChannel(channel);
         }
-        twitchClient.getChat().sendMessage("sp0ck1","I am here!");
+        // twitchClient.getChat().sendMessage("sp0ck1","I am here!");
 
 
 

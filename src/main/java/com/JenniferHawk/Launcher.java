@@ -3,6 +3,7 @@ package com.JenniferHawk;
 
 import com.JenniferHawk.JenniferGUI.JChatPane;
 import com.JenniferHawk.JenniferGUI.ButtonPanel;
+import com.JenniferHawk.JenniferGUI.StreamInfoPanel;
 
 import javax.security.auth.login.LoginException;
 import javax.swing.*;
@@ -32,9 +33,16 @@ public class Launcher {
         GridBagConstraints c = new GridBagConstraints();
         frame.setLayout(new BorderLayout());
         JPanel raisedPanel = new JPanel();
+        StreamInfoPanel streamInfo = new StreamInfoPanel();
+
         raisedPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         raisedPanel.setLayout(gridBagLayout);
-        raisedPanel.setMinimumSize(new Dimension(chatPane.getWidth()+buttonPanel.getWidth(),buttonPanel.getHeight()));
+
+        raisedPanel.setMinimumSize(new Dimension(chatPane.getWidth() +
+                buttonPanel.getWidth() +
+                streamInfo.getWidth(),
+                buttonPanel.getHeight()));
+
         chatPane.setBorder(BorderFactory.createRaisedBevelBorder());
         frame.getContentPane().add(raisedPanel);
         c.gridx = 0;
@@ -44,11 +52,13 @@ public class Launcher {
         raisedPanel.add(chatPane,c);
         c.gridx = 1;
         raisedPanel.add(buttonPanel,c);
+        c.gridx = 2;
+        raisedPanel.add(streamInfo);
         frame.pack();
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
 
-        chatPane.appendText("Welcome to JennierHawk's panel!");
+        chatPane.appendText("Welcome to JenniferHawk's panel!");
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

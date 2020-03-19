@@ -15,6 +15,7 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 import static com.JenniferHawk.Bot.twitchClient;
@@ -66,19 +67,17 @@ public class ButtonPanel extends JPanel implements ActionListener {
         textButton.addActionListener(this);
         byeSG.addActionListener(this);
 
-//            BufferedImage image = null;
-//            JFileChooser chooser = new JFileChooser();
-//            chooser.showOpenDialog(null);
-//            String path = chooser.getSelectedFile().getAbsolutePath();
-//            try {
-//                FileInputStream file = new FileInputStream(path);
-//                image = ImageIO.read(file);
-//                System.out.println("Are we loading?");
-//            } catch (IOException ioex) {
-//                System.err.println("load error: " + ioex.getMessage());
-//            }
-//            ImageIcon icon = new ImageIcon(image);
-//            button2.setIcon(icon);
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("n64mania.png");
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ImageIcon icon = new ImageIcon(image);
+        button2.setIcon(icon);
+
         setVisible(true);
 
         //button.setSize(,10);
@@ -150,7 +149,7 @@ public class ButtonPanel extends JPanel implements ActionListener {
                 break;
             case "Close Jennifer":
                 System.out.println("I'm outta here!");
-                twitchClient.getChat().sendMessage("sp0ck1","See you next time!");
+               // twitchClient.getChat().sendMessage("sp0ck1","See you next time!");
                 // Add something that closes the JFrame immediately
                 try {
                     Thread.sleep(1000);
