@@ -39,7 +39,7 @@ public class FileWriters {
 
     public void clearN64Layout() throws IOException {
         String s = "";
-        for (int i=0; i <= 5; i++) {
+        for (int i = 0; i <= 5; i++) {
             System.out.println(i);
             if (i == 1) s = "First";
             else if (i == 2) s = "Second";
@@ -53,6 +53,18 @@ public class FileWriters {
             FileUtils.writeStringToFile(year, "", "UTF-8", false);
             FileUtils.writeStringToFile(count, "", "UTF-8", false);
         }
+    }
+
+    public void clearN64Placements() throws IOException {
+        String s = "";
+        for (int i = 0; i <= 5; i++) {
+            if (i == 1) s = "First";
+            else if (i == 2) s = "Second";
+            else if (i == 3) s = "Third";
+            else if (i == 4) s = "Fourth";
+            else if (i == 5) s = "Fifth";
+            writeN64PlaceToFile(s, "Unclaimed"); // write "Unclaimed" to file
         }
     }
+}
 

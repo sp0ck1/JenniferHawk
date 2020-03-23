@@ -16,7 +16,7 @@ import static java.lang.Integer.parseInt;
 
 public class N64 {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("MMMM d, YYYY h:mm z");
-
+    FileWriters writer = new FileWriters();
     /**
      * Register events of this class with the EventManager
      *
@@ -63,21 +63,20 @@ if (isCommand)
             switch (firstWord) {
                 case "n64mania":
                     if (phraseLength > 1) {
-                        switch (word[1]) {
-                            case "lookup":
-                                System.out.println("Looking up: " + phrase[2]);
-                                String lookup = phrase[2];
-                                String[] maybeGame = JenDB.N64Lookup(lookup);
-                                if (maybeGame[1] == null) {
-                                    event.getTwitchChat().sendMessage(channel, "I'm not sure! Could you be a little more specific? Do you remember anything else?");
-                                    JChatPane.appendText("JenniferHawk: " + "I'm not sure! Could you be a little more specific? Do you remember anything else?");
-                                } else {
-                                    event.getTwitchChat().sendMessage(channel, "Did you want " + maybeGame[1] + "? It's !GameID " + maybeGame[0] + ".");
-                                    JChatPane.appendText("JenniferHawk: " + "Did you want " + maybeGame[1] + "? It's !GameID " + maybeGame[0] + ".");
-                                }
-                                break;} // in case other !n64mania [word] commands are added, like checking first/second/third in race
+                        if ("lookup".equals(word[1])) {
+                            System.out.println("Looking up: " + phrase[2]);
+                            String lookup = phrase[2];
+                            String[] maybeGame = JenDB.N64Lookup(lookup);
+                            if (maybeGame[1] == null) {
+                                event.getTwitchChat().sendMessage(channel, "I'm not sure! Could you be a little more specific? Do you remember anything else?");
+                                JChatPane.appendText("JenniferHawk: " + "I'm not sure! Could you be a little more specific? Do you remember anything else?");
+                            } else {
+                                event.getTwitchChat().sendMessage(channel, "Did you want " + maybeGame[1] + "? It's !GameID " + maybeGame[0] + ".");
+                                JChatPane.appendText("JenniferHawk: " + "Did you want " + maybeGame[1] + "? It's !GameID " + maybeGame[0] + ".");
+                            }
+                        } // in case other !n64mania [word] commands are added, like checking first/second/third in race
 
-                            if ( isBroadcaster || isModerator ) {
+                        if ( isBroadcaster || isModerator ) {
                                 System.out.println("Chatter is sp0ck1. Phrase length is: " + phraseLength);
                                 switch (word[1]) {
                                     case "link":
@@ -94,7 +93,7 @@ if (isCommand)
                                         JenDB.N64Complete();
                                         break;
                                     case "clear": // Clears layout and n64_current table
-                                        FileWriters writer = new FileWriters();
+
                                         try {
                                             writer.clearN64Layout();
                                         } catch (IOException e) {e.printStackTrace();}
@@ -110,7 +109,7 @@ if (isCommand)
                                         break;
                                     case "clearlayout":
                                         //FileWriters writer = new FileWriters();
-                                        //writer.clearN64Placements();
+                                        writer.clearN64Placements();
                                         break;
                                 } // End this switch for isBroadcaster
                                 }} // End if (wordCount > 1)
@@ -168,7 +167,7 @@ if (isCommand)
 
 
                         }
-                    } catch(ArrayIndexOutOfBoundsException a){
+                    } catch(ArrayIndexOutOfBoundsException | IOException a){
                     System.out.println("There are not enough words in the message to execute this command.");
                     a.getMessage();
                 }

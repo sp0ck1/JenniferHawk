@@ -17,12 +17,9 @@ import java.nio.file.Paths;
 public class Launcher {
 
     public static void main(String[] args) throws LoginException, InterruptedException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, URISyntaxException {
-        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+
         Bot bot = new Bot();
-        bot.registerFeatures();
-        bot.start();
-
-
 
 
         // Load the GUI
@@ -38,12 +35,11 @@ public class Launcher {
         raisedPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         raisedPanel.setLayout(gridBagLayout);
 
-        raisedPanel.setMinimumSize(new Dimension(chatPane.getWidth() +
+        raisedPanel.setMinimumSize(new Dimension(
+                chatPane.getWidth() +
                 buttonPanel.getWidth() +
                 streamInfo.getWidth(),
                 buttonPanel.getHeight()));
-
-       // streamInfo.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createRaisedBevelBorder(),BorderFactory.createTitledBorder("stream info panel")));
 
         chatPane.setBorder(BorderFactory.createRaisedBevelBorder());
         frame.getContentPane().add(raisedPanel);
@@ -60,14 +56,17 @@ public class Launcher {
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
 
-        chatPane.appendText("Welcome to JenniferHawk's panel!");
+        JChatPane.appendText("Welcome to JenniferHawk's panel!");
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Throwable exception) {
             // Fail silently.
         }
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
+        bot.registerFeatures();
+        bot.start();
 
 
 

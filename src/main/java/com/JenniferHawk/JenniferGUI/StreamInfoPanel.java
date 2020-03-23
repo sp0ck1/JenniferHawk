@@ -14,7 +14,7 @@ public class StreamInfoPanel extends JPanel {
     GridBagLayout gridBagLayout = new GridBagLayout();
     GridBagConstraints c = new GridBagConstraints();
     JTextArea titleText = new JTextArea();
-    JTextArea goLiveText = new JTextArea();
+    JTextField goLiveText = new JTextField();
     JTextField categoryText = new JTextField(15);
     JLabel titleLabel = new JLabel("Stream title:");
     JLabel goLiveLabel = new JLabel("Go live notification:");
@@ -38,7 +38,9 @@ public class StreamInfoPanel extends JPanel {
 
     public StreamInfoPanel() {
         super(new GridBagLayout());
-
+        goLiveText.setBorder(new RoundedCornerBorder());
+        goLiveText.setBackground(TwitchColors.DARK_MODE_FOREGROUND);
+        goLiveText.setOpaque(false);
         setBorder(BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED),
                 BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
                         "Press Jennifer's Buttons")));
@@ -95,7 +97,7 @@ public class StreamInfoPanel extends JPanel {
         innerPanel.add(goLiveLabel,c);
 
         c.gridy = 3;
-        goLiveText.setBorder(createLoweredBevelBorder());
+
         innerPanel.add(goLiveText,c);
 
         c.gridy = 4;

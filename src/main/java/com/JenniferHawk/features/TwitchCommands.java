@@ -98,7 +98,7 @@ public class TwitchCommands {
                 event.getTwitchChat().sendMessage(event.getChannel().getName(), message);
                 JChatPane.appendText("JenniferHawk: " + message);
             }
-            else if ( (isSp0ck1) && (messagein.equals("clear")) && (splitLength < 2)) {
+            else if (isSp0ck1 && messagein.equals("clear")) {
                 message = "Clear what?";
                 event.getTwitchChat().sendMessage(event.getChannel().getName(), message);
                 JChatPane.appendText("JenniferHawk: " + message);
@@ -130,8 +130,9 @@ twitchClient.getChat().sendPrivateMessage("sp0ck1","A whisper from JenniferHawk"
             else if (isCommand) {
                 message = JenDB.queryHer(whereClause);
                 event.getTwitchChat().sendMessage(event.getChannel().getName(), message);
-                JChatPane.appendText("JenniferHawk: " + message);
-
+                if (!message.equals("")) {
+                    JChatPane.appendText("JenniferHawk: " + message);
+                }
             }
 
 
