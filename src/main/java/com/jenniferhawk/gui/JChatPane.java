@@ -8,7 +8,11 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.text.*;
 import java.awt.*;
+import java.awt.datatransfer.SystemFlavorMap;
 import java.awt.event.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 import static com.jenniferhawk.Bot.twitchClient;
 
@@ -16,6 +20,7 @@ public class JChatPane extends JPanel {
 
     private static JTextPane ta = new JTextPane();
 
+    private static Map<String,Color> usernameColors = new HashMap<>();
     private JTextField chatEntry = new JTextField();
     private static JScrollPane scrollPane;
     // A JChatPane prints its width and height on resize.
@@ -33,11 +38,15 @@ public class JChatPane extends JPanel {
 
     public void onChannelMessage(ChannelMessageEvent event) {
 
-        appendText(event.getUser().getName() + " says: " + event.getMessage());
-
+        //appendText(event.getUser().getName() + " says: " + event.getMessage());
+        appendMessage(event.getUser().getName(),": " + event.getMessage());
     }
 
-
+    public static void setNewColor(String username) {
+            Random random = new Random();
+            Color newColor = new Color(random.nextInt(255),random.nextInt(255),random.nextInt(255));
+            usernameColors.put(username,newColor);
+    }
 
     public JChatPane(String buttonOne, String buttonTwo) {
         super(new BorderLayout());
@@ -46,7 +55,7 @@ public class JChatPane extends JPanel {
 
         JPanel panel = new JPanel();
         add(panel);
-        //panel.setLayout(new BorderLayout());
+
         panel.setLayout(new GridBagLayout());
 
         JButton saveButton = new JButton(buttonOne);
@@ -63,13 +72,14 @@ public class JChatPane extends JPanel {
         scrollPane = new JScrollPane(ta);
 
         scrollPane.setPreferredSize(new Dimension(420,700));
+        setMinimumSize(new Dimension(420,700));
         scrollPane.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
                         "Chat window"),BorderFactory.createBevelBorder(BevelBorder.LOWERED)));
         scrollPane.add(new JButton("scrollbutton"));
         c.fill = GridBagConstraints.VERTICAL;
         c.weighty = 1;
-        c.weightx = 0;
+        c.weightx = 1;
         c.gridy = 0;
         panel.add(scrollPane,c);
 
@@ -148,11 +158,53 @@ public class JChatPane extends JPanel {
     }
 
     public void appendMessage(String username,String message) {
-            //TODO: Add attribute sets for username
-            //  Create map of usernames and colors
-            //  Check map get("username") and return color
-            //  if color not present, create new color
-            //  associate with username, and put("username",color)
+
+        Random random = new Random();
+
+        Color userColor;
+
+        if (usernameColors.get(username) == null) {
+            Color newUserColor = new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255));
+            usernameColors.put(username, newUserColor);
+        }
+        userColor = usernameColors.get(username);
+
+        SimpleAttributeSet messageAttributes = new SimpleAttributeSet();
+        messageAttributes.addAttribute(StyleConstants.Foreground, userColor);
+
+
+        messageAttributes.addAttribute(StyleConstants.Background, TwitchColors.DARK_MODE_BACKGROUND);
+        StyleConstants.setBold(messageAttributes,true);
+        messageAttributes.addAttribute(StyleConstants.FontFamily, "Arial");
+        messageAttributes.addAttribute(StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+
+        messageAttributes.addAttribute(StyleConstants.FontSize,15);
+
+        int len = ta.getDocument().getLength();
+        ta.setCaretPosition(len);
+
+        StyledDocument doc = ta.getStyledDocument();
+
+        try {
+            doc.insertString(doc.getLength(), username, messageAttributes);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+
+        messageAttributes.removeAttribute(userColor);
+        messageAttributes.addAttribute(StyleConstants.Foreground, Color.WHITE);
+        StyleConstants.setBold(messageAttributes,false);
+
+        try {
+            doc.insertString(doc.getLength(), message+"\n", messageAttributes);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+
+
+        scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+        ta.setCaretPosition(ta.getDocument().getLength());
+
     }
 
     public void appendError(String msg) {

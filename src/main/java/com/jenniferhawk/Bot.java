@@ -63,29 +63,10 @@ public class Bot {
                 .withClientId(configuration.getApi().get("twitch_client_id"))
                 .withClientSecret(configuration.getApi().get("twitch_client_secret"))
                 .withEnableHelix(true)
-                /*
-                 * Chat Module
-                 * Joins irc and triggers all chat based events (viewer join/leave/sub/bits/gifted subs/...)
-                 */
                 .withChatAccount(credential)
                 .withEnableChat(true)
-                /*
-                 * GraphQL has a limited support
-                 * Don't expect a bunch of features enabling it
-                 */
-                .withEnableGraphQL(true)
-                /*
-                 * Kraken is going to be deprecated
-                 * see : https://dev.twitch.tv/docs/v5/#which-api-version-can-you-use
-                 * It is only here so you can call methods that are not (yet)
-                 * implemented in Helix
-                 */
-                .withEnableKraken(false)
-                .withEnableTMI(false)
                 .withEnablePubSub(true)
-                /*
-                 * Build the TwitchClient Instance
-                 */
+                .withEnableTMI(true)
                 .build();
         //endregion
 
@@ -108,12 +89,13 @@ public class Bot {
      */
 
     public void registerFeatures() {
-       // Register Event-based features
-        new WriteChannelChatToConsole(twitchClient.getEventManager());
+            // Register Event-based features
+          new WriteChannelChatToConsole(twitchClient.getEventManager());
           new TwitchCommands(twitchClient.getEventManager()); //
           new WriteChannelChatToFile(twitchClient.getEventManager());
           new N64(twitchClient.getEventManager());
-
+          new RandomCutie(twitchClient.getEventManager());
+          new JenniferGoLive(twitchClient.getEventManager());
     }
 
     public JChatPane createChatPane() {
@@ -148,6 +130,7 @@ public class Bot {
 
         for (String channel : configuration.getChannels()) {
             twitchClient.getChat().joinChannel(channel);
+            twitchClient.getClientHelper().enableStreamEventListener(channel);
         }
         // twitchClient.getChat().sendMessage("sp0ck1","I am here!");
 

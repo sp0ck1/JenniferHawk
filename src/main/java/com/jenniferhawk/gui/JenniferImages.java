@@ -3,6 +3,7 @@ package com.jenniferhawk.gui;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -20,8 +21,7 @@ public class JenniferImages {
 
     public void setIcons() {
 
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        InputStream is = classloader.getResourceAsStream("n64mania.png");
+        InputStream is = getClass().getClassLoader().getResourceAsStream("n64mania.png");
         BufferedImage image = null;
 
         try {

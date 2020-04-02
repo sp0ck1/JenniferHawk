@@ -1,5 +1,6 @@
 package com.jenniferhawk.features;
 
+import com.jenniferhawk.database.JenDB;
 import com.jenniferhawk.gui.JChatPane;
 
 
@@ -41,7 +42,7 @@ public class TimerToggle {
 
 
 
-    public void sendPokeFact() {
+    public static void sendPokeFact() {
         String fact = JenDB.getPokeFact();
         twitchClient.getChat().sendMessage("sp0ck1",fact);
         JChatPane.appendText("JenniferHawk: " + fact);

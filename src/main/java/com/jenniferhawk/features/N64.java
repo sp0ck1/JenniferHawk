@@ -1,5 +1,7 @@
 package com.jenniferhawk.features;
 
+import com.jenniferhawk.database.JenDB;
+import com.jenniferhawk.database.N64Game;
 import com.jenniferhawk.gui.JChatPane;
 import com.jenniferhawk.layout.FileWriters;
 import com.github.philippheuer.events4j.core.EventManager;
@@ -131,9 +133,9 @@ if (isCommand)
 
 
                 case "rolln64":
-                    String[] results = JenDB.rolln64();
-                    String game = results[1];
-                    String gameid = results[0];
+                    N64Game n64Game = JenDB.rolln64();
+                    String game = n64Game.getTitle();
+                    String gameid = n64Game.getId();
                     event.getTwitchChat().sendMessage(channel,
                             chatter +
                                     ", your next N64 game is " +

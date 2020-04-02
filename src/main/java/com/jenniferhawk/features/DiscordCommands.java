@@ -1,5 +1,7 @@
 package com.jenniferhawk.features;
 
+import com.jenniferhawk.database.JenDB;
+import com.jenniferhawk.database.N64Game;
 import com.jenniferhawk.howlongtobeat.*;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -27,11 +29,8 @@ public class DiscordCommands extends ListenerAdapter {
         User author = event.getAuthor();
 
         if (original.toLowerCase().startsWith("!rolln64")) {
-            String[] results = JenDB.rolln64();
-            String game = results[1];
-
-
-
+            N64Game n64Game = JenDB.rolln64();
+            String game = n64Game.getTitle();
 
             System.out.println("I looked for " + game + " on HLTB.");
 

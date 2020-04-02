@@ -5,7 +5,8 @@ import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import com.jenniferhawk.features.JenDB;
+import com.jenniferhawk.database.JenDB;
+import com.jenniferhawk.database.N64Game;
 import com.jenniferhawk.features.TimerToggle;
 
 import java.awt.Dimension;
@@ -81,9 +82,9 @@ public class ButtonPanel extends JPanel implements ActionListener {
                 timer.TimerOff();
                 break;
             case "Roll N64":
-                String[] games = JenDB.rolln64();
-                String game = games[1];
-                String gameid = games[0];
+                N64Game n64Game = JenDB.rolln64();
+                String game = n64Game.getTitle();
+                String gameid = n64Game.getId();
                 twitchClient.getChat().sendMessage("sp0ck1",
 
                     "I present to you: " +

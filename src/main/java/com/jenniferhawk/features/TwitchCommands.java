@@ -1,5 +1,6 @@
 package com.jenniferhawk.features;
 
+import com.jenniferhawk.database.JenDB;
 import com.jenniferhawk.gui.JChatPane;
 import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
@@ -43,7 +44,7 @@ public class TwitchCommands {
     private void onChannelMessage(ChannelMessageEvent event) throws ArrayIndexOutOfBoundsException {
         //Initializing a variable with word[1] or higher causes a fatal error if message is shorter than two words.
    //     TimerToggle timerToggle = new TimerToggle();
-
+        event.getChannel().getName();
         String Author = String.format("%s", event.getUser().getName());
         char bang = '!';
         String original = event.getMessage();
@@ -64,16 +65,16 @@ public class TwitchCommands {
                 event.getTwitchChat().sendMessage(event.getChannel().getName(), message);
                 JChatPane.appendText("JenniferHawk: " + message);
             }
-            else if ((event.getUser().getName().equals("maikachan")) && (random.nextInt(5) == 3)) {
-                message = "Thanks, Maika! TehePelo";
-                event.getTwitchChat().sendMessage("sg4e", message);
-            }
+//            else if ((event.getUser().getName().equals("maikachan")) && (random.nextInt(5) == 3)) {
+//                message = "Thanks, Maika! TehePelo";
+//                event.getTwitchChat().sendMessage("sg4e", message);
+//            }
             else if ((original.equals("Daro stop"))) {
                 message = "Daro please don't eat your wet shoe.";
                 event.getTwitchChat().sendMessage(event.getChannel().getName(), message);
                 JChatPane.appendText("JenniferHawk: " + message);
             }
-            else if ((messagein.equals("insert")) && (splitLength > 2)) {
+            else if ((messagein.equals("set")) && (splitLength > 2)) {
                 String Text = phrase[2];
                 String Command = phrase[1];
                 if (JenDB.checkQuery(Command) && !Author.equals("sp0ck1") ) {
@@ -84,7 +85,7 @@ public class TwitchCommands {
                 event.getTwitchChat().sendMessage(event.getChannel().getName(), message);
                     JChatPane.appendText("JenniferHawk: " + message);}
             }
-            else if ((messagein.equals("insert"))) {
+            else if ((messagein.equals("set"))) {
                 message = "To add a command to my repertoire, use the sequence !insert [command] [text] (without brackets).";
                 event.getTwitchChat().sendMessage(event.getChannel().getName(), message);
                 JChatPane.appendText("JenniferHawk: " + message);
@@ -104,7 +105,7 @@ public class TwitchCommands {
             else if ( (isSp0ck1) && messagein.equals("timeron")) {
 
       //          timerToggle.TimerOn();
-twitchClient.getChat().sendPrivateMessage("sp0ck1","A whisper from JenniferHawk");
+
                // twitchClient.getChat().sendMessage("sp0ck1","Timed Commands method active!");
                 }
             else if ( (isSp0ck1) && messagein.equals("timeroff")) {
@@ -117,14 +118,13 @@ twitchClient.getChat().sendPrivateMessage("sp0ck1","A whisper from JenniferHawk"
                 JChatPane.appendText("JenniferHawk: " + message);
             }
             else if (messagein.equals("poke") ) {
-      //          timerToggle.sendPokeFact();
+                TimerToggle.sendPokeFact();
 
-                System.out.println(event.getPermissions());
             }
-            else if (messagein.equals("25") && event.getChannel().getName().equals("sg4e")) { //
-      //      timerToggle.send24();
+            else if (messagein.equals("newcolor")) {
+                JChatPane.setNewColor(event.getUser().getName());
+                event.getUser().getId();
             }
-
             else if (isCommand) {
                 message = JenDB.queryHer(whereClause);
                 event.getTwitchChat().sendMessage(event.getChannel().getName(), message);
@@ -136,6 +136,7 @@ twitchClient.getChat().sendPrivateMessage("sp0ck1","A whisper from JenniferHawk"
 
         }
 
+        // Keep this method as an example of using StreamList, GameList, Game...
     public void send24() {
         List<String> sg4e = Collections.singletonList("sg4e");
         StreamList resultList = twitchClient.getHelix().getStreams("oauth:124tkcsi4od4062r3i9q63pjs5qwr5",null,  null, 1, null, null, null, null, Collections.singletonList("sg4e")).execute();

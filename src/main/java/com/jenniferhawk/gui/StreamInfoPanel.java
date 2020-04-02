@@ -30,7 +30,8 @@ public class StreamInfoPanel extends JPanel {
     Border titledBorder = BorderFactory.createTitledBorder(null,"Stream Info Panel", TitledBorder.LEFT,TitledBorder.TOP, Tahoma,Color.BLACK);
     private JLabel n64Icon = new JLabel();
 
-    Border setBorder(String title){
+
+    Border jenBorder(String title){
         return BorderFactory.createTitledBorder(createRaisedBevelBorder(),title, TitledBorder.LEFT,TitledBorder.ABOVE_TOP, Tahoma,Color.BLACK);
     }
 

@@ -1,4 +1,4 @@
-package com.jenniferhawk.features;
+package com.jenniferhawk.database;
 
 
 
@@ -228,34 +228,35 @@ public class JenDB {
      *
      */
 
-    public static String[] rolln64() { // Return a random N64 game from the n64_games table
-        String[] result = new String[3];
-        Random random = new Random();
+    public static N64Game rolln64() { // Return a random N64 game from the n64_games table
 
+        Random random = new Random();
+        N64Game n64Game = new N64Game();
         try {
             System.out.println("rolln64 command fired.");
                  Connection con = DriverManager.getConnection(url, username, password);
             Class.forName("com.mysql.jdbc.Driver");
             Statement stmt = con.createStatement();
-            boolean sports = true;
-            while (sports) {
+            boolean tryAgain = true;
+            while (tryAgain) {
+
                 int GameID = random.nextInt(304);
                 ResultSet rs = stmt.executeQuery("select * from JenniferHawk.n64_games WHERE GameID = " + GameID);
                 while (rs.next()) {
-                    result[0] = rs.getString("GameID");
-                    result[1] = rs.getString("GAME");
-                    result[2] = rs.getString("GENRE");
+                    n64Game.setId(rs.getString("GameID"));
+                    n64Game.setTitle(rs.getString("GAME"));
+                    n64Game.setGenre(rs.getString("GENRE"));
                 }
 
-                if (!result[2].toLowerCase().contains("sports")) { // If result[2] does not contains "sports", we're good. Sports is false
-                    sports = false;
-                } else { // If result[2] DOES contains "sports", we're not good and sports is true. The loop should repeat.
-                    System.out.print("GENRE is: " + result[2]+ "\n"); sports = true;
+                // If the genre is not sports, don't try again
+                if (!n64Game.getGenre().contains("sports")) {
+                    tryAgain = false; // If result[2] DOES contains "sports", we're not good and sports is true. The loop should repeat.
+                    System.out.print("GENRE is: " + n64Game.getGenre() + "\n");
                 }
                 }
                     con.close();
 
-        }catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             System.out.println("There was an exception, chief.");
             e.printStackTrace(System.err);
             System.err.println("SQLState: " +
@@ -268,7 +269,7 @@ public class JenDB {
 
 
         }
-        return result;
+        return n64Game;
     }
 
     public static String[] n64Info(Integer GameID) {
