@@ -3,10 +3,13 @@ package com.jenniferhawk.database;
 
 
 import com.jenniferhawk.Bot;
+import com.jenniferhawk.gui.JChatPane;
 import com.jenniferhawk.layout.FileWriters;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -237,22 +240,19 @@ public class JenDB {
                  Connection con = DriverManager.getConnection(url, username, password);
             Class.forName("com.mysql.jdbc.Driver");
             Statement stmt = con.createStatement();
-            boolean tryAgain = true;
-            while (tryAgain) {
+            List<Integer> idList = new ArrayList<>();
+            ResultSet resultSet = stmt.executeQuery("SELECT GameID as 'gameid' FROM JenniferHawk.n64_remaining");
 
-                int GameID = random.nextInt(304);
-                ResultSet rs = stmt.executeQuery("select * from JenniferHawk.n64_games WHERE GameID = " + GameID);
+            while (resultSet.next()) { idList.add(resultSet.getInt(1)); }
+
+                int GameID = idList.get(random.nextInt(idList.size())); // Get one of the entries in the list of GameIDs
+                JChatPane.appendText("The GameID being looked up is: " + GameID);
+                ResultSet rs = stmt.executeQuery("SELECT * FROM JenniferHawk.n64_remaining WHERE GameID = " + GameID);
+
                 while (rs.next()) {
-                    n64Game.setId(rs.getString("GameID"));
-                    n64Game.setTitle(rs.getString("GAME"));
-                    n64Game.setGenre(rs.getString("GENRE"));
-                }
-
-                // If the genre is not sports, don't try again
-                if (!n64Game.getGenre().contains("sports")) {
-                    tryAgain = false; // If result[2] DOES contains "sports", we're not good and sports is true. The loop should repeat.
-                    System.out.print("GENRE is: " + n64Game.getGenre() + "\n");
-                }
+                    n64Game.setId(rs.getString("GameID"))
+                    .setTitle(rs.getString("GAME"))
+                    .setGenre(rs.getString("GENRE"));
                 }
                     con.close();
 

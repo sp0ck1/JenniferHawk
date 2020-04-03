@@ -38,8 +38,8 @@ public class ButtonPanel extends JPanel implements ActionListener {
         button = new JButton("Timer On");
         button1 = new JButton("Timer Off");
         button2 = new JButton();
-        button3 = new JButton("Poke Facts");
-        button4 = new JButton("Poke Stop");
+        button3 = new JButton("usedpizza_play!");
+        button4 = new JButton("iateyourpie_play");
         button5 = new JButton("Pyramid");
         textButton = new JButton("Send A Message");
         byeSG = new JButton("Close Jennifer");
@@ -92,13 +92,8 @@ public class ButtonPanel extends JPanel implements ActionListener {
                             "! For more info, type !GameID " +
                             gameid);
                 break;
-            case "Poke Facts":
-            case "Poke Stop":
-                //   timer.pokeOn();
-                System.out.println("PokeFacts are currently disabled due to changes in the PubSub Scheduler Service." +
-                        " Fix ASAP or remove this button until redesign of the GUI.");
-                break;
-            //  timer.pokeStop();
+            case "iateyourpie_play": twitchClient.getChat().sendMessage("iateyourpie","!play"); break;
+            case "Poke Stop": twitchClient.getChat().sendMessage("usedpizza","!play"); break;
             case "Pyramid":
                 try {
                     JTextArea channelName = new JTextArea();

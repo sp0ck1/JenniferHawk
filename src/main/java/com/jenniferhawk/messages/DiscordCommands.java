@@ -1,4 +1,4 @@
-package com.jenniferhawk.features;
+package com.jenniferhawk.messages;
 
 import com.jenniferhawk.database.JenDB;
 import com.jenniferhawk.database.N64Game;

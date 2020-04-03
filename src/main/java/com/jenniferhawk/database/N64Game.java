@@ -34,22 +34,34 @@ public class N64Game {
         return publisher;
     }
 
-    public void setTitle(String title) {
+    public N64Game setTitle(String title) {
         this.title = title;
+        return this;
     }
 
-    public void setDeveloper(String developer) {
+    public N64Game setDeveloper(String developer) {
         this.developer = developer;
+        return this;
     }
 
-    public void setPublisher(String publisher) {
+    public N64Game setPublisher(String publisher) {
         this.publisher = publisher;
+        return this;
     }
 
-    public void setYear(int year){this.year = year;}
+    public N64Game setYear(int year) {
+        this.year = year;
+        return this;
+    }
 
-    public void setGenre(String genre){this.genre = genre;}
+    public N64Game setGenre(String genre) {
+        this.genre = genre;
+        return this;
+    }
 
-    public void setId(String id){this.id = id;}
+    public N64Game setId(String id) {
+        this.id = id;
+        return this;
+    }
 
 }

@@ -8,6 +8,9 @@ import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.TwitchClientBuilder;
 
+import com.jenniferhawk.messages.DiscordCommands;
+import com.jenniferhawk.messages.IncomingMessageBuilder;
+import com.jenniferhawk.messages.TwitchCommands;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -75,6 +78,7 @@ public class Bot {
                 .setToken(configuration.getDiscord().get("token"))
                 .addEventListeners(new DiscordCommands())
                 .addEventListeners(new DiscordPrivateMessages())
+                .addEventListeners(new IncomingMessageBuilder())
                 .build();
         discordClient.awaitReady();
         //endregion
@@ -94,8 +98,8 @@ public class Bot {
           new TwitchCommands(twitchClient.getEventManager()); //
           new WriteChannelChatToFile(twitchClient.getEventManager());
           new N64(twitchClient.getEventManager());
-          new RandomCutie(twitchClient.getEventManager());
           new JenniferGoLive(twitchClient.getEventManager());
+          new IncomingMessageBuilder(twitchClient.getEventManager());
     }
 
     public JChatPane createChatPane() {

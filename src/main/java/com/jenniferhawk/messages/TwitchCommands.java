@@ -1,6 +1,7 @@
-package com.jenniferhawk.features;
+package com.jenniferhawk.messages;
 
 import com.jenniferhawk.database.JenDB;
+import com.jenniferhawk.features.TimerToggle;
 import com.jenniferhawk.gui.JChatPane;
 import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
@@ -41,7 +42,7 @@ public class TwitchCommands {
      * Subscribe to the ChannelMessage Event and write the output to the console
      */
 
-    private void onChannelMessage(ChannelMessageEvent event) throws ArrayIndexOutOfBoundsException {
+    private void onChannelMessage(ChannelMessageEvent event) {
         //Initializing a variable with word[1] or higher causes a fatal error if message is shorter than two words.
    //     TimerToggle timerToggle = new TimerToggle();
         event.getChannel().getName();
