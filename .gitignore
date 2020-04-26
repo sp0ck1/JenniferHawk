@@ -51,3 +51,6 @@ client.log
 
 # Visual Studio Code
 .vscode/
+
+# Scratch files
+.txt

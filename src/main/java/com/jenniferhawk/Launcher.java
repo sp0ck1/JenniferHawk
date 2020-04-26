@@ -1,19 +1,24 @@
 package com.jenniferhawk;
 
 
+import com.github.twitch4j.helix.domain.Follow;
+import com.github.twitch4j.helix.domain.FollowList;
 import com.jenniferhawk.gui.JChatPane;
 import com.jenniferhawk.gui.ButtonPanel;
 import com.jenniferhawk.gui.StreamInfoPanel;
+import com.netflix.hystrix.HystrixCommand;
+import org.pircbotx.exception.IrcException;
 
 import javax.security.auth.login.LoginException;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
+import java.io.IOException;
 import java.net.URISyntaxException;
 
 public class Launcher {
 
-    public static void main(String[] args) throws LoginException, InterruptedException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, URISyntaxException {
+    public static void main(String[] args) throws LoginException, InterruptedException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, URISyntaxException, IOException, IrcException {
 
 
         Bot bot = new Bot();
@@ -48,7 +53,7 @@ public class Launcher {
         c.gridx = 1;
         raisedPanel.add(buttonPanel,c);
         c.gridx = 2;
-        raisedPanel.add(streamInfo,c);
+        //raisedPanel.add(streamInfo,c);
         frame.pack();
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
@@ -64,6 +69,11 @@ public class Launcher {
 
         bot.registerFeatures();
         bot.start();
+
+        IRCBot ircBot = new IRCBot();
+
+       FollowList followList = Bot.twitchClient.getHelix().getFollowers("","","","",100).execute();
+       Integer followerTotal = followList.getTotal();
 
 
 

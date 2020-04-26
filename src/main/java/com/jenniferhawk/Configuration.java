@@ -25,6 +25,8 @@ public class Configuration {
 
     private Map<String, String> discord;
 
+    private Map<String, String> irc;
+
     public Boolean getDebug() {
         return debug;
     }
@@ -67,6 +69,8 @@ public class Configuration {
 
     public Map<String, String> getDatabase() { return database; }
 
+    public Map<String, String> getIRC() { return irc; }
+
     public void setChannels(List<String> channels) {
         this.channels = channels;
     }
@@ -80,6 +84,7 @@ public class Configuration {
                 ", channels=" + channels +
                 ", discord =" + discord +
                 ", database ="+ database +
+                ", irc =" + irc +
                 '}';
     }
 }

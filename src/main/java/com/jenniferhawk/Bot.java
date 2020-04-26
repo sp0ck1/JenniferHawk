@@ -10,7 +10,6 @@ import com.github.twitch4j.TwitchClientBuilder;
 
 import com.jenniferhawk.messages.DiscordCommands;
 import com.jenniferhawk.messages.IncomingMessageBuilder;
-import com.jenniferhawk.messages.TwitchCommands;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -36,6 +35,13 @@ public class Bot {
      */
     public static JDA discordClient;
 
+    public static String OAUTH;
+
+    public static String CLIENT_ID;
+
+    public static String CLIENT_SECRET;
+
+    public static String BROADCASTER_ID;
 
     /**
      * Constructor
@@ -57,19 +63,20 @@ public class Bot {
         //region Auth
         OAuth2Credential credential = new OAuth2Credential(
                 "twitch",
-                configuration.getCredentials().get("irc")
+                OAUTH
         );
         //endregion
 
         //region TwitchClient
         twitchClient = clientBuilder
-                .withClientId(configuration.getApi().get("twitch_client_id"))
-                .withClientSecret(configuration.getApi().get("twitch_client_secret"))
+                .withClientId(CLIENT_ID)
+                .withClientSecret(CLIENT_SECRET)
                 .withEnableHelix(true)
                 .withChatAccount(credential)
                 .withEnableChat(true)
                 .withEnablePubSub(true)
                 .withEnableTMI(true)
+                .withEnableKraken(true)
                 .build();
         //endregion
 
@@ -95,7 +102,6 @@ public class Bot {
     public void registerFeatures() {
             // Register Event-based features
           new WriteChannelChatToConsole(twitchClient.getEventManager());
-          new TwitchCommands(twitchClient.getEventManager()); //
           new WriteChannelChatToFile(twitchClient.getEventManager());
           new N64(twitchClient.getEventManager());
           new JenniferGoLive(twitchClient.getEventManager());
@@ -120,11 +126,18 @@ public class Bot {
 
             ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
             configuration = mapper.readValue(is, Configuration.class);
+
+            CLIENT_ID = configuration.getApi().get("twitch_client_id");
+            CLIENT_SECRET = configuration.getApi().get("twitch_client_secret");
+            BROADCASTER_ID = configuration.getApi().get("user_id");
+            OAUTH = configuration.getCredentials().get("irc");
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println("Unable to load Configuration ... Exiting.");
             System.exit(1);
         }
+
+
     }
 
 

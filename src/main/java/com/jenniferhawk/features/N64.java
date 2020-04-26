@@ -131,23 +131,6 @@ if (isCommand)
 
                 // Other N64 Related Commands
 
-
-                case "rolln64":
-                    N64Game n64Game = JenDB.rolln64();
-                    String game = n64Game.getTitle();
-                    String gameid = n64Game.getId();
-                    event.getTwitchChat().sendMessage(channel,
-                            chatter +
-                                    ", your next N64 game is " +
-                                    game +
-                                    ". For more info, type !GameID " +
-                                    gameid);
-                    JChatPane.appendText("JenniferHawk: " + chatter +
-                            ", your next N64 game is " +
-                            game +
-                            ". For more info, type !GameId " + gameid);
-                    break;
-
                 case "gameid":
                     int ID = parseInt(word[1]);
                     String[] info = JenDB.n64Info(ID);

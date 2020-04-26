@@ -61,7 +61,7 @@ public class JenDB {
             Class.forName("com.mysql.jdbc.Driver");
             PreparedStatement stmt = con.prepareStatement("INSERT INTO JenniferHawk.COMMANDS(COMMAND, TEXT, AUTHOR) VALUES (?,?,?)");
 
-            System.out.println("Attempting to add this: " + Text);
+
             System.out.println("Attempting to add command: " + Text);
             stmt.execute("SET NAMES utf8mb4"); // This is the only way the database will accept UNICODE characters like 
             stmt.setString(1,Command);

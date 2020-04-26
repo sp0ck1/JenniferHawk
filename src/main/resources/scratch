@@ -1,0 +1,38 @@
+﻿        // Keep this method as an example of using StreamList, GameList, Game...
+    public void send24() {
+        List<String> sg4e = Collections.singletonList("sg4e");
+        StreamList resultList = twitchClient.getHelix().getStreams("oauth:",null,  null, 1, null, null, null, null, Collections.singletonList("sg4e")).execute();
+        resultList.getStreams().forEach(stream -> {
+            GameList gameList = twitchClient.getHelix().getGames("oauth:", Collections.singletonList(stream.getGameId()),null).execute();
+            Game game = gameList.getGames().get(0);
+            String gameInfo = String.valueOf(game);
+            String gameName = game.getName();// gameInfo.substring(gameInfo.indexOf("name=")+5,gameInfo.indexOf(", b"));
+            Calendar j = stream.getStartedAt();
+
+            String startTime = sdf.format(j.getTime());
+
+            twitchClient.getChat().sendMessage("sg4e",
+                    "Starting at "+startTime+", sg4e will be doing a 24 hour stream marathon. We'll start with everyone's favorite: "+gameName+"! " +
+                            "Then we'll move on to YOUR Mario Maker 2 levels! Type !mm submit <level code> <comment> to add a level to the queue, " +
+                            "use !queue to see what's next, and use !bully to get the latest information on whose records are being bopped. See you there! NoaGamba");
+        });
+    }
+
+}
+
+
+
+//    TODO: Get current game
+//    public void getGames() {
+//        // TestCase
+//        GameList resultList = testUtils.getTwitchHelixClient().getGames(Arrays.asList(overwatchGameId), null).execute();
+//    }
+//    public void getGame() {
+//    Game gameResult = getGame();
+/** Example code for sending a message */
+//                String message = String.format(
+//                "Channel: %s / %s: %s",
+//                event.getChannel().getName(),
+//                event.getUser().getName(),
+//                event.getMessage()
+        // event.getTwitchChat().sendMessage(event.getChannel().getName(), message)

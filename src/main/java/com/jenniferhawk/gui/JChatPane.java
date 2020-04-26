@@ -50,9 +50,9 @@ public class JChatPane extends JPanel {
 
     public JChatPane(String buttonOne, String buttonTwo) {
         super(new BorderLayout());
-
-        setPreferredSize(new Dimension(400, 800));
-
+        Dimension chatWindow = new Dimension(400,800);
+        setPreferredSize(chatWindow);
+        setMinimumSize(chatWindow);
         JPanel panel = new JPanel();
         add(panel);
 

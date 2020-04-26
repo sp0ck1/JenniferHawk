@@ -1,1 +1,3 @@
 rootProject.name = 'JenniferHawk-Master'
+//include "twitch4j"
+//project(":twitch4j").projectDir = file("D:/twitch4j/twitch4j")

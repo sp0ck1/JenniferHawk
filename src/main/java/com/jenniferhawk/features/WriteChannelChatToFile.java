@@ -42,7 +42,7 @@ public class WriteChannelChatToFile {
                 event.getUser().getName(),
                 event.getMessage()
         );
-        System.out.println(message);
+
         FileWriters writer = new FileWriters();
         writer.writeChatToFile(message);
 

@@ -8,7 +8,7 @@ public interface IncomingMessage {
     /**
      * Sends a message back to the appropriate source
      */
-    IncomingMessage respond();
+    void receiveMessage();
 
     /**
      * Returns the name of the user who sent the message

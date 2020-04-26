@@ -9,7 +9,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 // Sets the Main-Class in the shadowJar manifest
-mainClassName = 'com.JenniferHawk.Launcher'
+mainClassName = 'com.jenniferhawk.Launcher'
 
 // Repositories
 
@@ -19,13 +19,19 @@ mainClassName = 'com.JenniferHawk.Launcher'
         jcenter()
         maven { url "https://oss.jfrog.org/artifactory/libs-release" }
         maven { url "https://jitpack.io/" }
+        mavenLocal()
     }
 
 
 
 dependencies {
     // Twitch4J
-    compile "com.github.twitch4j:twitch4j:1.0.0-alpha.19"
+    compile "com.github.twitch4j:twitch4j:null"
+
+    // Local fork
+  // implementation project(":twitch4j")
+
+    compile 'com.github.pircbotx:pircbotx:2.2'
 
     // YAML Parser
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.0"
