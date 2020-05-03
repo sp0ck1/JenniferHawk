@@ -20,7 +20,7 @@ I make it public as a basic framework for others getting started with Twitch4J a
 how they might work if they wanted to make their own. But on that note, I take no responsibility for the quality of the code here
 and I do not recommend that it be taken as an example of how to do most things. 
 
-Everything I learn on other projects eventually makes it back to JenniferHawk. Feel free to do submit a PR to this project if you use
+Everything I learn on other projects eventually makes it back to JenniferHawk. Feel free to submit a PR to this project if you use
 Jennifer and there's something you'd like to see done better.
 
 ## Chat Token
