@@ -16,7 +16,7 @@ import java.util.Date;
 public class WriteChatToFile {
 
     File chatlog = new File("D:/JenniferUtils/Chatlog.csv");
-    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
 
     /**
      * Register events of this class with the EventManager
@@ -38,7 +38,7 @@ public class WriteChatToFile {
      */
 
     public void onChannelMessage(ChannelMessageEvent event) throws IOException {
-
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String message = String.format(
                 "\"%s\",\"%s\",\"%s\",\"%s\"\r\n",
                 event.getChannel().getName(),
