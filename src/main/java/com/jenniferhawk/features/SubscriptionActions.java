@@ -6,9 +6,9 @@ import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.chat.events.channel.SubscriptionEvent;
 import com.jenniferhawk.layout.Utils;
 
+import java.sql.Timestamp;
+
 public class SubscriptionActions {
-
-
 
 /**
      * Register events of this class with the EventManager

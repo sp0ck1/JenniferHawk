@@ -9,11 +9,14 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Date;
 
 
 public class WriteChatToFile {
 
     File chatlog = new File("D:/JenniferUtils/Chatlog.csv");
+    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
     /**
      * Register events of this class with the EventManager
@@ -31,21 +34,17 @@ public class WriteChatToFile {
     }
 
     /**
-     * Subscribe to the ChannelMessage Event and write the output to the console
+     * Subscribe to the ChannelMessage Event and write the output to the csv
      */
-//TODO: Separate string into three variables and add to either csv or database instead of .txt,
-// keep timestamp and then find method for downloading chatlog where match given date or IS BETWEEN two dates.
-    // Do I still want to do this? I don't know.
-
-
 
     public void onChannelMessage(ChannelMessageEvent event) throws IOException {
 
         String message = String.format(
-                "\"%s\",\"%s\",\"%s\"\r\n",
+                "\"%s\",\"%s\",\"%s\",\"%s\"\r\n",
                 event.getChannel().getName(),
                 event.getUser().getName(),
-                event.getMessage()
+                event.getMessage(),
+                timestamp.toString()
         );
 
         FileUtils.writeStringToFile(chatlog,message,"UTF-8",true);
