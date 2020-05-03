@@ -1,21 +1,26 @@
 package com.jenniferhawk.features;
 
-import com.jenniferhawk.layout.FileWriters;
+import com.jenniferhawk.layout.Utils;
 import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
+import java.io.File;
 import java.io.IOException;
 
 
-public class WriteChannelChatToFile {
+public class WriteChatToFile {
+
+    File chatlog = new File("D:/JenniferUtils/Chatlog.csv");
 
     /**
      * Register events of this class with the EventManager
      *
      * @param eventManager EventManager
      */
-    public WriteChannelChatToFile(EventManager eventManager) {
+    public WriteChatToFile(EventManager eventManager) {
         eventManager.getEventHandler(SimpleEventHandler.class).onEvent(ChannelMessageEvent.class, event -> {
             try {
                 onChannelMessage(event);
@@ -37,14 +42,13 @@ public class WriteChannelChatToFile {
     public void onChannelMessage(ChannelMessageEvent event) throws IOException {
 
         String message = String.format(
-                "Channel: %s | %s: %s \r\n",
+                "\"%s\",\"%s\",\"%s\"\r\n",
                 event.getChannel().getName(),
                 event.getUser().getName(),
                 event.getMessage()
         );
 
-        FileWriters writer = new FileWriters();
-        writer.writeChatToFile(message);
+        FileUtils.writeStringToFile(chatlog,message,"UTF-8",true);
 
     }
 }

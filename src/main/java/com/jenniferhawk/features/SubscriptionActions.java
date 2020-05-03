@@ -4,8 +4,9 @@ package com.jenniferhawk.features;
 import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.chat.events.channel.SubscriptionEvent;
+import com.jenniferhawk.layout.Utils;
 
-public class ChannelNotificationOnSubscription {
+public class SubscriptionActions {
 
 
 
@@ -15,7 +16,7 @@ public class ChannelNotificationOnSubscription {
      * @param eventManager EventManager
      */
 
-    public ChannelNotificationOnSubscription(EventManager eventManager) {
+    public SubscriptionActions(EventManager eventManager) {
         eventManager.getEventHandler(SimpleEventHandler.class).onEvent(SubscriptionEvent.class, this::onSubscription);
     }
 
@@ -49,6 +50,7 @@ public class ChannelNotificationOnSubscription {
 
         // Send Message
         event.getTwitchChat().sendMessage(event.getChannel().getName(), message);
+        Utils.updateSubscriberInfo();
     }
 }
 

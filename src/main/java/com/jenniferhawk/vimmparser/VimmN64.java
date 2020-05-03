@@ -33,7 +33,7 @@ public class VimmN64 {
         setSearchTerm(gameName);
     }
 
-    public void searchVimm(){
+    public void searchVimm() {
 
 
         String htmlToParse = getVimmResultsPage(searchTerm);

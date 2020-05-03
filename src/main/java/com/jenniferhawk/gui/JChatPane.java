@@ -39,7 +39,7 @@ public class JChatPane extends JPanel {
     public void onChannelMessage(ChannelMessageEvent event) {
 
         //appendText(event.getUser().getName() + " says: " + event.getMessage());
-        appendMessage(event.getUser().getName(),": " + event.getMessage());
+        appendMessage(event.getUser().getName(), event.getMessage());
     }
 
     public static void setNewColor(String username) {
@@ -93,7 +93,7 @@ public class JChatPane extends JPanel {
         c.gridy = 3;
         panel.add(closeButton,c);
 
-
+        scrollPane.getHorizontalScrollBar().setEnabled(false);
         chatEntry.addKeyListener(new ChatEntryListener());
         saveButton.addMouseListener(new MouseListener() {
             @Override
@@ -196,7 +196,7 @@ public class JChatPane extends JPanel {
         StyleConstants.setBold(messageAttributes,false);
 
         try {
-            doc.insertString(doc.getLength(), message+"\n", messageAttributes);
+            doc.insertString(doc.getLength(), ": " + message+"\n", messageAttributes);
         } catch (BadLocationException e) {
             e.printStackTrace();
         }

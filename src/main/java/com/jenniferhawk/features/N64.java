@@ -1,9 +1,8 @@
 package com.jenniferhawk.features;
 
 import com.jenniferhawk.database.JenDB;
-import com.jenniferhawk.database.N64Game;
 import com.jenniferhawk.gui.JChatPane;
-import com.jenniferhawk.layout.FileWriters;
+import com.jenniferhawk.layout.Utils;
 import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
@@ -18,7 +17,7 @@ import static java.lang.Integer.parseInt;
 
 public class N64 {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("MMMM d, YYYY h:mm z");
-    FileWriters writer = new FileWriters();
+    Utils writer = new Utils();
     /**
      * Register events of this class with the EventManager
      *

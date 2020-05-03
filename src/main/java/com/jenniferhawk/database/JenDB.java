@@ -4,7 +4,7 @@ package com.jenniferhawk.database;
 
 import com.jenniferhawk.Bot;
 import com.jenniferhawk.gui.JChatPane;
-import com.jenniferhawk.layout.FileWriters;
+import com.jenniferhawk.layout.Utils;
 
 import java.io.IOException;
 import java.sql.*;
@@ -348,7 +348,7 @@ public class JenDB {
             stmt.executeUpdate(); // + " where GameID = TRUE");
             con.close();
 
-            FileWriters writer = new FileWriters();
+            Utils writer = new Utils();
             writer.writeN64PlaceToFile(Column,Runner); //Update stream layout  (Move to layout package?)
         } catch (SQLException | ClassNotFoundException | IOException e) {
             System.out.println("Runner may not have been inserted.");
@@ -392,7 +392,7 @@ public class JenDB {
                 count = rc.getInt("C");
             }
             System.out.println("Writing " + GameID +" "+game+" "+year+" "+count);
-            FileWriters writer = new FileWriters();
+            Utils writer = new Utils();
             writer.writeN64InfoToFile(GameID,game,year, count);
             con.close();
         } catch (SQLException | ClassNotFoundException | IOException e) {
@@ -415,7 +415,7 @@ public class JenDB {
     public static void N64Complete() {
         String[] result = new String[8];
         int[] GameID = new int[1];
-        FileWriters writer = new FileWriters();
+        Utils writer = new Utils();
 
         try {
             writer.clearN64Layout();
@@ -580,7 +580,7 @@ System.out.println("Lookup phrase: "+Lookup);
 
 
             }
-        FileWriters writer = new FileWriters();
+        Utils writer = new Utils();
         writer.writeN64InfoToFile(gameID,game,year, count);
         }
     }

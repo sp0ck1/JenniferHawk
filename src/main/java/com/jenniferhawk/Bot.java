@@ -8,6 +8,7 @@ import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.TwitchClientBuilder;
 
+import com.jenniferhawk.layout.Utils;
 import com.jenniferhawk.messages.DiscordCommands;
 import com.jenniferhawk.messages.IncomingMessageBuilder;
 import net.dv8tion.jda.api.AccountType;
@@ -47,6 +48,7 @@ public class Bot {
      * Constructor
      */
     public Bot() throws LoginException, InterruptedException {
+
 
         URL localPackage = this.getClass().getResource("");
         URL urlLoader = Bot.class.getProtectionDomain().getCodeSource().getLocation();
@@ -102,10 +104,11 @@ public class Bot {
     public void registerFeatures() {
             // Register Event-based features
           new WriteChannelChatToConsole(twitchClient.getEventManager());
-          new WriteChannelChatToFile(twitchClient.getEventManager());
+          new WriteChatToFile(twitchClient.getEventManager());
           new N64(twitchClient.getEventManager());
           new JenniferGoLive(twitchClient.getEventManager());
           new IncomingMessageBuilder(twitchClient.getEventManager());
+          new SubscriptionActions(twitchClient.getEventManager());
     }
 
     public JChatPane createChatPane() {
@@ -147,14 +150,10 @@ public class Bot {
 
         for (String channel : configuration.getChannels()) {
             twitchClient.getChat().joinChannel(channel);
-            twitchClient.getClientHelper().enableStreamEventListener(channel);
+            twitchClient.getClientHelper().enableStreamEventListener("sp0ck1");
         }
         // twitchClient.getChat().sendMessage("sp0ck1","I am here!");
-
-
-
-
-
+        Utils.updateSubscriberInfo();
     }
 
 
