@@ -23,7 +23,7 @@ public class Launcher {
 
         Bot bot = new Bot();
 
-
+/*
         // Load the GUI
         JChatPane chatPane = bot.createChatPane();
         ButtonPanel buttonPanel = new ButtonPanel();
@@ -70,11 +70,9 @@ public class Launcher {
         bot.registerFeatures();
         bot.start();
 
-        IRCBot ircBot = new IRCBot();
+      //  IRCBot ircBot = new IRCBot();
 
-       FollowList followList = Bot.twitchClient.getHelix().getFollowers("","","","",100).execute();
-       Integer followerTotal = followList.getTotal();
-
+*/
 
 
     }

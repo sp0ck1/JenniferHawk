@@ -17,7 +17,7 @@ mainClassName = 'com.jenniferhawk.Launcher'
 
     repositories {
         jcenter()
-     //   maven { url "https://oss.jfrog.org/artifactory/libs-release" }
+        maven { url "https://oss.jfrog.org/artifactory/libs-release" }
         maven { url "https://jitpack.io/" }
         mavenLocal()
     }
@@ -26,7 +26,7 @@ mainClassName = 'com.jenniferhawk.Launcher'
 
 dependencies {
     // Twitch4J
-    compile "com.github.twitch4j:twitch4j:null"
+    compile "com.github.twitch4j:twitch4j:1.0.0-alpha.24"
 
     // Local fork
   // implementation project(":twitch4j")

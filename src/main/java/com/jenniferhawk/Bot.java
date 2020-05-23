@@ -1,5 +1,7 @@
 package com.jenniferhawk;
 
+import com.github.twitch4j.chat.TwitchChat;
+import com.github.twitch4j.helix.domain.UserList;
 import com.jenniferhawk.gui.JChatPane;
 import com.jenniferhawk.features.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,6 +16,7 @@ import com.jenniferhawk.messages.IncomingMessageBuilder;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 import javax.security.auth.login.LoginException;
 import java.io.InputStream;
@@ -71,14 +74,15 @@ public class Bot {
 
         //region TwitchClient
         twitchClient = clientBuilder
-                .withClientId(CLIENT_ID)
-                .withClientSecret(CLIENT_SECRET)
+            //    .withClientId(CLIENT_ID)
+              //  .withClientSecret(CLIENT_SECRET)
                 .withEnableHelix(true)
                 .withChatAccount(credential)
                 .withEnableChat(true)
                 .withEnablePubSub(true)
                 .withEnableTMI(true)
                 .withEnableKraken(true)
+                .withDefaultAuthToken(credential)
                 .build();
         //endregion
 
@@ -151,6 +155,7 @@ public class Bot {
         for (String channel : configuration.getChannels()) {
             twitchClient.getChat().joinChannel(channel);
             twitchClient.getClientHelper().enableStreamEventListener("sp0ck1");
+
         }
         // twitchClient.getChat().sendMessage("sp0ck1","I am here!");
         Utils.updateSubscriberInfo();

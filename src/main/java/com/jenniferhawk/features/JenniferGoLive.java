@@ -23,10 +23,16 @@ public class JenniferGoLive {
     public void onGoLiveEvent(ChannelGoLiveEvent event) {
 
         TextChannel streamIsHappening = discordClient.getTextChannelById("627611883335319602");
-        if(event.getChannel().getName().equals("sp0ck1")) {
-            streamIsHappening.sendMessage("Sp0ck1 went live! " +
-                    event.getTitle() + SP0CK1_STREAM_LINK).queue();
-        }
+
+
+            if (event.getChannel().getName().toLowerCase().equals("sp0ck1")) {
+
+                if (streamIsHappening != null) {
+                    streamIsHappening.sendMessage("Sp0ck1 went live! " +
+                            event.getTitle() + SP0CK1_STREAM_LINK).queue();
+                }
+            }
+
 
         JChatPane.appendText(event.getChannel().getName() + " went live!");
 

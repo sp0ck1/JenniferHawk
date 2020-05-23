@@ -41,7 +41,7 @@ public class SubscriptionActions {
         // Resubscription
         if (event.getMonths() > 1 && isSp0ck1) {
             message = String.format(
-                    "%s has subscribed! Wow!",
+                    "%s has re-subscribed! Wow!",
                     event.getUser().getName(),
                     event.getChannel().getName(),
                     event.getMonths()

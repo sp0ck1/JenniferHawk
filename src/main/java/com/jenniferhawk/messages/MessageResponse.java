@@ -2,19 +2,16 @@ package com.jenniferhawk.messages;
 
 import com.github.twitch4j.common.enums.CommandPermission;
 
-import com.jenniferhawk.Bot;
 import com.jenniferhawk.database.JenDB;
 import com.jenniferhawk.database.N64Game;
 import com.jenniferhawk.gui.JChatPane;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.TextChannel;
+
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Set;
 
-import com.jenniferhawk.messages.IncomingMessageBuilder.TwitchPermissions;
 
 import static com.jenniferhawk.Bot.*;
 

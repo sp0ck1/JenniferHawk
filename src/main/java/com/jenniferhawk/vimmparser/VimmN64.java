@@ -101,7 +101,7 @@ public class VimmN64 {
     }
 
     private void setDownloads(String vimmId) {
-        String downloadPrefix = "https://download2.vimm.net/download.php?id=";
+        String downloadPrefix = "https://download2.vimm.net/download/?mediaId=";
         int adjustedId = Integer.parseInt(vimmId) - 53;
         int readjustedId = adjustedId - 1;
 
@@ -124,7 +124,8 @@ public class VimmN64 {
             con.setInstanceFollowRedirects(true);
             con.setRequestProperty("User-Agent", "Mozilla/4.0");
 
-            String contentDisposition = con.getHeaderField("Content-Disposition");
+            String contentDisposition = con.getHeaderField("content-disposition");
+            System.out.println(con.getURL());
             fileName = contentDisposition.substring(contentDisposition.indexOf("filename=") + 9, contentDisposition.indexOf(";filename*"));
 
         } catch (IOException e) {
