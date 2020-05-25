@@ -4,7 +4,6 @@ import com.github.twitch4j.common.enums.CommandPermission;
 
 import com.jenniferhawk.database.JenDB;
 import com.jenniferhawk.database.N64Game;
-import com.jenniferhawk.gui.JChatPane;
 import net.dv8tion.jda.api.entities.MessageChannel;
 
 
@@ -145,7 +144,7 @@ public class MessageResponse implements IncomingMessage {
                 break;
             case TWITCH:
                 twitchClient.getChat().sendMessage(sourceChannel,message);
-                JChatPane.appendText("JenniferHawk: " + message);
+             //   JChatPane.appendText("JenniferHawk: " + message);
                 break;
         }
     }
@@ -179,8 +178,8 @@ public class MessageResponse implements IncomingMessage {
                     }
                     break;
                 case "newcolor":
-                    JChatPane.setNewColor(user);
-                    break;
+
+                                       break;
                 case "poke":
                     message = JenDB.getPokeFact();
                     break;

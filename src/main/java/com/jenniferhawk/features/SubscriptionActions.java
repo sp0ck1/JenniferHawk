@@ -4,7 +4,7 @@ package com.jenniferhawk.features;
 import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.chat.events.channel.SubscriptionEvent;
-import com.jenniferhawk.layout.Utils;
+
 
 import java.sql.Timestamp;
 
@@ -50,7 +50,7 @@ public class SubscriptionActions {
 
         // Send Message
         event.getTwitchChat().sendMessage(event.getChannel().getName(), message);
-        Utils.updateSubscriberInfo();
+      //  Utils.updateSubscriberInfo();
     }
 }
 

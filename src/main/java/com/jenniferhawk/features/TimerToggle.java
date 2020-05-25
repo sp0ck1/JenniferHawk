@@ -1,7 +1,7 @@
 package com.jenniferhawk.features;
 
 import com.jenniferhawk.database.JenDB;
-import com.jenniferhawk.gui.JChatPane;
+
 
 
 import java.text.SimpleDateFormat;
@@ -35,7 +35,7 @@ public class TimerToggle {
     private void sendTimedMessage() {
       String message = JenDB.getTimedMessage();
       twitchClient.getChat().sendMessage("sp0ck1", message);
-        JChatPane.appendText("JenniferHawk: " + message);
+      //  JChatPane.appendText("JenniferHawk: " + message);
 
     }
 
@@ -45,7 +45,7 @@ public class TimerToggle {
     public static void sendPokeFact() {
         String fact = JenDB.getPokeFact();
         twitchClient.getChat().sendMessage("sp0ck1",fact);
-        JChatPane.appendText("JenniferHawk: " + fact);
+      //  JChatPane.appendText("JenniferHawk: " + fact);
     }
 
 //    public void pokeOn() {

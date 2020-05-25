@@ -2,14 +2,10 @@ package com.jenniferhawk.features;
 
 import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
-import com.github.twitch4j.chat.events.channel.SubscriptionEvent;
 import com.github.twitch4j.common.events.channel.ChannelGoLiveEvent;
-import com.jenniferhawk.gui.JChatPane;
-import com.jenniferhawk.layout.Utils;
 import net.dv8tion.jda.api.entities.TextChannel;
-
 import static com.jenniferhawk.Bot.discordClient;
-import static com.jenniferhawk.Bot.twitchClient;
+
 
 public class JenniferGoLive {
 
@@ -34,8 +30,8 @@ public class JenniferGoLive {
             }
 
 
-        JChatPane.appendText(event.getChannel().getName() + " went live!");
+       // JChatPane.appendText(event.getChannel().getName() + " went live!");
 
-        Utils.updateSubscriberInfo();
+      //  Utils.updateSubscriberInfo();
     }
 }

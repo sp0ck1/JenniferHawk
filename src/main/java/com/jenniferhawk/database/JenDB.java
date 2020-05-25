@@ -3,9 +3,6 @@ package com.jenniferhawk.database;
 
 
 import com.jenniferhawk.Bot;
-import com.jenniferhawk.gui.JChatPane;
-import com.jenniferhawk.layout.Utils;
-
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -246,7 +243,7 @@ public class JenDB {
             while (resultSet.next()) { idList.add(resultSet.getInt(1)); }
 
                 int GameID = idList.get(random.nextInt(idList.size())); // Get one of the entries in the list of GameIDs
-                JChatPane.appendText("The GameID being looked up is: " + GameID);
+               // JChatPane.appendText("The GameID being looked up is: " + GameID);
                 ResultSet rs = stmt.executeQuery("SELECT * FROM JenniferHawk.n64_remaining WHERE GameID = " + GameID);
 
                 while (rs.next()) {
@@ -348,9 +345,7 @@ public class JenDB {
             stmt.executeUpdate(); // + " where GameID = TRUE");
             con.close();
 
-            Utils writer = new Utils();
-            writer.writeN64PlaceToFile(Column,Runner); //Update stream layout  (Move to layout package?)
-        } catch (SQLException | ClassNotFoundException | IOException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             System.out.println("Runner may not have been inserted.");
             e.printStackTrace(System.err);
             System.err.println("SQLState: " +
@@ -392,10 +387,8 @@ public class JenDB {
                 count = rc.getInt("C");
             }
             System.out.println("Writing " + GameID +" "+game+" "+year+" "+count);
-            Utils writer = new Utils();
-            writer.writeN64InfoToFile(GameID,game,year, count);
             con.close();
-        } catch (SQLException | ClassNotFoundException | IOException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             System.out.println("Game may not have been inserted.");
             e.printStackTrace(System.err);
             System.err.println("SQLState: " +
@@ -415,13 +408,7 @@ public class JenDB {
     public static void N64Complete() {
         String[] result = new String[8];
         int[] GameID = new int[1];
-        Utils writer = new Utils();
 
-        try {
-            writer.clearN64Layout();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         try { Connection con = DriverManager.getConnection(url, username, password);
             Class.forName("com.mysql.jdbc.Driver");
@@ -580,8 +567,7 @@ System.out.println("Lookup phrase: "+Lookup);
 
 
             }
-        Utils writer = new Utils();
-        writer.writeN64InfoToFile(gameID,game,year, count);
+
         }
     }
 

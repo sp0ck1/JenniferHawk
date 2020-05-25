@@ -1,8 +1,6 @@
 package com.jenniferhawk.features;
 
 import com.jenniferhawk.database.JenDB;
-import com.jenniferhawk.gui.JChatPane;
-import com.jenniferhawk.layout.Utils;
 import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
@@ -17,7 +15,7 @@ import static java.lang.Integer.parseInt;
 
 public class N64 {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("MMMM d, YYYY h:mm z");
-    Utils writer = new Utils();
+
     /**
      * Register events of this class with the EventManager
      *
@@ -70,10 +68,10 @@ if (isCommand)
                             String[] maybeGame = JenDB.N64Lookup(lookup);
                             if (maybeGame[1] == null) {
                                 event.getTwitchChat().sendMessage(channel, "I'm not sure! Could you be a little more specific? Do you remember anything else?");
-                                JChatPane.appendText("JenniferHawk: " + "I'm not sure! Could you be a little more specific? Do you remember anything else?");
+                              //  JChatPane.appendText("JenniferHawk: " + "I'm not sure! Could you be a little more specific? Do you remember anything else?");
                             } else {
                                 event.getTwitchChat().sendMessage(channel, "Did you want " + maybeGame[1] + "? It's !GameID " + maybeGame[0] + ".");
-                                JChatPane.appendText("JenniferHawk: " + "Did you want " + maybeGame[1] + "? It's !GameID " + maybeGame[0] + ".");
+                              //  JChatPane.appendText("JenniferHawk: " + "Did you want " + maybeGame[1] + "? It's !GameID " + maybeGame[0] + ".");
                             }
                         } // in case other !n64mania [word] commands are added, like checking first/second/third in race
 
@@ -88,17 +86,12 @@ if (isCommand)
                                         Integer gID = parseInt(word[2]);
                                         String current = JenDB.setNewN64Game(gID);
                                         event.getTwitchChat().sendMessage(channel, "Current game has been set to: " + current);
-                                        JChatPane.appendText("JenniferHawk: " + "Current game has been set to: " + current);
+                                    //    JChatPane.appendText("JenniferHawk: " + "Current game has been set to: " + current);
                                         break;
                                     case "complete":
                                         JenDB.N64Complete();
                                         break;
-                                    case "clear": // Clears layout and n64_current table
 
-                                        try {
-                                            writer.clearN64Layout();
-                                        } catch (IOException e) {e.printStackTrace();}
-                                        JenDB.N64Clear();
                                     case "first":
                                     case "second":
                                     case "third":
@@ -108,10 +101,7 @@ if (isCommand)
                                         String column = word[1].toUpperCase(); // example !n64mania first tapioca
                                         JenDB.N64UpdateCurrent(runner, column);
                                         break;
-                                    case "clearlayout":
-                                        //FileWriters writer = new FileWriters();
-                                        writer.clearN64Placements();
-                                        break;
+
                                 } // End this switch for isBroadcaster
                                 }} // End if (wordCount > 1)
                               else {
@@ -123,7 +113,7 @@ if (isCommand)
                                     message = "This week's N64Mania game is " + current[1] + ". The race starts around 9PM EST on Friday! Use !GameID " + current[0] + " for more info about the game.";
                                 }
                                 event.getTwitchChat().sendMessage(event.getChannel().getName(), message);
-                                JChatPane.appendText("JenniferHawk: " + message);
+                             //   JChatPane.appendText("JenniferHawk: " + message);
                             } //End if (wordCount = 1), continue switch (firstWord) {
                             break; // break n64mania case
 
@@ -141,17 +131,17 @@ if (isCommand)
                                     " published it. It was released in " + info[4] +
                                     " . It's in the " + info[5] + " genre.");
 
-                    JChatPane.appendText("JenniferHawk: " + info[0] +
-                            " was released in " + info[1] +
-                            ". "+ info[2] +
-                            " developed it and " + info[3] +
-                            " published it. It was released in " + info[4] +
-                            " . It's in the " + info[5] + " genre.");
+//                    JChatPane.appendText("JenniferHawk: " + info[0] +
+//                            " was released in " + info[1] +
+//                            ". "+ info[2] +
+//                            " developed it and " + info[3] +
+//                            " published it. It was released in " + info[4] +
+//                            " . It's in the " + info[5] + " genre.");
                     break;
 
 
                         }
-                    } catch(ArrayIndexOutOfBoundsException | IOException a){
+                    } catch(ArrayIndexOutOfBoundsException a){
                     System.out.println("There are not enough words in the message to execute this command.");
                     a.getMessage();
                 }

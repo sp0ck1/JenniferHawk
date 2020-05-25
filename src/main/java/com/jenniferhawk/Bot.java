@@ -2,15 +2,12 @@ package com.jenniferhawk;
 
 import com.github.twitch4j.chat.TwitchChat;
 import com.github.twitch4j.helix.domain.UserList;
-import com.jenniferhawk.gui.JChatPane;
 import com.jenniferhawk.features.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.TwitchClientBuilder;
-
-import com.jenniferhawk.layout.Utils;
 import com.jenniferhawk.messages.DiscordCommands;
 import com.jenniferhawk.messages.IncomingMessageBuilder;
 import net.dv8tion.jda.api.AccountType;
@@ -108,20 +105,12 @@ public class Bot {
     public void registerFeatures() {
             // Register Event-based features
           new WriteChannelChatToConsole(twitchClient.getEventManager());
-          new WriteChatToFile(twitchClient.getEventManager());
           new N64(twitchClient.getEventManager());
           new JenniferGoLive(twitchClient.getEventManager());
           new IncomingMessageBuilder(twitchClient.getEventManager());
           new SubscriptionActions(twitchClient.getEventManager());
     }
 
-    public JChatPane createChatPane() {
-        JChatPane jChatPane = new JChatPane("Highly","Appreciated!");
-
-        jChatPane.initChat(twitchClient.getEventManager());
-
-        return jChatPane;
-    }
 
     /**
      * Load the Configuration
@@ -151,14 +140,16 @@ public class Bot {
 
     public void start() {
         // Connect to all channels
+        TextChannel streamIsHappening = discordClient.getTextChannelById("627611883335319602");
+        streamIsHappening.sendMessage("Hola!").queue();
 
         for (String channel : configuration.getChannels()) {
             twitchClient.getChat().joinChannel(channel);
             twitchClient.getClientHelper().enableStreamEventListener("sp0ck1");
 
         }
-        // twitchClient.getChat().sendMessage("sp0ck1","I am here!");
-        Utils.updateSubscriberInfo();
+         twitchClient.getChat().sendMessage("sp0ck1","I am live!");
+        // Utils.updateSubscriberInfo();
     }
 
 
