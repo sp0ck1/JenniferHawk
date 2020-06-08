@@ -1,5 +1,9 @@
 package com.jenniferhawk.features;
 
+import com.github.philippheuer.events4j.simple.SimpleEventHandler;
+import com.github.twitch4j.common.events.channel.ChannelGoLiveEvent;
+import com.github.twitch4j.common.events.domain.EventChannel;
+import com.jenniferhawk.Bot;
 import com.jenniferhawk.database.JenDB;
 
 
@@ -20,7 +24,7 @@ public class TimerToggle {
 
     public void TimerOn() {
 
-        TimedCommands();
+       // TimedCommands();
         value = false;
         System.out.println(value);
 
@@ -50,28 +54,14 @@ public class TimerToggle {
 
 //    public void pokeOn() {
 //        Runnable pokeTimer = () -> sendPokeFact();
-//        pokeFacts = twitchClient.getPubSub().getEventManager().getEventHandler(ReactorEventHandler.class).getScheduler().schedulePeriodically(pokeTimer, 0, 4, SECONDS);
+//        pokeFacts = twitchClient.getPubSub().getEventManager().getEventHandler(SimpleEventHandler.class).getScheduler().schedulePeriodically(pokeTimer, 0, 4, SECONDS);
 //    }
 
 //    public void pokeStop() {
 //        pokeFacts.dispose();
 //    }
 
-    private ScheduledFuture TimedCommands() {
-        System.out.println("Starting timed commands.");
-        final Runnable Timer = () -> sendTimedMessage();
-        ScheduledFuture<?> timerHandle =
-                scheduler.scheduleAtFixedRate(Timer, 1, 5, MINUTES); // Fire every 5 minutes
 
-        scheduler.setRemoveOnCancelPolicy(true);
-        scheduler.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
-
-        ScheduledExecutorService  timerCancelCheckExecutor = Executors.newSingleThreadScheduledExecutor();
-        timerCancelCheckExecutor.scheduleAtFixedRate(() -> {
-            if( value ) timerHandle.cancel(true);  },1,1,SECONDS);
-
-        return timerHandle;
-    }
 
     public void pyramid(String channel) throws InterruptedException {
         twitchClient.getChat().sendMessage(channel," TehePelo ");

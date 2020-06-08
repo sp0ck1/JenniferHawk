@@ -67,8 +67,8 @@ public class JenDB {
             stmt.executeUpdate();
             con.close();
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.print ("There was an error when inserting.");
-            e.printStackTrace(System.err);
+            //System.out.print ("There was an error when inserting.");
+            //e.printStackTrace(System.err);
             System.err.println("SQLState: " +
                     ((SQLException) e).getSQLState());
 

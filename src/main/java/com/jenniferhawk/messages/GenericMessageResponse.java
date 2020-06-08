@@ -13,15 +13,16 @@ import java.util.Set;
 
 
 import static com.jenniferhawk.Bot.*;
+import static java.lang.Integer.parseInt;
 
-public class MessageResponse implements IncomingMessage {
+public class GenericMessageResponse implements IncomingMessage, GenericCommandResponse {
 
     boolean isCommand;
     String message;
     String user;
     String sourceChannel;
     MessageType messageType;
-    String commandPhrase;
+    String command;
     String newCommandName;
     String newCommandResponse;
     SimpleDateFormat sdf = new SimpleDateFormat("MMMM d, YYYY h:mm z");
@@ -29,22 +30,20 @@ public class MessageResponse implements IncomingMessage {
     Set<CommandPermission> permissionType;
     String newTitle;
 
-
-    public MessageResponse setNewCommandName(String newCommandName) {
+    @Override
+    public GenericCommandResponse setNewCommandName(String newCommandName) {
         this.newCommandName = newCommandName;
         return this;
     }
-
-    public MessageResponse setNewCommandResponse(String newCommandText) {
+    
+    @Override
+    public GenericCommandResponse setNewCommandResponse(String newCommandText) {
         this.newCommandResponse = newCommandText;
         return this;
     }
-
-    MessageResponse() {
-
-    }
-
-    MessageResponse setMessageType(MessageType type) {
+    
+    @Override
+    public GenericCommandResponse setMessageType(MessageType type) {
         this.messageType = type;
         return this;
     }
@@ -54,39 +53,46 @@ public class MessageResponse implements IncomingMessage {
         return messageType;
     }
 
-    public MessageResponse setMessage(String message) {
+    @Override
+    public GenericCommandResponse setMessage(String message) {
         this.message = message;
         return this;
     }
 
-    public MessageResponse setUser(String user) {
+    @Override
+    public GenericCommandResponse setUser(String user) {
         this.user = user;
         return this;
     }
 
-    public MessageResponse setPermissionType(Set<CommandPermission> permissionType) {
+    @Override
+    public GenericCommandResponse setPermissionType(Set<CommandPermission> permissionType) {
         this.permissionType = permissionType;
         return this;
     }
 
-    public MessageResponse setSourceChannel(String sourceChannel) {
+    @Override
+    public GenericCommandResponse setSourceChannel(String sourceChannel) {
         System.out.println("The source channel that was just set is " + sourceChannel);
         this.sourceChannel = sourceChannel;
         return this;
     }
 
-    public MessageResponse setNewTitle(String newTitle) {
+    @Override
+    public GenericCommandResponse setNewTitle(String newTitle) {
         this.newTitle = newTitle;
         return this;
     }
 
-    public MessageResponse setIsCommand(boolean command) {
+    @Override
+    public GenericCommandResponse setIsCommand(boolean command) {
         isCommand = command;
         return this;
     }
 
-    public MessageResponse setCommandPhrase(String commandPhrase) {
-        this.commandPhrase = commandPhrase;
+    @Override
+    public GenericCommandResponse setCommand(String commandPhrase) {
+        this.command = commandPhrase;
         return this;
     }
 
@@ -96,9 +102,10 @@ public class MessageResponse implements IncomingMessage {
      *
      * @return String
      */
+
     @Override
     public String getUser() {
-        return null;
+        return user;
     }
 
     /**
@@ -106,9 +113,10 @@ public class MessageResponse implements IncomingMessage {
      *
      * @return String
      */
+
     @Override
     public String getMessage() {
-        return null;
+        return message;
     }
 
     /**
@@ -116,6 +124,7 @@ public class MessageResponse implements IncomingMessage {
      *
      * @return boolean
      */
+
     @Override
     public boolean isCommand() {
         return false;
@@ -126,18 +135,20 @@ public class MessageResponse implements IncomingMessage {
      *
      * @return String
      */
+
     @Override
     public String getSourceChannel() {
         return sourceChannel;
     }
 
-    public MessageResponse setDiscordChannel(MessageChannel discordChannel) {
+    @Override
+    public GenericCommandResponse setDiscordChannel(MessageChannel discordChannel) {
         this.discordChannel = discordChannel;
         return this;
     }
 
-
-    void respond(String message) {
+    @Override
+    public void respond(String message) {
         switch (messageType) {
             case DISCORD:
                     discordChannel.sendMessage(message).queue();
@@ -155,7 +166,7 @@ public class MessageResponse implements IncomingMessage {
         String message = "";
 
         if(isCommand) {
-            switch (commandPhrase) {
+            switch (command) {
                 case "time":
                     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
                     String time = sdf.format(timestamp);
@@ -179,7 +190,7 @@ public class MessageResponse implements IncomingMessage {
                     break;
                 case "newcolor":
 
-                                       break;
+                    break;
                 case "poke":
                     message = JenDB.getPokeFact();
                     break;
@@ -213,8 +224,19 @@ public class MessageResponse implements IncomingMessage {
                                 n64Game.getId();
                     }
                     break;
+//                case "gameid":
+//                    int ID = parseInt(newCommandName);
+//                    String[] info = JenDB.n64Info(ID);
+//                    message =
+//                            info[0] +
+//                                    " was released in " + info[1] +
+//                                    ". "+ info[2] +
+//                                    " developed it and " + info[3] +
+//                                    " published it. It was released in " + info[4] +
+//                                    " . It's in the " + info[5] + " genre.";
+//                    break;
                 default:
-                    message = JenDB.queryHer(commandPhrase);
+                    message = JenDB.queryHer(command);
             }
             if (!message.equals("")) {
                 respond(message);

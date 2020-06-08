@@ -6,7 +6,7 @@ import net.dv8tion.jda.internal.entities.AbstractMessage;
 public interface IncomingMessage {
 
     /**
-     * Sends a message back to the appropriate source
+     * Interprets a message in order to determine the appropriate actions to be taken in response
      */
     void receiveMessage();
 
@@ -15,7 +15,7 @@ public interface IncomingMessage {
      * @return String
      */
     String getUser();
-
+;
     /**
      * Returns the text of the message sent
      * @return String
@@ -23,7 +23,7 @@ public interface IncomingMessage {
     String getMessage();
 
     /**
-     * Checks if the first character was a '!' char
+     * Checks if the first character was a '!'
      * @return boolean
      */
     boolean isCommand();
@@ -36,8 +36,15 @@ public interface IncomingMessage {
 
     MessageType getMessageType();
 
-    enum MessageType {
-        TWITCH, DISCORD
+    enum MessageType
+    {
+        TWITCH("<@!?(\\d+)>"),
+        DISCORD("<@!?(\\d+)>");
+
+        MessageType(String regex) {
+
+        }
+
     }
 }
 

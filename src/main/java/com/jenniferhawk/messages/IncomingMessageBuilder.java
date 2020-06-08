@@ -7,25 +7,34 @@ import com.github.twitch4j.common.enums.CommandPermission;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import java.util.Set;
 
 public class IncomingMessageBuilder extends ListenerAdapter {
 
+    Logger LOG = LoggerFactory.getLogger(IncomingMessageBuilder.class);
     String newCommandName;
     String newCommandResponse;
     String commandPhrase;
     boolean isCommand;
     String newTitle;
-
-
+    String user;
+    String sourceChannel;
+    MessageChannel discordChannel;
+    IncomingMessage.MessageType messageType;
+    String message;
+    int messageLength;
+    String[] splitMessage;
+    Set<CommandPermission> permissionType;
+    GenericCommandResponse response;
 
     /**
-     * Empty constructor used to instantiate class for <code>Bot#registerFeatures</code>
+     * Empty constructor used to instantiate class for <code>Bot#discordClient</code>
      */
     public IncomingMessageBuilder() {
-
     }
 
     /**
@@ -33,81 +42,99 @@ public class IncomingMessageBuilder extends ListenerAdapter {
      * @param eventManager
      */
     public IncomingMessageBuilder(EventManager eventManager) {
-        eventManager.getEventHandler(SimpleEventHandler.class).onEvent(ChannelMessageEvent.class, this::buildTwitchMessage);
+        eventManager.getEventHandler(SimpleEventHandler.class).onEvent(ChannelMessageEvent.class, this::parseMessageEvent);
     }
-
-
 
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
-        if (!event.getAuthor().getName().toLowerCase().equals("jenniferhawk")) {
-            buildDiscordMessage(event);
+        if (!event.getAuthor().getName().toLowerCase().equals("jenniferhawk")) { // If Jennifer didn't send the message
+            parseMessageEvent(event);
         }
     }
 
-    public void buildTwitchMessage(ChannelMessageEvent event) {
-        if (event == null) {
-            return;
+    public void buildMessageResponse() {
+
+        if (isCommand() && commandPhrase.equals("n64mania")) {
+            LOG.info("Building n64 response to message from source: " + sourceChannel);
+            response = new N64ManiaMessageResponse()
+                    .setMessage(message)
+                    .setUser(user)
+                    .setSourceChannel(sourceChannel)
+                    .setIsCommand(isCommand())
+                    .setMessageType(messageType)
+                    .setCommand(commandPhrase)
+                    .setNewCommandName(newCommandName)
+                    .setNewCommandResponse(newCommandResponse)
+                    .setPermissionType(permissionType)
+                    .setNewTitle(newTitle);
+
+            if (messageType == IncomingMessage.MessageType.DISCORD) {
+                response.setDiscordChannel(discordChannel);
+            }
+            response.receiveMessage();
+
         }
+        else {
 
-        String message = event.getMessage();
-        parseMessage(message);
-        String user = event.getUser().getName().toLowerCase();
-        String sourceChannel = event.getChannel().getName();
-        Set<CommandPermission> permissionType = event.getPermissions();
 
-        IncomingMessage.MessageType messageType = IncomingMessage.MessageType.TWITCH;
+            LOG.info("Building generic response to message from source: " + sourceChannel);
+            response = new GenericMessageResponse()
+                    .setMessage(message)
+                    .setUser(user)
+                    .setSourceChannel(sourceChannel)
+                    .setIsCommand(isCommand())
+                    .setMessageType(messageType)
+                    .setCommand(commandPhrase)
+                    .setNewCommandName(newCommandName)
+                    .setNewCommandResponse(newCommandResponse)
+                    .setPermissionType(permissionType)
+                    .setNewTitle(newTitle);
 
-        System.out.println("The source Twitch channel in IMB is: " + event.getChannel().getName());
-        new MessageResponse()
-                .setMessage(message)
-                .setUser(user)
-                .setSourceChannel(sourceChannel)
-                .setIsCommand(isCommand)
-                .setMessageType(messageType)
-                .setCommandPhrase(commandPhrase)
-                .setNewCommandName(newCommandName)
-                .setNewCommandResponse(newCommandResponse)
-                .setPermissionType(permissionType)
-                .setNewTitle(newTitle)
-                .receiveMessage();
-    }
-
-    public void buildDiscordMessage(MessageReceivedEvent event){
-        if (event == null) {
-            return;
+            if (messageType == IncomingMessage.MessageType.DISCORD) {
+                response.setDiscordChannel(discordChannel);
+            }
+                    response.receiveMessage();
         }
-        String message = event.getMessage().getContentDisplay();
-        parseMessage(message);
-
-        String user = event.getAuthor().getName().toLowerCase();
-        String sourceChannel = event.getChannel().getName();
-        MessageChannel discordChannel = event.getChannel();
-        IncomingMessage.MessageType messageType = IncomingMessage.MessageType.DISCORD;
-
-        System.out.println("The source Discord channel in IMB is: " + event.getChannel().getName());
-        new MessageResponse()
-                .setMessage(message)
-                .setUser(user)
-                .setSourceChannel(sourceChannel)
-                .setIsCommand(isCommand)
-                .setMessageType(messageType)
-                .setCommandPhrase(commandPhrase)
-                .setNewCommandName(newCommandName)
-                .setNewCommandResponse(newCommandResponse)
-                .setDiscordChannel(discordChannel)
-                .receiveMessage();
     }
 
-    public void parseMessage(String message){
-        int messageLength =  message.split(" ",3).length;
-        isCommand = message.startsWith("!");
-        String[] splitMessage = message.split(" ",3);
-        commandPhrase = isCommand ? splitMessage[0].replaceAll("!","").toLowerCase() : null;
-        newCommandName = messageLength >= 2 ? splitMessage[1].toLowerCase() : null;  // Will use if commandPhrase.equals("set")
-        newCommandResponse = messageLength >= 3 ? splitMessage[2] : null; // ^^
-        newTitle = messageLength >= 2 ? message.split(" ",2)[1] : null;
+
+    public void parseMessageEvent(MessageReceivedEvent event){
+        message = event.getMessage().getContentDisplay();
+        splitMessage = message.split(" ",3);
+        commandPhrase = isCommand() ? splitMessage[0].replaceAll("!","").toLowerCase() : null;
+        newCommandName = getMessageLength() >= 2 ? splitMessage[1].toLowerCase() : null;  // Will use if commandPhrase.equals("set")
+        newCommandResponse = getMessageLength() >= 3 ? splitMessage[2] : null; // ^^
+        newTitle = getMessageLength() >= 2 ? message.split(" ",2)[1] : null;
+        user = event.getAuthor().getName().toLowerCase();
+        sourceChannel = event.getChannel().getName();
+        discordChannel = event.getChannel();
+        messageType = IncomingMessage.MessageType.DISCORD;
+        buildMessageResponse();
+        //event.getMessage().getEmotes().forEach(emote -> System.out.println(emote.toString()));
     }
+
+    public void parseMessageEvent(ChannelMessageEvent event) {
+        message = event.getMessage();
+        splitMessage = message.split(" ", 3);
+        commandPhrase = isCommand() ? splitMessage[0].replaceAll("!", "").toLowerCase() : null;
+        newCommandName = getMessageLength() >= 2 ? splitMessage[1].toLowerCase() : null;  // Will use if commandPhrase.equals("set")
+        newCommandResponse = getMessageLength() >= 3 ? splitMessage[2] : null; // ^^
+        newTitle = getMessageLength() >= 2 ? message.split(" ", 2)[1] : null;
+        user = event.getUser().getName().toLowerCase();
+        sourceChannel = event.getChannel().getName();
+        permissionType = event.getPermissions();
+        messageType = IncomingMessage.MessageType.TWITCH;
+        buildMessageResponse();
+    }
+
+    private boolean isCommand() {
+        return message.startsWith("!");
+    }
+
+    private int getMessageLength() {
+        return message.split(" ", 3).length;
+    }
+
 
     public enum TwitchPermissions {
         BROADCASTER, MODERATOR, SUBSCRIBER, VIP, NONE

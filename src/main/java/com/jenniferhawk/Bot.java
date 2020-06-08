@@ -1,6 +1,8 @@
 package com.jenniferhawk;
 
 import com.github.twitch4j.chat.TwitchChat;
+import com.github.twitch4j.helix.domain.Stream;
+import com.github.twitch4j.helix.domain.StreamList;
 import com.github.twitch4j.helix.domain.UserList;
 import com.jenniferhawk.features.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,6 +20,8 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import javax.security.auth.login.LoginException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.channels.Channel;
+import java.util.Collections;
 
 public class Bot {
 
@@ -43,6 +47,8 @@ public class Bot {
     public static String CLIENT_SECRET;
 
     public static String BROADCASTER_ID;
+
+
 
     /**
      * Constructor
@@ -105,7 +111,6 @@ public class Bot {
     public void registerFeatures() {
             // Register Event-based features
           new WriteChannelChatToConsole(twitchClient.getEventManager());
-          new N64(twitchClient.getEventManager());
           new JenniferGoLive(twitchClient.getEventManager());
           new IncomingMessageBuilder(twitchClient.getEventManager());
           new SubscriptionActions(twitchClient.getEventManager());
@@ -138,18 +143,16 @@ public class Bot {
 
 
 
+
+
     public void start() {
         // Connect to all channels
-        TextChannel streamIsHappening = discordClient.getTextChannelById("627611883335319602");
-        streamIsHappening.sendMessage("Hola!").queue();
-
+        ChannelGoLiveCheck goLiveCheck = new ChannelGoLiveCheck();
         for (String channel : configuration.getChannels()) {
             twitchClient.getChat().joinChannel(channel);
-            twitchClient.getClientHelper().enableStreamEventListener("sp0ck1");
-
         }
-         twitchClient.getChat().sendMessage("sp0ck1","I am live!");
-        // Utils.updateSubscriberInfo();
+        goLiveCheck.addChannel("sp0ck1");
+        twitchClient.getChat().sendMessage("sp0ck1","I am live!");
     }
 
 
