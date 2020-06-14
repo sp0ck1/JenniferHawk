@@ -9,6 +9,9 @@ public class N64Game {
     private String genre;
     private String id;
     private String developer;
+    private String region;
+
+    public String getRegion() {return region;}
 
     public String getTitle() {
         return title;
@@ -61,6 +64,11 @@ public class N64Game {
 
     public N64Game setId(String id) {
         this.id = id;
+        return this;
+    }
+
+    public N64Game setRegion(String region) {
+        this.region = region;
         return this;
     }
 

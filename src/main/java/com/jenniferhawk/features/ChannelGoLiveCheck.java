@@ -4,6 +4,7 @@ import com.github.philippheuer.events4j.core.domain.Event;
 import com.github.twitch4j.common.events.channel.ChannelGoLiveEvent;
 import com.github.twitch4j.common.events.channel.ChannelGoOfflineEvent;
 import com.github.twitch4j.common.events.domain.EventChannel;
+import com.github.twitch4j.domain.ChannelCache;
 import com.github.twitch4j.helix.domain.Stream;
 import com.github.twitch4j.helix.domain.StreamList;
 import com.jenniferhawk.Bot;
@@ -54,6 +55,8 @@ public class ChannelGoLiveCheck {
         return this;
     }
 
+
+
     private void goLiveCheck() {
         boolean isLive;
         ArrayList<String> streamUsernameList  = new ArrayList<>();
@@ -69,6 +72,7 @@ public class ChannelGoLiveCheck {
                     null,
                     null,
                     channelsToCheck).execute();
+            resultList.getStreams().forEach(member -> streamUsernameList.add(member.getUserName())); // Add all the usernames to the list of returned username
 
             if (resultList.getStreams().size() != 0) { // If at least one stream in here is live
 
@@ -88,14 +92,14 @@ public class ChannelGoLiveCheck {
                         addLiveChannel(stream.getUserName());
                       //  Bot.twitchClient.getChat().sendMessage(stream.getUserName(), stream.getUserName() + " is online!");
                     }
-                     streamUsernameList.add(stream.getUserName()); // Add this name to the list of usernames returned in the resultList
+                   //  streamUsernameList.add(stream.getUserName()); // Add this name to the list of usernames returned in the resultList
                     }
             } else {
                 // None of the streams were live
             }
 
             // If a username is in the liveChannels set but was not part of the resultList, remove them from the liveChannels and throw a ChannelGoOfflineEvent
-            resultList.getStreams().forEach(member -> streamUsernameList.add(member.getUserName())); // Add all the usernames to the list of returned usernames
+
             for (String username : liveChannels) {
                 if (!streamUsernameList.contains(username)) {
                     removeLiveChannel(username);

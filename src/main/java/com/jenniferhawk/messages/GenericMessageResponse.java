@@ -224,17 +224,17 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                                 n64Game.getId();
                     }
                     break;
-//                case "gameid":
-//                    int ID = parseInt(newCommandName);
-//                    String[] info = JenDB.n64Info(ID);
-//                    message =
-//                            info[0] +
-//                                    " was released in " + info[1] +
-//                                    ". "+ info[2] +
-//                                    " developed it and " + info[3] +
-//                                    " published it. It was released in " + info[4] +
-//                                    " . It's in the " + info[5] + " genre.";
-//                    break;
+                case "gameid":
+                    int ID = parseInt(newCommandName);
+                    N64Game game = JenDB.n64Info(ID);
+                    message =
+                            game.getTitle() +
+                                    " was released in " + game.getYear() +
+                                    ". "+ game.getDeveloper() +
+                                    " developed it and " + game.getPublisher() +
+                                    " published it. It was released in " + game.getRegion() +
+                                    " . It's in the " + game.getGenre() + " genre.";
+                    break;
                 default:
                     message = JenDB.queryHer(command);
             }

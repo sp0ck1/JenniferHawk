@@ -66,13 +66,8 @@ public class IncomingMessageBuilder extends ListenerAdapter {
                     .setNewCommandName(newCommandName)
                     .setNewCommandResponse(newCommandResponse)
                     .setPermissionType(permissionType)
-                    .setNewTitle(newTitle);
-
-            if (messageType == IncomingMessage.MessageType.DISCORD) {
-                response.setDiscordChannel(discordChannel);
-            }
-            response.receiveMessage();
-
+                    .setNewTitle(newTitle)
+                    .setMessage("");
         }
         else {
 
@@ -90,11 +85,11 @@ public class IncomingMessageBuilder extends ListenerAdapter {
                     .setPermissionType(permissionType)
                     .setNewTitle(newTitle);
 
-            if (messageType == IncomingMessage.MessageType.DISCORD) {
-                response.setDiscordChannel(discordChannel);
-            }
-                    response.receiveMessage();
         }
+        if (messageType == IncomingMessage.MessageType.DISCORD) {
+            response.setDiscordChannel(discordChannel);
+        }
+        response.receiveMessage();
     }
 
 

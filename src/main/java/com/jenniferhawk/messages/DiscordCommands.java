@@ -68,15 +68,14 @@ public class DiscordCommands extends ListenerAdapter {
         {
 
             int ID = parseInt(word[1]);
-            String[] info = JenDB.n64Info(ID);
-
+            N64Game game = JenDB.n64Info(ID);
             channel.sendMessage(
-                    info[0] +
-                            " was released in " + info[1] +
-                            ". "+ info[2] +
-                            " developed it and " + info[3] +
-                            " published it. It was released in " + info[4] +
-                            " . It's in the " + info[5] + " genre.").queue();
+                    game.getTitle() +
+                            " was released in " + game.getYear() +
+                            ". "+ game.getDeveloper() +
+                            " developed it and " + game.getPublisher() +
+                            " published it. It was released in " + game.getRegion() +
+                            " . It's in the " + game.getGenre() + " genre.").queue();
         }
     }
 
@@ -96,8 +95,8 @@ public class DiscordCommands extends ListenerAdapter {
                     case 4: return "Do you really want that on your record?";
                     case 5: return "Do you own that one?";
                     case 6: return "Have you checked to see if there's a GameCube version instead?";
+                    default: return "I guess that's what you wanted, right?";
                 }
-                return "I guess that's what you wanted, right?";
             }
         }
     }

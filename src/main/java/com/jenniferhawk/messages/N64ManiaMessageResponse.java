@@ -3,6 +3,8 @@ package com.jenniferhawk.messages;
 import com.github.twitch4j.common.enums.CommandPermission;
 import com.jenniferhawk.database.JenDB;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.Set;
@@ -12,6 +14,7 @@ import static java.lang.Integer.parseInt;
 
 public class N64ManiaMessageResponse implements GenericCommandResponse {
 
+    Logger LOG = LoggerFactory.getLogger(N64ManiaMessageResponse.class);
     boolean isCommand;
     String message;
     String user;
@@ -158,9 +161,9 @@ public class N64ManiaMessageResponse implements GenericCommandResponse {
 
     @Override
     public void receiveMessage() {
-        String message = "";
 
-        if (isCommand && !n64Command.isEmpty()) {
+        if (n64Command != null) {
+
             switch (n64Command) { // In this class, the n64Command is the word after !n64mania
                 case "new":
                     Integer gID = parseInt(newCommandResponse);
@@ -193,24 +196,24 @@ public class N64ManiaMessageResponse implements GenericCommandResponse {
                     String url = newCommandResponse;
                     JenDB.N64UpdateCurrent(url, "URL");
                     break;
-                default:
-                    String[] currentGame = JenDB.N64Current();
-                    if (currentGame[0] == null) {
-                        message = "This week's game hasn't been decided yet! Use !rolln64 to give us some suggestions.";
-                    } else {
-                        message = "This week's N64Mania game is " + currentGame[1] + ". The race starts around 9PM EST on Friday! Use !GameID " + currentGame[0] + " for more info about the game.";
-                    }
+                default: setMessageToDefault();
             }
         } else {
-            String[] currentGame = JenDB.N64Current();
-            if (currentGame[0] == null) {
-                message = "This week's game hasn't been decided yet! Use !rolln64 to give us some suggestions.";
-            } else {
-                message = "This week's N64Mania game is " + currentGame[1] + ". The race starts around 9PM EST on Friday! Use !GameID " + currentGame[0] + " for more info about the game.";
-            }
+            setMessageToDefault();
         }
+
         if (!message.equals("")) {
             respond(message);
+        }
+    }
+
+    private void setMessageToDefault() {
+        LOG.debug("Sending n64Mania base command.");
+        String[] currentGame = JenDB.N64Current();
+        if (currentGame[0] == null) {
+            message = "This week's game hasn't been decided yet! Use !rolln64 to give us some suggestions.";
+        } else {
+            message = "This week's N64Mania game is " + currentGame[1] + ". The race starts around 9PM EST on Friday! Use !GameID " + currentGame[0] + " for more info about the game.";
         }
     }
 }

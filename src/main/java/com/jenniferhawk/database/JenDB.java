@@ -269,20 +269,21 @@ public class JenDB {
         return n64Game;
     }
 
-    public static String[] n64Info(Integer GameID) {
-        String[] result = new String[7];
+    public static N64Game n64Info(Integer GameID) {
+
+        N64Game n64Game = new N64Game();
         try {
             Connection con = DriverManager.getConnection(url, username, password);
             Class.forName("com.mysql.jdbc.Driver");
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("select * from JenniferHawk.n64_games WHERE GameID = " + GameID);
             while (rs.next()) {
-                result[0] = rs.getString("GAME");
-                result[1] = rs.getString("YEAR");
-                result[2] = rs.getString("DEVELOPER");
-                result[3] = rs.getString("PUBLISHER");
-                result[4] = rs.getString("REGION");
-                result[5] = rs.getString("GENRE");
+                n64Game.setTitle(rs.getString("GAME"))
+                .setYear(Integer.parseInt(rs.getString("YEAR")))
+                .setDeveloper(rs.getString("DEVELOPER"))
+                .setPublisher(rs.getString("PUBLISHER"))
+                .setRegion(rs.getString("REGION"))
+                .setGenre(rs.getString("GENRE"));
             }
         con.close();
         } catch (SQLException | ClassNotFoundException e) {
@@ -298,7 +299,7 @@ public class JenDB {
 
 
         }
-        return result;
+        return n64Game;
     }
 
     public static String[] N64Current() {

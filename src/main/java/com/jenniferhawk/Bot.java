@@ -151,6 +151,7 @@ public class Bot {
         for (String channel : configuration.getChannels()) {
             twitchClient.getChat().joinChannel(channel);
         }
+
         goLiveCheck.addChannel("sp0ck1");
         twitchClient.getChat().sendMessage("sp0ck1","I am live!");
     }
