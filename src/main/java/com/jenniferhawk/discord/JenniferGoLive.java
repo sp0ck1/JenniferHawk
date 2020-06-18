@@ -1,4 +1,4 @@
-package com.jenniferhawk.features;
+package com.jenniferhawk.discord;
 
 import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
@@ -23,12 +23,13 @@ public class JenniferGoLive {
 
     public void onGoLiveEvent(ChannelGoLiveEvent event) {
 
+        LOG.debug("ChannelGoLiveEvent was fired and received by JenniferGoLive class");
         TextChannel streamIsHappening = discordClient.getTextChannelById("627611883335319602");
         if (streamIsHappening != null) {
             LOG.info("Sending message to stream-is-happening");
             if (event.getChannel().getName().toLowerCase().equals("sp0ck1")) {
                 streamIsHappening.sendMessage("Sp0ck1 went live! " +
-                        event.getTitle() + SP0CK1_STREAM_LINK).queue();
+                        event.getTitle() +" "+ SP0CK1_STREAM_LINK).queue();
             }
               } else {
                 LOG.error("ChannelGoLiveEvent was fired, but TextChannel was null!");

@@ -1,4 +1,4 @@
-package com.jenniferhawk.messages;
+package com.jenniferhawk.discord;
 
 import com.jenniferhawk.database.JenDB;
 import com.jenniferhawk.database.N64Game;

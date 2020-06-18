@@ -4,13 +4,14 @@ import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 import com.github.twitch4j.common.enums.CommandPermission;
-import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 import java.util.Set;
 
 public class IncomingMessageBuilder extends ListenerAdapter {
@@ -105,6 +106,10 @@ public class IncomingMessageBuilder extends ListenerAdapter {
         discordChannel = event.getChannel();
         messageType = IncomingMessage.MessageType.DISCORD;
         buildMessageResponse();
+        User author = event.getAuthor();
+        Guild guild = event.getGuild();
+        Member member = guild.getMember(author);
+        List<Role> roles = member.getRoles();
         //event.getMessage().getEmotes().forEach(emote -> System.out.println(emote.toString()));
     }
 

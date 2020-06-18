@@ -1,27 +1,22 @@
 package com.jenniferhawk;
 
-import com.github.twitch4j.chat.TwitchChat;
-import com.github.twitch4j.helix.domain.Stream;
-import com.github.twitch4j.helix.domain.StreamList;
-import com.github.twitch4j.helix.domain.UserList;
+import com.jenniferhawk.discord.JenniferGoLive;
+import com.jenniferhawk.discord.N64RoleAssigner;
 import com.jenniferhawk.features.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.TwitchClientBuilder;
-import com.jenniferhawk.messages.DiscordCommands;
+import com.jenniferhawk.discord.DiscordCommands;
 import com.jenniferhawk.messages.IncomingMessageBuilder;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.TextChannel;
 
 import javax.security.auth.login.LoginException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.channels.Channel;
-import java.util.Collections;
 
 public class Bot {
 
@@ -95,6 +90,7 @@ public class Bot {
                 .addEventListeners(new DiscordCommands())
                 .addEventListeners(new DiscordPrivateMessages())
                 .addEventListeners(new IncomingMessageBuilder())
+                .addEventListeners(new N64RoleAssigner())
                 .build();
         discordClient.awaitReady();
         //endregion
