@@ -62,19 +62,6 @@ public class TimerToggle {
 //    }
 
 
-
-    public void pyramid(String channel) throws InterruptedException {
-        twitchClient.getChat().sendMessage(channel," TehePelo ");
-        Thread.sleep(1500); System.out.println(1);
-        twitchClient.getChat().sendMessage(channel," TehePelo TehePelo ");
-        Thread.sleep(1500); System.out.println(2);
-        twitchClient.getChat().sendMessage(channel," TehePelo TehePelo  TehePelo  ");
-        Thread.sleep(1500);System.out.println(3);
-        twitchClient.getChat().sendMessage(channel," TehePelo  TehePelo ");
-        Thread.sleep(1500);System.out.println(4);
-        twitchClient.getChat().sendMessage(channel," TehePelo ");
-    }
-
 }
 
     //Every 10 minutes, send a random message from the timed_commands table WHERE TIMER = 1:

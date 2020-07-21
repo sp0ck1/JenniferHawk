@@ -22,7 +22,7 @@ public class ChannelGoLiveCheck {
     // Fires a ChannelGoOfflineEvent if a channel in the liveChannels is not in the resultList
 
     Logger LOG = LoggerFactory.getLogger(ChannelGoLiveCheck.class);
-
+    public static boolean isLive;
     List<String> channelsToCheck = new ArrayList<>();
     Scheduler goLiveScheduler = new Scheduler();
     Set<String> liveChannels = new HashSet<>();
@@ -58,7 +58,7 @@ public class ChannelGoLiveCheck {
 
 
     private void goLiveCheck() {
-        boolean isLive;
+
         ArrayList<String> streamUsernameList  = new ArrayList<>();
 
         if (channelsToCheck.size() != 0) { // Cannot pass empty string as lookup value

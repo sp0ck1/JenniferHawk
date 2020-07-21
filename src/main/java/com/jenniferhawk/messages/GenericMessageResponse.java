@@ -4,6 +4,7 @@ import com.github.twitch4j.common.enums.CommandPermission;
 
 import com.jenniferhawk.database.JenDB;
 import com.jenniferhawk.database.N64Game;
+import com.jenniferhawk.irc.SRLRaceListener;
 import net.dv8tion.jda.api.entities.MessageChannel;
 
 
@@ -13,6 +14,7 @@ import java.util.Set;
 
 
 import static com.jenniferhawk.Bot.*;
+import static com.jenniferhawk.irc.IRCBot.SRL;
 import static java.lang.Integer.parseInt;
 
 public class GenericMessageResponse implements IncomingMessage, GenericCommandResponse {
@@ -23,8 +25,8 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
     String sourceChannel;
     MessageType messageType;
     String command;
-    String newCommandName;
-    String newCommandResponse;
+    String secondWord;
+    String phrase;
     SimpleDateFormat sdf = new SimpleDateFormat("MMMM d, YYYY h:mm z");
     MessageChannel discordChannel;
     Set<CommandPermission> permissionType;
@@ -32,13 +34,13 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
 
     @Override
     public GenericCommandResponse setNewCommandName(String newCommandName) {
-        this.newCommandName = newCommandName;
+        this.secondWord = newCommandName;
         return this;
     }
     
     @Override
     public GenericCommandResponse setNewCommandResponse(String newCommandText) {
-        this.newCommandResponse = newCommandText;
+        this.phrase = newCommandText;
         return this;
     }
     
@@ -179,7 +181,7 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                     message = "The Elder Scrolls III: Prince Street Pizza";
                     break;
                 case "set":
-                    JenDB.addToHer(newCommandName, newCommandResponse, user);
+                    JenDB.addToHer(secondWord, phrase, user);
                     message = "I set the command...probably TehePelo";
                     break;
                 case "title":
@@ -200,7 +202,7 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                 case "clear":
                     System.out.println("User is: " + user);
                     if (user.equals("sp0ck1")) {
-                        JenDB.deleteFromHer(newCommandName);
+                        JenDB.deleteFromHer(secondWord);
                         message = "I delete! I delete! But most importantly, I delete! ...I think";
                     }
                     break;
@@ -224,17 +226,19 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                                 n64Game.getId();
                     }
                     break;
-                case "gameid":
-                    int ID = parseInt(newCommandName);
-                    N64Game game = JenDB.n64Info(ID);
-                    message =
-                            game.getTitle() +
-                                    " was released in " + game.getYear() +
-                                    ". "+ game.getDeveloper() +
-                                    " developed it and " + game.getPublisher() +
-                                    " published it. It was released in " + game.getRegion() +
-                                    " . It's in the " + game.getGenre() + " genre.";
-                    break;
+//                case "gameid":
+//                    int ID = parseInt(newCommandName);
+//                    N64Game game = JenDB.n64Info(ID);
+//                    message =
+//                            game.getTitle() +
+//                                    " was released in " + game.getYear() +
+//                                    ". "+ game.getDeveloper() +
+//                                    " developed it and " + game.getPublisher() +
+//                                    " published it. It was released in " + game.getRegion() +
+//                                    " . It's in the " + game.getGenre() + " genre.";
+//                    break;
+                case "joinsrl":
+                    new SRLRaceListener(secondWord);
                 default:
                     message = JenDB.queryHer(command);
             }

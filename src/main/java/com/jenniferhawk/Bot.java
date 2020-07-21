@@ -9,12 +9,15 @@ import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.TwitchClientBuilder;
 import com.jenniferhawk.discord.DiscordCommands;
+import com.jenniferhawk.irc.IRCBot;
 import com.jenniferhawk.messages.IncomingMessageBuilder;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import org.pircbotx.exception.IrcException;
 
 import javax.security.auth.login.LoginException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -110,8 +113,12 @@ public class Bot {
           new JenniferGoLive(twitchClient.getEventManager());
           new IncomingMessageBuilder(twitchClient.getEventManager());
           new SubscriptionActions(twitchClient.getEventManager());
+              try {
+                  new IRCBot();
+              } catch (IOException | IrcException e) {
+                  e.printStackTrace();
+              }
     }
-
 
     /**
      * Load the Configuration

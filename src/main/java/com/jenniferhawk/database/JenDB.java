@@ -127,6 +127,7 @@ public class JenDB {
         }
     }
 
+    // TODO: Make the forbidden table a view of all commands where sp0ck1 is the author and all commands listed in timed_commands
     public static boolean checkQuery(String whereClause) { // If query is on the list of forbidden commands, return true
         boolean tf;
         String result = "";
@@ -160,17 +161,16 @@ public class JenDB {
         String result = "";
         Random random = new Random();
         System.out.println("Timed message called.");
+        List<String> commandList = new ArrayList<>();
         try {
 
             Connection con = DriverManager.getConnection(url, username,password);
             Class.forName("com.mysql.jdbc.Driver");
-            int id = random.nextInt(5) + 1;
             Statement stmt = con.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery("SELECT TEXT FROM JenniferHawk.timed_commands WHERE ID = " + id);
+            rs = stmt.executeQuery("SELECT TEXT FROM JenniferHawk.timed_commands WHERE TIMER = 1");
             while (rs.next()) {
-                result = rs.getString(1);
-            System.out.println("Sending timed message: " + result);
+                commandList.add(rs.getString(1));
             }
             con.close();
         } catch (SQLException | ClassNotFoundException e) {
@@ -184,6 +184,8 @@ public class JenDB {
 
             System.err.println("Message: " + e.getMessage());
         }
+        int id = random.nextInt(commandList.size()) + 1;
+        result = commandList.get(id);
         return result;
     }
 

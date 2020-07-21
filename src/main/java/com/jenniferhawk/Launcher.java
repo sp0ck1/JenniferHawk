@@ -1,10 +1,14 @@
 package com.jenniferhawk;
 
+import com.jenniferhawk.irc.IRCBot;
+import com.jenniferhawk.messages.ScheduledMessages;
 import org.pircbotx.exception.IrcException;
 import javax.security.auth.login.LoginException;
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
+
+import static com.jenniferhawk.irc.IRCBot.SRL;
 
 public class Launcher {
 
@@ -16,10 +20,8 @@ public class Launcher {
         bot.registerFeatures();
         bot.start();
 
-      //  IRCBot ircBot = new IRCBot();
-
-
-
+        SRL.startBot();
+        ScheduledMessages scheduledMessages = new ScheduledMessages();
 
     }
 

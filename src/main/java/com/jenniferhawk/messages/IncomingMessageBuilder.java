@@ -4,6 +4,7 @@ import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 import com.github.twitch4j.common.enums.CommandPermission;
+import com.jenniferhawk.Bot;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -36,6 +37,7 @@ public class IncomingMessageBuilder extends ListenerAdapter {
      * Empty constructor used to instantiate class for <code>Bot#discordClient</code>
      */
     public IncomingMessageBuilder() {
+        
     }
 
     /**
@@ -136,7 +138,7 @@ public class IncomingMessageBuilder extends ListenerAdapter {
     }
 
 
-    public enum TwitchPermissions {
+    public enum PermissionType {
         BROADCASTER, MODERATOR, SUBSCRIBER, VIP, NONE
     }
 }

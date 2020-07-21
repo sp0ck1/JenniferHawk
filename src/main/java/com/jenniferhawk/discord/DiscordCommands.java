@@ -52,13 +52,12 @@ public class DiscordCommands extends ListenerAdapter {
                 embed.setTitle("Cover Image");
                 MessageEmbed builtEmbed = embed.build();
                 System.out.println("Is this embed sendable? : " + builtEmbed.isSendable(AccountType.BOT));
-
+                String checkHLTB = HLTB > 0.0 ? " HLTB says " + hltbGame + " takes " + HLTB + " hours to beat the main story, if that's relevant. " : "";
                 channel.sendMessage(
                         chatter +
                                 ", you are responsible for suggesting " +
                                 game +
-                                ". " + jenQuip(game) +
-                                " HLTB says " + hltbGame + " takes " + HLTB + " hours to beat the main story, if that's relevant. ")
+                                ". " + jenQuip(game) + checkHLTB)
                         .queue();
             } else {
                 channel.sendMessage(chatter + ", you are responsible for suggesting " + game + ". " + jenQuip(game) + ". ").queue();
