@@ -20,7 +20,7 @@ public class Launcher {
         bot.registerFeatures();
         bot.start();
 
-        SRL.startBot();
+    //    SRL.startBot();
         ScheduledMessages scheduledMessages = new ScheduledMessages();
 
     }

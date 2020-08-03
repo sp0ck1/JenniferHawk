@@ -18,8 +18,8 @@ package com.jenniferhawk.howlongtobeat.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.jenniferhawk.howlongtobeat.HowLongToBeatService;
-import com.jenniferhawk.howlongtobeat.HowLongToBeatServiceDefaultImpl;
+import com.jenniferhawk.howlongtobeat.HLTBService;
+import com.jenniferhawk.howlongtobeat.HLTBServiceDefaultImpl;
 
 /**
  * Runtime configuration for services scoped for Howlongtobeat.
@@ -31,7 +31,7 @@ import com.jenniferhawk.howlongtobeat.HowLongToBeatServiceDefaultImpl;
 public class HowLongToBeatConfig {
 
 	@Bean(name = "howLongToBeatService")
-	HowLongToBeatService createHowLongToBeatService() {
-		return new HowLongToBeatServiceDefaultImpl();
+    HLTBService createHowLongToBeatService() {
+		return new HLTBServiceDefaultImpl();
 	}
 }

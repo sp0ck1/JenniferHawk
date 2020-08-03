@@ -15,7 +15,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  * @author Christian Katzorke ckatzorke@gmail.com
  *
  */
-public class HowLongToBeatServiceDefaultImpl implements HowLongToBeatService {
+public class HLTBServiceDefaultImpl implements HLTBService {
 
   private static final String HLTB_SEARCH_URL = "https://howlongtobeat.com/search_results?page=1";
   private static final String HLTB_DETAIL_URL = "https://howlongtobeat.com/game.php";
@@ -38,17 +38,19 @@ public class HowLongToBeatServiceDefaultImpl implements HowLongToBeatService {
   }
 
   @Override
-  public HowLongToBeatEntry detail(String gameId) {
-    HttpResponse<String> response;
-    try {
-      response = Unirest.get(HLTB_DETAIL_URL).header("accept", "text/html").queryString("id", gameId).asString();
-      HowLongToBeatDetailPage detailPage = new HowLongToBeatDetailPage(response.getBody(),
-          HLTB_DETAIL_URL + "?id=" + gameId, gameId);
-      return detailPage.getEntry();
-    } catch (UnirestException e) {
-      throw new ContextedRuntimeException("Howlongtobeat not available", e).addContextValue("errorId", ERROR_HLTB_GONE)
-          .addContextValue("gameId", gameId).addContextValue("url", HLTB_DETAIL_URL);
-    }
+  public HLTBEntry detail(String gameId) { // FIXME: this might be able to be deleted
+//    HttpResponse<String> response;
+//    try {
+//      response = Unirest.get(HLTB_DETAIL_URL).header("accept", "text/html").queryString("id", gameId).asString();
+//      HowLongToBeatDetailPage detailPage = new HowLongToBeatDetailPage(response.getBody(),
+//          HLTB_DETAIL_URL + "?id=" + gameId, gameId);
+//      System.out.println("Does this actually get used?");
+//      return detailPage.getEntry();
+//    } catch (UnirestException e) {
+//      throw new ContextedRuntimeException("Howlongtobeat not available", e).addContextValue("errorId", ERROR_HLTB_GONE)
+//          .addContextValue("gameId", gameId).addContextValue("url", HLTB_DETAIL_URL);
+//    }
+    return null;
   }
 
 }

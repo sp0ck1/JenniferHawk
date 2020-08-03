@@ -53,6 +53,11 @@ public class IncomingMessageBuilder extends ListenerAdapter {
         if (!event.getAuthor().getName().toLowerCase().equals("jenniferhawk")) { // If Jennifer didn't send the message
             parseMessageEvent(event);
         }
+
+        List<Emote> emotes = event.getMessage().getEmotes();
+        for (Emote emote : emotes) {
+            System.out.println("Emote ID: " + emote.getId());
+        }
     }
 
     public void buildMessageResponse() {

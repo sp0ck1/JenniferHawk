@@ -4,8 +4,10 @@ import com.github.twitch4j.common.enums.CommandPermission;
 
 import com.jenniferhawk.database.JenDB;
 import com.jenniferhawk.database.N64Game;
+import com.jenniferhawk.features.ChannelGoLiveCheck;
 import com.jenniferhawk.irc.SRLRaceListener;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.Role;
 
 
 import java.sql.Timestamp;
@@ -201,7 +203,7 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                     break;
                 case "clear":
                     System.out.println("User is: " + user);
-                    if (user.equals("sp0ck1")) {
+                    if (permissionType.contains(CommandPermission.MODERATOR)) {
                         JenDB.deleteFromHer(secondWord);
                         message = "I delete! I delete! But most importantly, I delete! ...I think";
                     }
@@ -239,6 +241,21 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
 //                    break;
                 case "joinsrl":
                     new SRLRaceListener(secondWord);
+                    break;
+                case "timed":
+                    message = JenDB.getTimedMessage();
+                    break;
+                case "livenow":
+                    ChannelGoLiveCheck.isLive = !ChannelGoLiveCheck.isLive;
+                    System.out.println("Changed channelgolive and it's now this: " + ChannelGoLiveCheck.isLive);
+                    break;
+                case "leaveapun":
+                    JenDB.addPun(secondWord, phrase, user);
+                    break;
+                case "takeapun":
+                    message = JenDB.getPun();
+                    break;
+
                 default:
                     message = JenDB.queryHer(command);
             }

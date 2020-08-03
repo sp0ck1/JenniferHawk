@@ -29,7 +29,7 @@ public class HowLongToBeatSearchResultPage {
 	private final String htmlFragment;
 	private final String searchTerm;
 	private int resultCount = -1;
-	private List<HowLongToBeatSearchResultEntry> entries;
+	private List<HLTBSearchResultEntry> entries;
 
 	public HowLongToBeatSearchResultPage(String term, String fragment) {
 		this.searchTerm = term;
@@ -64,7 +64,7 @@ public class HowLongToBeatSearchResultPage {
 	/**
 	 * @return the entries
 	 */
-	public List<HowLongToBeatSearchResultEntry> getEntries() {
+	public List<HLTBSearchResultEntry> getEntries() {
 		if (entries == null) {
 			analyzeFragment();
 		}
@@ -84,18 +84,19 @@ public class HowLongToBeatSearchResultPage {
 		Elements liElements = html.getElementsByTag("li");
 		this.resultCount = liElements.size();
 		System.out.println("Result count: " + this.resultCount);
-		Set<HowLongToBeatSearchResultEntry> entrySet = liElements	.stream()
+		Set<HLTBSearchResultEntry> entrySet = liElements	.stream()
 																	.map(element -> handleHltbResultLi(element))
 																	.collect(Collectors.toSet());
 		this.entries = new ArrayList<>(entrySet);
 	}
 
-	private HowLongToBeatSearchResultEntry handleHltbResultLi(Element liElement) { // This one parses the search results page
+	private HLTBSearchResultEntry handleHltbResultLi(Element liElement) { // This one parses the search results page
 		Element gameTitle = liElement	.getElementsByTag("a")
 										.get(0);
-		HowLongToBeatSearchResultEntry entry = new HowLongToBeatSearchResultEntry();
+		HLTBSearchResultEntry entry = new HLTBSearchResultEntry();
+		System.out.println("gameTitle? " + gameTitle);
 		entry.setName(gameTitle.attr("title"));
-		String href = HowLongToBeatService.HLTB_URL + gameTitle.attr("href");
+		String href = HLTBService.HLTB_URL + gameTitle.attr("href");
 		entry.setDetailLink(href);
 		entry.setGameId(href.substring(href.indexOf("?id=") + 4));
 		entry.setImageSource(gameTitle	.getElementsByTag("img")
@@ -104,17 +105,19 @@ public class HowLongToBeatSearchResultPage {
 		System.out.println("I just set: " + gameTitle	.getElementsByTag("img")
 				.get(0)
 				.attr("src"));
-		entry.setPropability(calculateSearchHitPropability(entry.getName(), searchTerm));
+		//entry.setPropability(calculateSearchHitPropability(entry.getName(), searchTerm));
 		Elements times = liElement.getElementsByClass("search_list_details_block");
 		times	.get(0)
 				.children()
 				.iterator()
 				.forEachRemaining((div) -> {
-					String type = div	.child(0)
+					String type = div	.child(0) // FIXME: This sometimes causes an Index 0 out of bounds for length 0 and the message won't send after
 										.text();
-					double time = parseTime(div	.child(1)
+
+					String time = parseTime(div	.child(1)
 												.text());
 					parseTypeAndSet(entry, type, time);
+					//System.out.println("The entry is " + entry);
 				});
 
 		return entry;

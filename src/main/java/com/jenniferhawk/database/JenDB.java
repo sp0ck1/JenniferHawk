@@ -127,6 +127,93 @@ public class JenDB {
         }
     }
 
+    public static void addPun(String pun, String text, String author) { //Add to Jennifer's puns list
+        try {
+
+            Connection con = DriverManager.getConnection(url, username, password);
+            Class.forName("com.mysql.jdbc.Driver");
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO JenniferHawk.puns(PUN, TEXT, AUTHOR) VALUES (?,?,?)");
+
+
+            System.out.println("Attempting to add pun: " + text);
+            stmt.execute("SET NAMES utf8mb4"); // This is the only way the database will accept UNICODE characters like
+            stmt.setString(1,pun);
+            stmt.setString(2,text);
+            stmt.setString(3,author);
+            stmt.executeUpdate();
+            con.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            //System.out.print ("There was an error when inserting.");
+            //e.printStackTrace(System.err);
+            System.err.println("SQLState: " +
+                    ((SQLException) e).getSQLState());
+
+            System.err.println("Error Code: " +
+                    ((SQLException) e).getErrorCode());
+
+            System.err.println("Message: " + e.getMessage());
+
+            if ((((SQLException) e).getErrorCode()) == 1062) { // If command cannot be inserted because it already exists, update the record
+                System.err.println("That pun already exists. Attempting an update...");
+                try {
+
+                    Connection con = DriverManager.getConnection(url, username, password);
+                    Class.forName("com.mysql.jdbc.Driver");
+                    PreparedStatement stmt = con.prepareStatement("UPDATE JenniferHawk.puns SET TEXT = ? WHERE PUN = ? ");
+                    stmt.setString(1,text);
+                    stmt.setString(2,pun);
+                    stmt.execute("SET NAMES utf8mb4");
+                    stmt.executeUpdate();
+                    con.close();
+                } catch (SQLException | ClassNotFoundException f) {
+                    System.out.println("There was still a pun error.");
+                    e.printStackTrace(System.err);
+                    assert f instanceof SQLException;
+                    System.err.println("SQLState: " +
+                            ((SQLException) f).getSQLState());
+
+                    System.err.println("Error Code: " +
+                            ((SQLException) f).getErrorCode());
+
+                    System.err.println("Message: " + f.getMessage());
+                }
+
+            }
+        }
+    }
+
+    public static String getPun() { // Retrieve the text of a command
+        String result = "";
+        Random random = new Random();
+        System.out.println("Getting pun.");
+        List<String> punList = new ArrayList<>();
+        try {
+
+            Connection con = DriverManager.getConnection(url, username,password);
+            Class.forName("com.mysql.jdbc.Driver");
+            Statement stmt = con.createStatement();
+            ResultSet rs;
+            rs = stmt.executeQuery("SELECT TEXT FROM JenniferHawk.puns");
+            while (rs.next()) {
+                punList.add(rs.getString(1));
+            }
+            con.close();
+        } catch (SQLException | ClassNotFoundException e) {
+
+            e.printStackTrace(System.err);
+            System.err.println("SQLState: " +
+                    ((SQLException) e).getSQLState());
+
+            System.err.println("Error Code: " +
+                    ((SQLException) e).getErrorCode());
+
+            System.err.println("Message: " + e.getMessage());
+        }
+        int id = random.nextInt(punList.size());
+        result = punList.get(id);
+        return result;
+    }
+
     // TODO: Make the forbidden table a view of all commands where sp0ck1 is the author and all commands listed in timed_commands
     public static boolean checkQuery(String whereClause) { // If query is on the list of forbidden commands, return true
         boolean tf;
@@ -157,10 +244,12 @@ public class JenDB {
         return tf;
     }
 
+
+
     public static String getTimedMessage() {
         String result = "";
         Random random = new Random();
-        System.out.println("Timed message called.");
+        System.out.println("Getting timed message from timed_commands.");
         List<String> commandList = new ArrayList<>();
         try {
 
@@ -174,7 +263,7 @@ public class JenDB {
             }
             con.close();
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("There was an error when toggling.");
+
             e.printStackTrace(System.err);
             System.err.println("SQLState: " +
                     ((SQLException) e).getSQLState());
@@ -184,7 +273,7 @@ public class JenDB {
 
             System.err.println("Message: " + e.getMessage());
         }
-        int id = random.nextInt(commandList.size()) + 1;
+        int id = random.nextInt(commandList.size());
         result = commandList.get(id);
         return result;
     }

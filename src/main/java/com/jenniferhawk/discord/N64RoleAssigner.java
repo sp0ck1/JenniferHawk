@@ -15,6 +15,7 @@ public class N64RoleAssigner extends ListenerAdapter {
         if (event.getMessageId().equals("723160483749691502")) { // N64Mania Hey role
             User user = event.getUser();
             Role hey = event.getGuild().getRoleById("723159374654210108");
+
                 if (event.getReaction().getReactionEmote().getId().equals("675022837613854777")) {
                     event.getGuild().addRoleToMember(user.getId(), hey).complete();
                 }

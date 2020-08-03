@@ -14,17 +14,19 @@ package com.jenniferhawk.howlongtobeat;
  * @author Christian Katzorke ckatzorke@gmail.com
  *
  */
-public class HowLongToBeatEntry {
+public class HLTBEntry {
 
 	private String name;
 	private String detailLink;
 	private String gameId;
 	private String imageSource;
-	private double mainStory;
+	private String mainStory;
 	private double mainAndExtra;
 	private double completionist;
 	private double vs;
 	private double coop;
+	private String timeUnit;
+
 
 	/**
 	 * @return the name of the game
@@ -74,14 +76,14 @@ public class HowLongToBeatEntry {
 	/**
 	 * @return the amount of hours to play the main story
 	 */
-	public double getMainStory() {
+	public String getMainStory() {
 		return mainStory;
 	}
 
 	/**
 	 * @param the amount of hours to play the main story
 	 */
-	public void setMainStory(double mainStory) {
+	public void setMainStory(String mainStory) {
 		this.mainStory = mainStory;
 	}
 
@@ -113,7 +115,9 @@ public class HowLongToBeatEntry {
 		this.completionist = completionist;
 	}
 	
+	public void setTimeUnit(String timeUnit) { this.timeUnit = timeUnit; }
 
+	public String getTimeUnit() { return this.timeUnit; }
 
 	/**
 	 * @return the vs

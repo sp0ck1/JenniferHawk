@@ -2,6 +2,7 @@ package com.jenniferhawk;
 
 import com.jenniferhawk.discord.JenniferGoLive;
 import com.jenniferhawk.discord.N64RoleAssigner;
+import com.jenniferhawk.discord.VulcanRoleAssigner;
 import com.jenniferhawk.features.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -94,6 +95,7 @@ public class Bot {
                 .addEventListeners(new DiscordPrivateMessages())
                 .addEventListeners(new IncomingMessageBuilder())
                 .addEventListeners(new N64RoleAssigner())
+                .addEventListeners(new VulcanRoleAssigner())
                 .build();
         discordClient.awaitReady();
         //endregion
@@ -156,6 +158,7 @@ public class Bot {
         }
 
         goLiveCheck.addChannel("sp0ck1");
+     //   twitchClient.getClientHelper().enableStreamEventListener("sp0ck1");
         twitchClient.getChat().sendMessage("sp0ck1","I am live!");
     }
 

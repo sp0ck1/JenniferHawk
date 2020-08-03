@@ -10,6 +10,8 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class HowLongToBeatUtil {
 
+
+
 	/**
 	 * Calculates the similarity between to strings using Levenshtein in
 	 * comparison to the string length. The similarity is calculated as double,
@@ -44,18 +46,19 @@ public class HowLongToBeatUtil {
 	 * @param time
 	 * @return
 	 */
-	public static HowLongToBeatEntry parseTypeAndSet(HowLongToBeatEntry entry, String type, double time) {
+	public static HLTBEntry parseTypeAndSet(HLTBEntry entry, String type, String time) { // I only actually need to parse this if there's a " - " in it.
 		if (type.startsWith("Main Story") || type.startsWith("Single-Player") || type.startsWith("Solo")) {
 			entry.setMainStory(time);
 		} else if (type.startsWith("Main + Extra")) {
-			entry.setMainAndExtra(time);
+			entry.setMainAndExtra(Double.parseDouble(time));
 		} else if (type.startsWith("Completionist")) {
-			entry.setCompletionist(time);
+			entry.setCompletionist(Double.parseDouble(time));
 		} else if (type.startsWith("Co-Op")) {
-			entry.setCoop(time);
+			entry.setCoop(Double.parseDouble(time));
 		} else if (type.startsWith("Vs.")) {
-			entry.setVs(time);
+			entry.setVs(Double.parseDouble(time));
 		}
+
 		return entry;
 	}
 
@@ -66,16 +69,17 @@ public class HowLongToBeatUtil {
 	 * 
 	 * @param text
 	 *            representing the hours
-	 * @return the pares time as double
+	 * @return the time as 0, or a String containing a number and timeunit
 	 */
-	public static double parseTime(String text) {
+	public static String parseTime(String text) {
 		// "65&#189; Hours"; "--" if not known
 		if (text.equals("--")) {
-			return 0;
+			return "0";
 		}
-		if (text.indexOf(" - ") > -1) {
+		if (text.contains(" - ")) {
 			return handleRange(text);
 		}
+		System.out.println("parseTime returning " + text);
 		return getTime(text);
 	}
 
@@ -84,10 +88,14 @@ public class HowLongToBeatUtil {
 	 *            like '5 Hours - 12 Hours' or '2½ Hours - 33½ Hours'
 	 * @return
 	 */
-	private static double handleRange(String text) {
+	private static String handleRange(String text) {
+		System.out.println("Time text is: " + text);
+		String timeUnit = text.substring(text.indexOf(" "), text.indexOf(" - "));
 		String[] range = text.split(" - ");
-		double d = (getTime(range[0]) + getTime(range[1])) / 2; // Take FROM (hours) and TO (hours) range, add together and divide by two for AVG
-		return d;
+		double from = Double.parseDouble(getTime(range[0]));
+		double to = Double.parseDouble(getTime(range[1]));
+		double d = from + to / 2; // Take FROM (hours) and TO (hours) range, add together and divide by two for AVG
+		return d +" "+timeUnit;
 	}
 
 	/**
@@ -95,13 +103,18 @@ public class HowLongToBeatUtil {
 	 *            can be '12 Hours' or '5½ Hours'
 	 * @return
 	 */
-	private static double getTime(String text) {
+	private static String getTime(String text) {
 		String time = text.substring(0, text.indexOf(" "));
-
-		if (time.contains("\u00BD")) {
-			return 0.5 + Double.parseDouble(time.substring(0, text.indexOf("\u00BD")));
-
+		String timeUnit = text.substring(text.indexOf(" "));
+		if (timeUnit.toLowerCase().equals("mins")) {
+			timeUnit = "Minutes";
 		}
-		return Double.parseDouble(time);
+		System.out.println("What unit are we talking, here? " + timeUnit.trim());
+
+//		if (time.contains("\u00BD")) { // ½
+//			double parsedHalf = 0.5 + Double.parseDouble(time.substring(0, text.indexOf("\u00BD")));
+//			return String.valueOf(parsedHalf);
+//		}
+		return time+timeUnit;
 	}
 }

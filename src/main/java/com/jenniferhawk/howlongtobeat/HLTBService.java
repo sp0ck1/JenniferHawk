@@ -5,7 +5,7 @@ package com.jenniferhawk.howlongtobeat;
  * @author Christian Katzorke ckatzorke@gmail.com
  *
  */
-public interface HowLongToBeatService {
+public interface HLTBService {
 
 	String ERROR_HLTB_GONE = "HLTB_GONE";
 	String HLTB_URL = "http://www.howlongtobeat.com/";
@@ -22,6 +22,6 @@ public interface HowLongToBeatService {
 	 * @param gameId the id used by <a href="http://howlongtobeat.com">Howlongtobeat</a>, like 16624 or 35878
 	 * @return a detail entry
 	 */
-	HowLongToBeatEntry detail(String gameId);
+	HLTBEntry detail(String gameId);
 
 }

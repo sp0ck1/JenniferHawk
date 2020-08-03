@@ -34,12 +34,12 @@ public class DiscordCommands extends ListenerAdapter {
 
             System.out.println("I looked for " + game + " on HLTB.");
 
-            HowLongToBeatService service = new HowLongToBeatServiceDefaultImpl();
+            HLTBService service = new HLTBServiceDefaultImpl();
             HowLongToBeatSearchResultPage result = new HowLongToBeatSearchResultPage(game, service.search(game).getHtmlFragment());
 
             if (result.getEntries().size() != 0) {
-                HowLongToBeatEntry entry = result.getEntries().get(0);
-                double HLTB = entry.getMainStory();
+                HLTBEntry entry = result.getEntries().get(0);
+                String HLTB = entry.getMainStory();
                 String hltbLink = entry.getDetailLink();
                 String gameImage = entry.getImageSource();
                 String hltbGame = entry.getName();
@@ -52,7 +52,7 @@ public class DiscordCommands extends ListenerAdapter {
                 embed.setTitle("Cover Image");
                 MessageEmbed builtEmbed = embed.build();
                 System.out.println("Is this embed sendable? : " + builtEmbed.isSendable(AccountType.BOT));
-                String checkHLTB = HLTB > 0.0 ? " HLTB says " + hltbGame + " takes " + HLTB + " hours to beat the main story, if that's relevant. " : "";
+                String checkHLTB = !HLTB.equals("0") ? " HLTB says " + hltbGame + " takes " + HLTB + " to beat the main story, if that's relevant. " : "";
                 channel.sendMessage(
                         chatter +
                                 ", you are responsible for suggesting " +

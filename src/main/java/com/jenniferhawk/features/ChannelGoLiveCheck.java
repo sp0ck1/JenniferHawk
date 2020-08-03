@@ -32,7 +32,7 @@ public class ChannelGoLiveCheck {
             goLiveCheck();
         };
         // Check every minute if streams in the list are online/offline
-        goLiveScheduler.schedule(goLiveRunnable,1,1, TimeUnit.MINUTES);
+        goLiveScheduler.schedule(goLiveRunnable,1,5, TimeUnit.SECONDS);
     }
 
     public ChannelGoLiveCheck addChannel(String channel) {
@@ -58,7 +58,7 @@ public class ChannelGoLiveCheck {
 
 
     private void goLiveCheck() {
-
+            //System.out.println("Hi my name is goLiveCheck! I'm broken :(...");
         ArrayList<String> streamUsernameList  = new ArrayList<>();
 
         if (channelsToCheck.size() != 0) { // Cannot pass empty string as lookup value
@@ -77,7 +77,7 @@ public class ChannelGoLiveCheck {
             if (resultList.getStreams().size() != 0) { // If at least one stream in here is live
 
                 for (Stream stream : resultList.getStreams()) {
-
+                //    System.out.println("Running goLiveCheck. isLive = " + isLive);
                     isLive = stream.getType().equals("live");
 
                     if ( (isLive) && !(liveChannels.contains(stream.getUserName())) ) { // If they're live and not already in the set of live channels...
@@ -96,6 +96,7 @@ public class ChannelGoLiveCheck {
                     }
             } else {
                 // None of the streams were live
+                isLive = false;
             }
 
             // If a username is in the liveChannels set but was not part of the resultList, remove them from the liveChannels and throw a ChannelGoOfflineEvent

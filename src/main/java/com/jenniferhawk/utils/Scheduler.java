@@ -14,7 +14,7 @@ public class Scheduler {
     private boolean isCanceled;
 
     public ScheduledFuture<?> schedule(Runnable runnable, long initialDelay, long period, TimeUnit timeUnit) {
-        LOG.info("Starting timed commands.");
+        LOG.info("Beginning scheduler for " + runnable.toString());
 
         ScheduledFuture<?> timerHandle =
                 scheduler.scheduleAtFixedRate(runnable, initialDelay, period, timeUnit);

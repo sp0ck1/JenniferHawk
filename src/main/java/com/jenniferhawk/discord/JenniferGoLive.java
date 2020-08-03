@@ -28,7 +28,10 @@ public class JenniferGoLive {
         if (streamIsHappening != null) {
             LOG.info("Sending message to stream-is-happening");
             if (event.getChannel().getName().toLowerCase().equals("sp0ck1")) {
-                streamIsHappening.sendMessage("Sp0ck1 went live! " +
+
+                String pingrole = discordClient.getRoleById("737267159926833212").getAsMention();
+
+                streamIsHappening.sendMessage("Sp0ck1 went live! " + pingrole + " " +
                         event.getTitle() +" "+ SP0CK1_STREAM_LINK).queue();
             }
               } else {

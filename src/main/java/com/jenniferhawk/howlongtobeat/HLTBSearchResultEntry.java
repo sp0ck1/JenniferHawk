@@ -4,7 +4,7 @@ package com.jenniferhawk.howlongtobeat;
  * @author Christian Katzorke ckatzorke@gmail.com
  *
  */
-public class HowLongToBeatSearchResultEntry extends HowLongToBeatEntry {
+public class HLTBSearchResultEntry extends HLTBEntry {
 
 	private double propability = 0;
 
