@@ -3,8 +3,7 @@ package com.jenniferhawk.discord;
 import com.jenniferhawk.database.JenDB;
 import com.jenniferhawk.database.N64Game;
 import com.jenniferhawk.howlongtobeat.*;
-import net.dv8tion.jda.api.AccountType;
-import net.dv8tion.jda.api.EmbedBuilder;
+import com.jenniferhawk.utils.HLTBLookup;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -34,25 +33,10 @@ public class DiscordCommands extends ListenerAdapter {
 
             System.out.println("I looked for " + game + " on HLTB.");
 
-            HLTBService service = new HLTBServiceDefaultImpl();
-            HowLongToBeatSearchResultPage result = new HowLongToBeatSearchResultPage(game, service.search(game).getHtmlFragment());
+            HLTBEntry entry = HLTBLookup.searchGame(game);
 
-            if (result.getEntries().size() != 0) {
-                HLTBEntry entry = result.getEntries().get(0);
-                String HLTB = entry.getMainStory();
-                String hltbLink = entry.getDetailLink();
-                String gameImage = entry.getImageSource();
-                String hltbGame = entry.getName();
-                System.out.println("Time: " + HLTB);
-                System.out.println("Link: " + hltbLink);
-                System.out.println("Image link: " + gameImage);
-
-                EmbedBuilder embed = new EmbedBuilder();
-                embed.setImage(gameImage);
-                embed.setTitle("Cover Image");
-                MessageEmbed builtEmbed = embed.build();
-                System.out.println("Is this embed sendable? : " + builtEmbed.isSendable(AccountType.BOT));
-                String checkHLTB = !HLTB.equals("0") ? " HLTB says " + hltbGame + " takes " + HLTB + " to beat the main story, if that's relevant. " : "";
+            if (entry != null) {
+                String checkHLTB = !entry.getMainStoryTime().equals("0") ? " HLTB says " + entry.getName() + " takes " + entry.getMainStoryTime() + " to beat the main story." : "";
                 channel.sendMessage(
                         chatter +
                                 ", you are responsible for suggesting " +

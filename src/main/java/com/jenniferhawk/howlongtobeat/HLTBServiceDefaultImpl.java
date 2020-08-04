@@ -22,7 +22,7 @@ public class HLTBServiceDefaultImpl implements HLTBService {
 
   @Override
   @Timed
-  public HowLongToBeatSearchResultPage search(String gameName) {
+  public HLTBSearchResultPage search(String gameName) {
     HttpResponse<String> response;
     try {
       response = Unirest.post(HLTB_SEARCH_URL).header("accept", "*/*")
@@ -30,7 +30,7 @@ public class HLTBServiceDefaultImpl implements HLTBService {
           .field("queryString", gameName).field("t", "games").field("sorthead", "popular")
           .field("sortd", "Normal Order").field("plat", "").field("length_type", "main").field("length_min", "")
           .field("length_max", "").field("detail", "0").asString();
-      return new HowLongToBeatSearchResultPage(gameName, response.getBody());
+      return new HLTBSearchResultPage(gameName, response.getBody());
     } catch (UnirestException e) {
       throw new ContextedRuntimeException("Howlongtobeat not available", e).addContextValue("errorId", ERROR_HLTB_GONE)
           .addContextValue("gameName", gameName).addContextValue("url", HLTB_SEARCH_URL);

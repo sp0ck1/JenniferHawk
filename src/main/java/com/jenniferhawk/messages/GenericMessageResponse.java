@@ -5,7 +5,9 @@ import com.github.twitch4j.common.enums.CommandPermission;
 import com.jenniferhawk.database.JenDB;
 import com.jenniferhawk.database.N64Game;
 import com.jenniferhawk.features.ChannelGoLiveCheck;
+import com.jenniferhawk.howlongtobeat.HLTBEntry;
 import com.jenniferhawk.irc.SRLRaceListener;
+import com.jenniferhawk.utils.HLTBLookup;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.Role;
 
@@ -255,7 +257,24 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                 case "takeapun":
                     message = JenDB.getPun();
                     break;
-
+                case "hltb":
+                    HLTBEntry entry;
+                    System.out.println("First word: " + command + " Second word: " + secondWord + " The rest of the phrase: " + phrase);
+                    if (phrase != null) {
+                        entry = HLTBLookup.searchGame(secondWord + " " + phrase);
+                    } else {
+                        entry = HLTBLookup.searchGame(secondWord);
+                    }
+                    if (entry != null) {
+                        if (!entry.getMainStoryTime().equals("0")) {
+                        message = String.format("%s takes %s to beat, according to HLTB. Does that answer your question?",entry.getName(),entry.getMainStoryTime());
+                        } else {
+                            message = String.format("This game is on HowLongToBeat, but it doesn't have a time. %s", entry.getDetailLink());
+                        }
+                    } else {
+                        message = "Couldn't find this game on HowLongToBeat! Try searching yourself at https://howlongtobeat.com/#search";
+                    }
+                    break;
                 default:
                     message = JenDB.queryHer(command);
             }

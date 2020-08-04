@@ -87,9 +87,9 @@ public class IncomingMessageBuilder extends ListenerAdapter {
                     .setSourceChannel(sourceChannel)
                     .setIsCommand(isCommand())
                     .setMessageType(messageType)
-                    .setCommand(commandPhrase)
-                    .setNewCommandName(newCommandName)
-                    .setNewCommandResponse(newCommandResponse)
+                    .setCommand(commandPhrase) // The first word
+                    .setNewCommandName(newCommandName) // The second word
+                    .setNewCommandResponse(newCommandResponse) // The third word/phrase
                     .setPermissionType(permissionType)
                     .setNewTitle(newTitle);
 

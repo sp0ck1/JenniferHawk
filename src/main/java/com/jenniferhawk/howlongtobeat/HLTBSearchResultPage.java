@@ -24,14 +24,14 @@ import org.jsoup.select.Elements;
  * @author Christian Katzorke ckatzorke@gmail.com
  *
  */
-public class HowLongToBeatSearchResultPage {
+public class HLTBSearchResultPage {
 
 	private final String htmlFragment;
 	private final String searchTerm;
 	private int resultCount = -1;
 	private List<HLTBSearchResultEntry> entries;
 
-	public HowLongToBeatSearchResultPage(String term, String fragment) {
+	public HLTBSearchResultPage(String term, String fragment) {
 		this.searchTerm = term;
 		this.htmlFragment = fragment;
 	}
@@ -111,11 +111,18 @@ public class HowLongToBeatSearchResultPage {
 				.children()
 				.iterator()
 				.forEachRemaining((div) -> {
-					String type = div	.child(0) // FIXME: This sometimes causes an Index 0 out of bounds for length 0 and the message won't send after
-										.text();
+					String type;
+					String time;
+					if(div.child(0).text() != null) { // Possible fix for NPE here?
+						type = div.child(0)
+								.text();
 
-					String time = parseTime(div	.child(1)
-												.text());
+					time = parseTime(div	.child(1)
+												.text()).toLowerCase();}
+					else {
+						type = "";
+						time = "0";
+					}
 					parseTypeAndSet(entry, type, time);
 					//System.out.println("The entry is " + entry);
 				});

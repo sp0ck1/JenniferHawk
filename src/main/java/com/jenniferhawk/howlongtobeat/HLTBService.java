@@ -11,11 +11,11 @@ public interface HLTBService {
 	String HLTB_URL = "http://www.howlongtobeat.com/";
 
 	/**
-   * Searches for a given string, parsing the result as {@link HowLongToBeatSearchResultPage}
+   * Searches for a given string, parsing the result as {@link HLTBSearchResultPage}
 	 * @param gameName
 	 * @return
 	 */
-	HowLongToBeatSearchResultPage search(String gameName);
+	HLTBSearchResultPage search(String gameName);
 
 	/**
    * Get the details for a specific game, represented by an id (as used by <a href="http://howlongtobeat.com">Howlongtobeat</a>)

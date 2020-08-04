@@ -76,7 +76,7 @@ public class HLTBEntry {
 	/**
 	 * @return the amount of hours to play the main story
 	 */
-	public String getMainStory() {
+	public String getMainStoryTime() {
 		return mainStory;
 	}
 
