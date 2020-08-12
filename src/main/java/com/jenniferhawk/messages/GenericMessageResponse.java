@@ -9,7 +9,6 @@ import com.jenniferhawk.howlongtobeat.HLTBEntry;
 import com.jenniferhawk.irc.SRLRaceListener;
 import com.jenniferhawk.utils.HLTBLookup;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.Role;
 
 
 import java.sql.Timestamp;
@@ -18,7 +17,6 @@ import java.util.Set;
 
 
 import static com.jenniferhawk.Bot.*;
-import static com.jenniferhawk.irc.IRCBot.SRL;
 import static java.lang.Integer.parseInt;
 
 public class GenericMessageResponse implements IncomingMessage, GenericCommandResponse {
@@ -261,12 +259,12 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                     HLTBEntry entry;
                     System.out.println("First word: " + command + " Second word: " + secondWord + " The rest of the phrase: " + phrase);
                     if (phrase != null) {
-                        entry = HLTBLookup.searchGame(secondWord + " " + phrase);
+                        entry = HLTBLookup.searchGameRandom(secondWord + " " + phrase);
                     } else {
-                        entry = HLTBLookup.searchGame(secondWord);
+                        entry = HLTBLookup.searchGameRandom(secondWord);
                     }
                     if (entry != null) {
-                        if (!entry.getMainStoryTime().equals("0")) {
+                        if (entry.getMainStoryTime() != null && !entry.getMainStoryTime().equals("0")) {
                         message = String.format("%s takes %s to beat, according to HLTB. Does that answer your question?",entry.getName(),entry.getMainStoryTime());
                         } else {
                             message = String.format("This game is on HowLongToBeat, but it doesn't have a time. %s", entry.getDetailLink());

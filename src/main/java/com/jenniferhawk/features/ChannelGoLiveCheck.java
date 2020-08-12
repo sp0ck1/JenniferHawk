@@ -72,7 +72,7 @@ public class ChannelGoLiveCheck {
                     null,
                     null,
                     channelsToCheck).execute();
-            resultList.getStreams().forEach(member -> streamUsernameList.add(member.getUserName())); // Add all the usernames to the list of returned username
+            resultList.getStreams().forEach(member -> streamUsernameList.add(member.getUserName())); // Add all the usernames to the list of returned usernames
 
             if (resultList.getStreams().size() != 0) { // If at least one stream in here is live
 

@@ -1,5 +1,6 @@
 package com.jenniferhawk;
 
+import com.github.twitch4j.common.enums.CommandPermission;
 import com.jenniferhawk.discord.JenniferGoLive;
 import com.jenniferhawk.discord.N64RoleAssigner;
 import com.jenniferhawk.discord.VulcanRoleAssigner;

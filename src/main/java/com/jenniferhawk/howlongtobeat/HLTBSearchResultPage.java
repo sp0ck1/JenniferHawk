@@ -5,6 +5,7 @@ import static com.jenniferhawk.howlongtobeat.HowLongToBeatUtil.parseTime;
 import static com.jenniferhawk.howlongtobeat.HowLongToBeatUtil.parseTypeAndSet;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -84,49 +85,54 @@ public class HLTBSearchResultPage {
 		Elements liElements = html.getElementsByTag("li");
 		this.resultCount = liElements.size();
 		System.out.println("Result count: " + this.resultCount);
-		Set<HLTBSearchResultEntry> entrySet = liElements	.stream()
-																	.map(element -> handleHltbResultLi(element))
-																	.collect(Collectors.toSet());
-		this.entries = new ArrayList<>(entrySet);
+		Set<HLTBSearchResultEntry> entrySet = new HashSet<>();
+
+//				liElements	.stream()
+//																	.map(element -> handleHltbResultLi(element))
+//																	.collect(Collectors.toSet());
+
+		for (Element element : liElements) {
+			entrySet.add(handleHltbResultLi(element));
+		}
+		this.entries = new ArrayList<>(entrySet); // Randomized ordering
 	}
 
 	private HLTBSearchResultEntry handleHltbResultLi(Element liElement) { // This one parses the search results page
-		Element gameTitle = liElement	.getElementsByTag("a")
-										.get(0);
+		String type = "";
+		String time = "0";
+		Element gameTitle = liElement.getElementsByTag("a")
+				.get(0);
 		HLTBSearchResultEntry entry = new HLTBSearchResultEntry();
-		System.out.println("gameTitle? " + gameTitle);
+
 		entry.setName(gameTitle.attr("title"));
 		String href = HLTBService.HLTB_URL + gameTitle.attr("href");
 		entry.setDetailLink(href);
 		entry.setGameId(href.substring(href.indexOf("?id=") + 4));
-		entry.setImageSource(gameTitle	.getElementsByTag("img")
-																		.get(0)
-																		.attr("src"));
-		System.out.println("I just set: " + gameTitle	.getElementsByTag("img")
+		entry.setImageSource(gameTitle.getElementsByTag("img")
 				.get(0)
 				.attr("src"));
+
 		//entry.setPropability(calculateSearchHitPropability(entry.getName(), searchTerm));
 		Elements times = liElement.getElementsByClass("search_list_details_block");
-		times	.get(0)
-				.children()
-				.iterator()
-				.forEachRemaining((div) -> {
-					String type;
-					String time;
-					if(div.child(0).text() != null) { // Possible fix for NPE here?
-						type = div.child(0)
-								.text();
+		if (times.size() != 0) {
+			Element firstElement = times.get(0)
+					.children().first();
 
-					time = parseTime(div	.child(1)
-												.text()).toLowerCase();}
-					else {
-						type = "";
-						time = "0";
+						if (firstElement.children().size() != 0) {
+
+							type = firstElement.child(0)
+									.text();
+
+							time = parseTime(firstElement.child(1)
+									.text()).toLowerCase();
+
+						parseTypeAndSet(entry, type, time);
 					}
-					parseTypeAndSet(entry, type, time);
-					//System.out.println("The entry is " + entry);
-				});
 
+			return entry;
+		} else {
+			parseTypeAndSet(entry, "Main Story", "0");
+		}
 		return entry;
 	}
 

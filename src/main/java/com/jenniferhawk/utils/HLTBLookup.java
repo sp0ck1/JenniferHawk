@@ -9,7 +9,7 @@ public class HLTBLookup {
 
     private static HLTBService service = new HLTBServiceDefaultImpl();
 
-    public static HLTBEntry searchGame(String game) {
+    public static HLTBEntry searchGameRandom(String game) {
 
         HLTBSearchResultPage result = new HLTBSearchResultPage(game, service.search(game).getHtmlFragment());
 
