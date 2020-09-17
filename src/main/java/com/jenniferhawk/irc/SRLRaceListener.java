@@ -1,6 +1,7 @@
 package com.jenniferhawk.irc;
 
 import com.jenniferhawk.Bot;
+import com.jenniferhawk.database.JenDB;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.types.GenericChannelEvent;
@@ -48,6 +49,37 @@ public class SRLRaceListener extends ListenerAdapter {
 //                    message.contains(" 5th ")) {
             if (message.contains(" has finished in ")) {
                 Bot.twitchClient.getChat().sendMessage("sp0ck1", event.getMessage());
+                String[] array = message.split(" ");
+                String runner = array[0];
+                String place = array[4];
+
+                // Correct for tapioca's username
+                // will add other usernames here as necessary
+                if (runner.equals("tapioca2000")) {
+                    runner = "tapioca";
+                }
+                switch (place) {
+                    case "1st":
+                    case "first":
+                        JenDB.N64UpdateCurrent(runner, "FIRST");
+                        break;
+                    case "2nd":
+                    case "second":
+                        JenDB.N64UpdateCurrent(runner, "SECOND");
+                        break;
+                    case "3rd":
+                    case "third":
+                        JenDB.N64UpdateCurrent(runner, "THIRD");
+                        break;
+                    case "4th":
+                    case "fourth":
+                        JenDB.N64UpdateCurrent(runner, "FOURTH");
+                        break;
+                    case "5th":
+                    case "fifth":
+                        JenDB.N64UpdateCurrent(runner, "FIFTH");
+                        break;
+                }
             }
         }
     }

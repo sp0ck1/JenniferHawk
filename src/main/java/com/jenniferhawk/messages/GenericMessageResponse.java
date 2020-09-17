@@ -4,7 +4,7 @@ import com.github.twitch4j.common.enums.CommandPermission;
 
 import com.jenniferhawk.database.JenDB;
 import com.jenniferhawk.database.N64Game;
-import com.jenniferhawk.features.ChannelGoLiveCheck;
+import com.jenniferhawk.twitch.ChannelGoLiveCheck;
 import com.jenniferhawk.howlongtobeat.HLTBEntry;
 import com.jenniferhawk.irc.SRLRaceListener;
 import com.jenniferhawk.utils.HLTBLookup;
@@ -245,9 +245,12 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                 case "timed":
                     message = JenDB.getTimedMessage();
                     break;
-                case "livenow":
-                    ChannelGoLiveCheck.isLive = !ChannelGoLiveCheck.isLive;
-                    System.out.println("Changed channelgolive and it's now this: " + ChannelGoLiveCheck.isLive);
+                //case "livenow":
+                  //  ChannelGoLiveCheck.isLive = !ChannelGoLiveCheck.isLive;
+                    //System.out.println("Changed channelgolive and it's now this: " + ChannelGoLiveCheck.isLive);
+                    //break;
+                case "amilive":
+                    message = "Is Sp0ck1 live? " + ChannelGoLiveCheck.isLive;
                     break;
                 case "leaveapun":
                     JenDB.addPun(secondWord, phrase, user);

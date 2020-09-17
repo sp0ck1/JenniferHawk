@@ -1,10 +1,8 @@
 package com.jenniferhawk;
 
-import com.github.twitch4j.common.enums.CommandPermission;
-import com.jenniferhawk.discord.JenniferGoLive;
+import com.jenniferhawk.discord.DiscordPrivateMessages;
 import com.jenniferhawk.discord.N64RoleAssigner;
 import com.jenniferhawk.discord.VulcanRoleAssigner;
-import com.jenniferhawk.features.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
@@ -13,6 +11,10 @@ import com.github.twitch4j.TwitchClientBuilder;
 import com.jenniferhawk.discord.DiscordCommands;
 import com.jenniferhawk.irc.IRCBot;
 import com.jenniferhawk.messages.IncomingMessageBuilder;
+import com.jenniferhawk.twitch.ChannelGoLiveCheck;
+import com.jenniferhawk.twitch.ChannelStateEventsHandler;
+import com.jenniferhawk.twitch.SubscriptionActions;
+import com.jenniferhawk.twitch.WriteChannelChatToConsole;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -113,10 +115,12 @@ public class Bot {
     public void registerFeatures() {
             // Register Event-based features
           new WriteChannelChatToConsole(twitchClient.getEventManager());
-          new JenniferGoLive(twitchClient.getEventManager());
+          new ChannelStateEventsHandler(twitchClient.getEventManager());
           new IncomingMessageBuilder(twitchClient.getEventManager());
           new SubscriptionActions(twitchClient.getEventManager());
-              try {
+
+          // Start IRC Bot
+          try {
                   new IRCBot();
               } catch (IOException | IrcException e) {
                   e.printStackTrace();

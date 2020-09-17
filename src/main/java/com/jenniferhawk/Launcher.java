@@ -19,7 +19,16 @@ public class Launcher {
 
         bot.registerFeatures();
         bot.start();
-        SRL.startBot();
+        Thread thread = new Thread( () -> {
+
+
+            try {
+                SRL.startBot();
+            } catch (IOException | IrcException e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
         ScheduledMessages scheduledMessages = new ScheduledMessages();
 
     }

@@ -1,4 +1,4 @@
-package com.jenniferhawk.features;
+package com.jenniferhawk.discord;
 
 import com.jenniferhawk.vimmparser.VimmN64;
 import net.dv8tion.jda.api.entities.TextChannel;

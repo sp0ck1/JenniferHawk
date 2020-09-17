@@ -1,10 +1,9 @@
-package com.jenniferhawk.features;
+package com.jenniferhawk.twitch;
 
 import com.github.philippheuer.events4j.core.domain.Event;
 import com.github.twitch4j.common.events.channel.ChannelGoLiveEvent;
 import com.github.twitch4j.common.events.channel.ChannelGoOfflineEvent;
 import com.github.twitch4j.common.events.domain.EventChannel;
-import com.github.twitch4j.domain.ChannelCache;
 import com.github.twitch4j.helix.domain.Stream;
 import com.github.twitch4j.helix.domain.StreamList;
 import com.jenniferhawk.Bot;
@@ -14,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 public class ChannelGoLiveCheck {
 
@@ -77,10 +75,14 @@ public class ChannelGoLiveCheck {
             if (resultList.getStreams().size() != 0) { // If at least one stream in here is live
 
                 for (Stream stream : resultList.getStreams()) {
-                //    System.out.println("Running goLiveCheck. isLive = " + isLive);
+
+                    LOG.info(stream.getUserName() + " is live!");
+
                     isLive = stream.getType().equals("live");
 
-                    if ( (isLive) && !(liveChannels.contains(stream.getUserName())) ) { // If they're live and not already in the set of live channels...
+                    LOG.debug("isLive boolean is now " + isLive);
+                    // If they're live and not already in the set of live channels...
+                    if ( (isLive) && !(liveChannels.contains(stream.getUserName())) ) {
                         LOG.info(stream.getUserName() + " is live! Dispatching new ChannelGoLiveEvent for " + stream.getUserName());
 
                         Event goLiveEvent = new ChannelGoLiveEvent(

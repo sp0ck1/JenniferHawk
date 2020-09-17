@@ -1,5 +1,5 @@
 
-package com.jenniferhawk.features;
+package com.jenniferhawk.twitch;
 
 import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
