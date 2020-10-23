@@ -183,6 +183,9 @@ public class N64ManiaMessageResponse implements GenericCommandResponse {
                 case "complete":
                     JenDB.N64Complete();
                     break;
+                case "clear":
+                    JenDB.N64Clear();
+                    break;
                 case "first":
                 case "second":
                 case "third":

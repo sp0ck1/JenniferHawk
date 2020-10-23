@@ -20,7 +20,8 @@ public class DiscordCommands extends ListenerAdapter {
         System.out.println(event.getAuthor().getName() + ": " + event.getMessage().getContentDisplay());
         System.out.println(event.getChannel().getIdLong());
         //Initializing a variable with segments[1] or higher causes a fatal error if message is shorter than two words.
-        String chatter = String.format("%s", event.getAuthor().getName()); //Name of chatter
+        // String chatter = String.format("%s", event.getAuthor().getName()); //Name of chatter
+        String chatter = String.format("%s", event.getAuthor().getName()) + "_7k"; // temporary 7k version
         String original = event.getMessage().getContentDisplay(); //Original message, preserving caps
 
         MessageChannel channel = event.getChannel();
@@ -49,16 +50,16 @@ public class DiscordCommands extends ListenerAdapter {
         }
         else if (original.toLowerCase().startsWith("!gameid"))
         {
-
-            int ID = parseInt(word[1]);
-            N64Game game = JenDB.n64Info(ID);
-            channel.sendMessage(
-                    game.getTitle() +
-                            " was released in " + game.getYear() +
-                            ". "+ game.getDeveloper() +
-                            " developed it and " + game.getPublisher() +
-                            " published it. It was released in " + game.getRegion() +
-                            " . It's in the " + game.getGenre() + " genre.").queue();
+//
+//            int ID = parseInt(word[1]);
+//            N64Game game = JenDB.getGameInfo(ID);
+//            channel.sendMessage(
+//                    game.getTitle() +
+//                            " was released in " + game.getYear() +
+//                            ". "+ game.getDeveloper() +
+//                            " developed it and " + game.getPublisher() +
+//                            " published it. It was released in " + game.getRegion() +
+//                            " . It's in the " + game.getGenre() + " genre.").queue();
         }
     }
 

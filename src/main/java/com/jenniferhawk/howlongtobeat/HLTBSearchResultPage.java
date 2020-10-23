@@ -75,7 +75,7 @@ public class HLTBSearchResultPage {
 	private void analyzeFragment() {
 		Document html = Jsoup.parseBodyFragment(htmlFragment);
 		if (isResult(html)) {
-			handleResult(html);
+			handleResultList(html);
 		} else {
 			handleNoResult();
 		}
@@ -94,7 +94,23 @@ public class HLTBSearchResultPage {
 		for (Element element : liElements) {
 			entrySet.add(handleHltbResultLi(element));
 		}
-		this.entries = new ArrayList<>(entrySet); // Randomized ordering
+		this.entries = new ArrayList<>(entrySet); // Randomized ordering TODO: Create non-randomized ordering
+	}
+
+	private void handleResultList(Document html) {
+		Elements liElements = html.getElementsByTag("li");
+		this.resultCount = liElements.size();
+		System.out.println("Result count: " + this.resultCount);
+		List<HLTBSearchResultEntry> entryList = new ArrayList<>();
+
+//				liElements	.stream()
+//																	.map(element -> handleHltbResultLi(element))
+//																	.collect(Collectors.toSet());
+
+		for (Element element : liElements) {
+			entryList.add(handleHltbResultLi(element));
+		}
+		this.entries = new ArrayList<>(entryList); // Randomized ordering TODO: Test to get the same result every time
 	}
 
 	private HLTBSearchResultEntry handleHltbResultLi(Element liElement) { // This one parses the search results page

@@ -2,7 +2,11 @@ package com.jenniferhawk.twitch;
 
 import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
+import com.github.twitch4j.chat.enums.CommandSource;
+import com.github.twitch4j.chat.events.CommandEvent;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
+
+import java.util.Map;
 
 public class WriteChannelChatToConsole {
 
@@ -22,7 +26,6 @@ public class WriteChannelChatToConsole {
      */
 
         public void onChannelMessage(ChannelMessageEvent event) {
-
            // status.appendText(event.getUser().getName() + " says: " + event.getMessage());
 
             System.out.printf(
@@ -31,5 +34,9 @@ public class WriteChannelChatToConsole {
                     event.getUser().getName(),
                     event.getMessage()
             );
+        }
+
+        public void onCommandEvent(CommandEvent event) {
+
         }
     }

@@ -3,6 +3,9 @@ package com.jenniferhawk.database;
 
 
 import com.jenniferhawk.Bot;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,7 +17,7 @@ public class JenDB {
     public static String username = Bot.configuration.getDatabase().get("username");
     public static String password = Bot.configuration.getDatabase().get("password");
     private static String url = Bot.configuration.getDatabase().get("url");
-
+    private static Logger LOG = LoggerFactory.getLogger(JenDB.class);
 
     /**
      * Begin standard user command queries
@@ -278,7 +281,7 @@ public class JenDB {
         return result;
     }
 
-    public static String pokeFacts() {
+    private static String pokeFacts() {
         String pokeFact = null;
         Random random = new Random();
         int FactID = random.nextInt(231);
@@ -360,7 +363,7 @@ public class JenDB {
         return n64Game;
     }
 
-    public static N64Game n64Info(Integer GameID) {
+    public static N64Game getGameInfo(Integer GameID) {
 
         N64Game n64Game = new N64Game();
         try {
@@ -391,7 +394,7 @@ public class JenDB {
 
         }
         return n64Game;
-    }
+    } // for lookup command
 
     public static String[] N64Current() {
         String[] result = new String[2];
@@ -422,7 +425,7 @@ public class JenDB {
         }
 
         return result;
-    }
+    } // for base n64mania commmand
 
     public static void N64UpdateCurrent(String Runner, String Column) { // Insert first/second/third/fourth/fifth place and runner's name
 
@@ -450,7 +453,7 @@ public class JenDB {
 
 
         }
-    }
+    } // to add first, second, third etc place
 
     public static String setNewN64Game(Integer GameID) { // Get game name by Integer GameID and insert into n64_current
         String game = "";
@@ -566,7 +569,7 @@ public class JenDB {
             Statement stmt = con.createStatement();
             int deleted = stmt.executeUpdate("DELETE FROM JenniferHawk.n64_current WHERE TRUE");
             con.close();
-            if ( deleted > 0 ) { System.out.println(deleted + " records deleted.");} else {System.out.println("Nothing was deleted!");}
+            if ( deleted > 0 ) { LOG.info(deleted + " records deleted.");} else {LOG.info("Nothing was deleted!");}
         } catch(SQLException | ClassNotFoundException e){
             System.out.println("Error when clearing results from n64_current table.");
             e.printStackTrace(System.err);

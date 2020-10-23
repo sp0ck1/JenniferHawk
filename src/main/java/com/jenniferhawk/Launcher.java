@@ -12,6 +12,8 @@ import static com.jenniferhawk.irc.IRCBot.SRL;
 
 public class Launcher {
 
+    public static int truckMoney = 0;
+
     public static void main(String[] args) throws LoginException, InterruptedException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, URISyntaxException, IOException, IrcException {
 
 
@@ -19,6 +21,8 @@ public class Launcher {
 
         bot.registerFeatures();
         bot.start();
+
+        
         Thread thread = new Thread( () -> {
 
 
@@ -29,7 +33,7 @@ public class Launcher {
             }
         });
         thread.start();
-        ScheduledMessages scheduledMessages = new ScheduledMessages();
+
 
     }
 

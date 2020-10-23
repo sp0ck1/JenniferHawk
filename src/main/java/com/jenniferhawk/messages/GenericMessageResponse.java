@@ -10,13 +10,13 @@ import com.jenniferhawk.irc.SRLRaceListener;
 import com.jenniferhawk.utils.HLTBLookup;
 import net.dv8tion.jda.api.entities.MessageChannel;
 
-
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Set;
 
 
 import static com.jenniferhawk.Bot.*;
+import static com.jenniferhawk.Launcher.truckMoney;
 import static java.lang.Integer.parseInt;
 
 public class GenericMessageResponse implements IncomingMessage, GenericCommandResponse {
@@ -33,6 +33,7 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
     MessageChannel discordChannel;
     Set<CommandPermission> permissionType;
     String newTitle;
+
 
     @Override
     public GenericCommandResponse setNewCommandName(String newCommandName) {
@@ -217,6 +218,26 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                         respond(" TehePelo ");
                     }
                     break;
+                case "addmoney":
+                    if (sourceChannel.equals("sp0ck1") && permissionType.contains(CommandPermission.MODERATOR)) {
+                        int newMoney;
+                        try {
+                            newMoney = Integer.parseInt(secondWord);
+                            truckMoney = truckMoney + newMoney;
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    message = "New total: $ " + truckMoney;
+                    break;
+                case "clearmoney":
+                    if (sourceChannel.equals("sp0ck1") && permissionType.contains(CommandPermission.MODERATOR)) {
+                    truckMoney = 0; }
+                    message = "!truckmoney has been reset to $0";
+                    break;
+                case "truckmoney":
+                    message = "Sp0ck1 has made $" + truckMoney + " trucking today.";
+                    break;
                 case "rolln64":
                     N64Game n64Game = JenDB.rolln64();
                     if (messageType == MessageType.DISCORD) {
@@ -228,17 +249,18 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                                 n64Game.getId();
                     }
                     break;
-//                case "gameid":
-//                    int ID = parseInt(newCommandName);
-//                    N64Game game = JenDB.n64Info(ID);
-//                    message =
-//                            game.getTitle() +
-//                                    " was released in " + game.getYear() +
-//                                    ". "+ game.getDeveloper() +
-//                                    " developed it and " + game.getPublisher() +
-//                                    " published it. It was released in " + game.getRegion() +
-//                                    " . It's in the " + game.getGenre() + " genre.";
-//                    break;
+                case "gameid":
+                    int ID = parseInt(secondWord);
+                    N64Game game = JenDB.getGameInfo(ID);
+                    message =
+                            game.getTitle() +
+                                    " is an N64 game in the " + game.getGenre() + " genre." +
+                                    " It was developed by "+ game.getDeveloper() +
+                                    " and published by " + game.getPublisher() +
+                                    " in " + game.getYear() + ", " +
+                                    " where it was released in " + game.getRegion() +
+                                    ".";
+                    break;
                 case "joinsrl":
                     new SRLRaceListener(secondWord);
                     break;

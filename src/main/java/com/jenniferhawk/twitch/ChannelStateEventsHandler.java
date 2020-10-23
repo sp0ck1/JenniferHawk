@@ -22,13 +22,13 @@ public class ChannelStateEventsHandler {
 
     public void onGoOfflineEvent(ChannelGoOfflineEvent event) {
 
-        LOG.debug("ChannelGoOfflineEvent was fired and received by JenniferGoOffline class");
+        LOG.debug("ChannelGoOfflineEvent was received");
 
     }
 
     public void onGoLiveEvent(ChannelGoLiveEvent event) {
 
-        LOG.debug("ChannelGoLiveEvent was received by ChannelStateEventsHandler");
+        LOG.debug("ChannelGoLiveEvent was received");
         TextChannel streamIsHappening = discordClient.getTextChannelById("627611883335319602");
         if (streamIsHappening != null) {
             LOG.info("Sending message to stream-is-happening");

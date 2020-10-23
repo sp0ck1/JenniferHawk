@@ -11,6 +11,7 @@ import com.github.twitch4j.TwitchClientBuilder;
 import com.jenniferhawk.discord.DiscordCommands;
 import com.jenniferhawk.irc.IRCBot;
 import com.jenniferhawk.messages.IncomingMessageBuilder;
+import com.jenniferhawk.messages.ScheduledMessages;
 import com.jenniferhawk.twitch.ChannelGoLiveCheck;
 import com.jenniferhawk.twitch.ChannelStateEventsHandler;
 import com.jenniferhawk.twitch.SubscriptionActions;
@@ -24,6 +25,7 @@ import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Collections;
 
 public class Bot {
 
@@ -158,6 +160,7 @@ public class Bot {
     public void start() {
         // Connect to all channels
         ChannelGoLiveCheck goLiveCheck = new ChannelGoLiveCheck();
+        ScheduledMessages scheduledMessages = new ScheduledMessages();
         for (String channel : configuration.getChannels()) {
             twitchClient.getChat().joinChannel(channel);
         }

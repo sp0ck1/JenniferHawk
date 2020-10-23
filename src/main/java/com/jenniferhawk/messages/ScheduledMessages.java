@@ -12,7 +12,6 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 public class ScheduledMessages {
 
 
-
     Scheduler messageScheduler = new Scheduler();
     Scheduler isLiveScheduler = new Scheduler();
 
