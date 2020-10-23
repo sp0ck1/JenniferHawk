@@ -9,17 +9,14 @@ public class HLTBLookup {
 
     private static HLTBService service = new HLTBServiceDefaultImpl();
 
-    public static HLTBEntry searchGameRandom(String game) {
+    public static HLTBEntry searchGame(String game) {
 
         HLTBSearchResultPage result = new HLTBSearchResultPage(game, service.search(game).getHtmlFragment());
 
         if (result.getEntries().size() != 0) { // Search returned something
-            HLTBEntry entry = result.getEntries().get(0); // Get the first HLTBEntry and hope it's the correct one.
 
-            String HLTB = entry.getMainStoryTime();
-            String hltbGame = entry.getName();
 
-            return entry;
+            return result.getEntries().get(0); // Return the first HLTBEntry
         }
         else {
 

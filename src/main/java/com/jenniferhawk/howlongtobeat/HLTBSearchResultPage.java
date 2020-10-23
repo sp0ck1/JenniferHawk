@@ -84,7 +84,7 @@ public class HLTBSearchResultPage {
 	private void handleResult(Document html) {
 		Elements liElements = html.getElementsByTag("li");
 		this.resultCount = liElements.size();
-		System.out.println("Result count: " + this.resultCount);
+		//System.out.println("Result count: " + this.resultCount);
 		Set<HLTBSearchResultEntry> entrySet = new HashSet<>();
 
 //				liElements	.stream()
@@ -100,7 +100,7 @@ public class HLTBSearchResultPage {
 	private void handleResultList(Document html) {
 		Elements liElements = html.getElementsByTag("li");
 		this.resultCount = liElements.size();
-		System.out.println("Result count: " + this.resultCount);
+		// System.out.println("Result count: " + this.resultCount);
 		List<HLTBSearchResultEntry> entryList = new ArrayList<>();
 
 //				liElements	.stream()

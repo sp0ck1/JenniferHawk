@@ -396,6 +396,34 @@ public class JenDB {
         return n64Game;
     } // for lookup command
 
+    public static N64Game getGameName(Integer GameID) {
+
+        N64Game n64Game = new N64Game();
+        try {
+            Connection con = DriverManager.getConnection(url, username, password);
+            Class.forName("com.mysql.jdbc.Driver");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("select GAME from JenniferHawk.n64_games WHERE GameID = " + GameID);
+            while (rs.next()) {
+                n64Game.setTitle(rs.getString("GAME"));
+            }
+            con.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("There was an exception when retrieving the game name.");
+            e.printStackTrace(System.err);
+            System.err.println("SQLState: " +
+                    ((SQLException) e).getSQLState());
+
+            System.err.println("Error Code: " +
+                    ((SQLException) e).getErrorCode());
+
+            System.err.println("Message: " + e.getMessage());
+
+
+        }
+        return n64Game;
+    } // for lookup command
+
     public static String[] N64Current() {
         String[] result = new String[2];
 

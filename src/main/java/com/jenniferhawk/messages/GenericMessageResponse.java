@@ -284,9 +284,9 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                     HLTBEntry entry;
                     System.out.println("First word: " + command + " Second word: " + secondWord + " The rest of the phrase: " + phrase);
                     if (phrase != null) {
-                        entry = HLTBLookup.searchGameRandom(secondWord + " " + phrase);
+                        entry = HLTBLookup.searchGame(secondWord + " " + phrase);
                     } else {
-                        entry = HLTBLookup.searchGameRandom(secondWord);
+                        entry = HLTBLookup.searchGame(secondWord);
                     }
                     if (entry != null) {
                         if (entry.getMainStoryTime() != null && !entry.getMainStoryTime().equals("0")) {

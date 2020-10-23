@@ -34,7 +34,7 @@ public class DiscordCommands extends ListenerAdapter {
 
             System.out.println("I looked for " + game + " on HLTB.");
 
-            HLTBEntry entry = HLTBLookup.searchGameRandom(game);
+            HLTBEntry entry = HLTBLookup.searchGame(game);
 
             if (entry != null) {
                 String checkHLTB = !entry.getMainStoryTime().equals("0") ? " HLTB says " + entry.getName() + " takes " + entry.getMainStoryTime() + " to beat the main story." : "";

@@ -79,7 +79,7 @@ public class HowLongToBeatUtil {
 		if (text.contains(" - ")) {
 			return handleRange(text);
 		}
-		System.out.println("parseTime returning " + text);
+		// System.out.println("parseTime returning " + text);
 		return getTime(text);
 	}
 
@@ -109,7 +109,7 @@ public class HowLongToBeatUtil {
 		if (timeUnit.toLowerCase().equals("mins")) {
 			timeUnit = "Minutes";
 		}
-		System.out.println("What unit are we talking, here? " + timeUnit.trim());
+		//System.out.println("What unit are we talking, here? " + timeUnit.trim());
 
 //		if (time.contains("\u00BD")) { // ½
 //			double parsedHalf = 0.5 + Double.parseDouble(time.substring(0, text.indexOf("\u00BD")));
