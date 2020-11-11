@@ -36,7 +36,7 @@ public class DiscordCommands extends ListenerAdapter {
 
             HLTBEntry entry = HLTBLookup.searchGame(game);
 
-            if (entry != null) {
+            if (entry != null && !entry.getMainStoryTime().equals("--")) {
                 String checkHLTB = !entry.getMainStoryTime().equals("0") ? " HLTB says " + entry.getName() + " takes " + entry.getMainStoryTime() + " to beat the main story." : "";
                 channel.sendMessage(
                         chatter +

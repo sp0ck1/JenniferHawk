@@ -129,27 +129,37 @@ public class HLTBSearchResultPage {
 				.attr("src"));
 
 		//entry.setPropability(calculateSearchHitPropability(entry.getName(), searchTerm));
-		Elements times = liElement.getElementsByClass("search_list_details_block");
-		if (times.size() != 0) {
-			int childrenSize = times.get(0).children().size();
+		Elements detailsBlockElements = liElement.getElementsByClass("search_list_details_block");
+		if (detailsBlockElements.size() != 0) {
 
-				Element firstElement = times.get(0)
+			int childrenSize = detailsBlockElements.get(0).children().size();
+
+			if (childrenSize == 1) { // A typical game will only have one child
+				Element firstChild = detailsBlockElements.get(0)
 						.children().first();
-				System.out.println("What is " + firstElement.children().size());
-				if (firstElement.children().size() != 0) {
-// Just replace firstElement with times
-					type = firstElement.child(0)
+
+				System.out.println("firstChild has this many children: " + firstChild.children().size());
+				if (firstChild.children().size() != 0) {
+
+					type = firstChild.child(0) // Main Story/Solo
 							.text();
 
-					time = parseTime(firstElement.child(1)
+					time = parseTime(firstChild.child(1) // The second in the list of divs. 0 is Main Story/Solo, 1 is the time
 							.text()).toLowerCase();
 					System.out.println("Setting time equal to " + time);
 					parseTypeAndSet(entry, type, time);
-				}
 
+				}
 				return entry;
 
+			} else {
 
+				type = detailsBlockElements.get(0).child(0).text();
+
+				time = parseTime(detailsBlockElements.get(0).child(1).text()).toLowerCase();
+				System.out.println("Setting time equal to " + time);
+				parseTypeAndSet(entry, type, time);
+			}
 		} else {
 			System.out.println("Setting time to 0");
 			parseTypeAndSet(entry, "Main Story", "0");

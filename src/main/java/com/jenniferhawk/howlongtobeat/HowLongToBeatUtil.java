@@ -49,14 +49,8 @@ public class HowLongToBeatUtil {
 	public static HLTBEntry parseTypeAndSet(HLTBEntry entry, String type, String time) { // I only actually need to parse this if there's a " - " in it.
 		if (type.startsWith("Main Story") || type.startsWith("Single-Player") || type.startsWith("Solo")) {
 			entry.setMainStory(time);
-		} else if (type.startsWith("Main + Extra")) {
-			entry.setMainAndExtra(Double.parseDouble(time));
-		} else if (type.startsWith("Completionist")) {
-			entry.setCompletionist(Double.parseDouble(time));
-		} else if (type.startsWith("Co-Op")) {
-			entry.setCoop(Double.parseDouble(time));
-		} else if (type.startsWith("Vs.")) {
-			entry.setVs(Double.parseDouble(time));
+		} else {
+			entry.setMainStory("--");
 		}
 
 		return entry;
