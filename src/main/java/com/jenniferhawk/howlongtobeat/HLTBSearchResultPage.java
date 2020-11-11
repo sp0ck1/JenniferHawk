@@ -131,22 +131,27 @@ public class HLTBSearchResultPage {
 		//entry.setPropability(calculateSearchHitPropability(entry.getName(), searchTerm));
 		Elements times = liElement.getElementsByClass("search_list_details_block");
 		if (times.size() != 0) {
-			Element firstElement = times.get(0)
-					.children().first();
+			int childrenSize = times.get(0).children().size();
 
-						if (firstElement.children().size() != 0) {
+				Element firstElement = times.get(0)
+						.children().first();
+				System.out.println("What is " + firstElement.children().size());
+				if (firstElement.children().size() != 0) {
+// Just replace firstElement with times
+					type = firstElement.child(0)
+							.text();
 
-							type = firstElement.child(0)
-									.text();
+					time = parseTime(firstElement.child(1)
+							.text()).toLowerCase();
+					System.out.println("Setting time equal to " + time);
+					parseTypeAndSet(entry, type, time);
+				}
 
-							time = parseTime(firstElement.child(1)
-									.text()).toLowerCase();
+				return entry;
 
-						parseTypeAndSet(entry, type, time);
-					}
 
-			return entry;
 		} else {
+			System.out.println("Setting time to 0");
 			parseTypeAndSet(entry, "Main Story", "0");
 		}
 		return entry;

@@ -73,7 +73,7 @@ public class HowLongToBeatUtil {
 	 */
 	public static String parseTime(String text) {
 		// "65&#189; Hours"; "--" if not known
-		if (text.equals("--")) {
+		if (text.equals("--") || text.equals("-- ")) {
 			return "0";
 		}
 		if (text.contains(" - ")) {

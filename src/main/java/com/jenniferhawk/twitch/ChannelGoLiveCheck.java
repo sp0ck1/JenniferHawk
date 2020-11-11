@@ -30,7 +30,7 @@ public class ChannelGoLiveCheck {
             goLiveCheck();
         };
         // Check every minute if streams in the list are online/offline
-        goLiveScheduler.schedule(goLiveRunnable,1,2, TimeUnit.SECONDS);
+        goLiveScheduler.schedule(goLiveRunnable,1,2, TimeUnit.MINUTES);
     }
 
     public ChannelGoLiveCheck addChannel(String channel) {

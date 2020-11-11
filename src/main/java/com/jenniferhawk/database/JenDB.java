@@ -328,7 +328,7 @@ public class JenDB {
         N64Game n64Game = new N64Game();
         try {
             System.out.println("rolln64 command fired.");
-                 Connection con = DriverManager.getConnection(url, username, password);
+            Connection con = DriverManager.getConnection(url, username, password);
             Class.forName("com.mysql.jdbc.Driver");
             Statement stmt = con.createStatement();
             List<Integer> idList = new ArrayList<>();
@@ -337,7 +337,7 @@ public class JenDB {
             while (resultSet.next()) { idList.add(resultSet.getInt(1)); }
 
                 int GameID = idList.get(random.nextInt(idList.size())); // Get one of the entries in the list of GameIDs
-               // JChatPane.appendText("The GameID being looked up is: " + GameID);
+
                 ResultSet rs = stmt.executeQuery("SELECT * FROM JenniferHawk.n64_remaining WHERE GameID = " + GameID);
 
                 while (rs.next()) {
