@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.commons.lang3.StringUtils;
 
 
-import java.util.Random;
+import java.util.*;
 
 import static java.lang.Integer.parseInt;
 
@@ -62,9 +62,28 @@ public class DiscordCommands extends ListenerAdapter {
 //                            " . It's in the " + game.getGenre() + " genre.").queue();
         }
     }
-
+    // TODO: Change to take N64Game object in order to specify quips by genre.
     private String jenQuip(String game) {
         Random random = new Random();
+        List<String> quipSet = new ArrayList<String>();
+        quipSet.add("I wouldn't have chosen that one, but to each their own.");
+        quipSet.add("That's on you, bud.");
+        quipSet.add("This looks like trash, but what do I know?");
+        quipSet.add("Do you own that one?");
+        quipSet.add("Do you really want that on your record?");
+        quipSet.add("Have you checked to see if there's a Gamecube version instead?");
+        quipSet.add("I guess that's what you wanted, right?");
+        quipSet.add("This could be good, I guess?");
+        quipSet.add("Spock rented this once. He said it was fine.");
+        quipSet.add("May Blockbuster bless your soul.");
+        quipSet.add("Eat your heart out, Mario.");
+        quipSet.add("Somehow, this one slipped by Miyamoto.");
+        quipSet.add("Fancy! Or terrible, depending upon the circumstances.");
+        quipSet.add("Can Flant farm us on this one?");
+        quipSet.add("¯\\_(ツ)_/¯");
+        quipSet.add("It's no Pilotwings but, I guess so.");
+
+
         if (game.equalsIgnoreCase("Pilotwings 64")) {
             return "That's a damn fine video game.";
         } else if (
@@ -72,20 +91,7 @@ public class DiscordCommands extends ListenerAdapter {
                 return "@Hydromedia ";
             } else {
 
-                switch (random.nextInt(7)) {
-                    case 1: return "I wouldn't have chosen that one, but to each their own.";
-                    case 2: return "That's on you, bud.";
-                    case 3: return "This looks like trash, but what do I know?";
-                    case 4: return "Do you really want that on your record?";
-                    case 5: return "Do you own that one?";
-                    case 6: return "Have you checked to see if there's a GameCube version instead?";
-                    default: return "I guess that's what you wanted, right?";
+                return quipSet.get(random.nextInt(quipSet.size()));
                 }
             }
         }
-    }
-
-
-
-
-
