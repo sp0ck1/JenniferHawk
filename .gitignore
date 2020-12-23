@@ -54,3 +54,5 @@ client.log
 
 # Scratch files
 .txt
+/src/test/
+

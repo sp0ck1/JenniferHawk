@@ -28,31 +28,31 @@ public class JenDB {
         String result = "";
         System.out.println(username+" : " + password);
 
-            try {
-                Connection con = DriverManager.getConnection(url, username, password);
-                Class.forName(driverForName);
-                PreparedStatement stmt = con.prepareStatement("select * from ADMIN.COMMANDS WHERE COMMAND = ? ");
-                stmt.setString(1,whereClause);
-                ResultSet rs = stmt.executeQuery();
+        try {
+            Connection con = DriverManager.getConnection(url, username, password);
+            Class.forName(driverForName);
+            PreparedStatement stmt = con.prepareStatement("select * from ADMIN.COMMANDS WHERE COMMAND = ? ");
+            stmt.setString(1,whereClause);
+            ResultSet rs = stmt.executeQuery();
 //                ResultSet testSet = stmt.executeQuery("select * from ADMIN.COMMANDS WHERE COMMAND = '" + "dab"+"'");stmt.executeUpdate("DROP/**/TABLE/**/ADMIN.TAPIOCA");stmt.executeQuery("SELECT * from ADMIN.COMMANDS WHERE COMMAND = '"+ "cya" + "'");
-                while (rs.next())
-                    result = rs.getString(2);
-                 con.close();
-            } catch (SQLException | ClassNotFoundException e) {
-                System.out.println("There was an exception, chief.");
-                e.printStackTrace(System.err);
-                System.err.println("SQLState: " +
-                        ((SQLException) e).getSQLState());
+            while (rs.next())
+                result = rs.getString(2);
+            con.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("There was an exception, chief.");
+            e.printStackTrace(System.err);
+            System.err.println("SQLState: " +
+                    ((SQLException) e).getSQLState());
 
-                System.err.println("Error Code: " +
-                        ((SQLException) e).getErrorCode());
+            System.err.println("Error Code: " +
+                    ((SQLException) e).getErrorCode());
 
-                System.err.println("Message: " + e.getMessage());
+            System.err.println("Message: " + e.getMessage());
 
 
         }
-            return result;
-        }
+        return result;
+    }
 
 
 
@@ -290,7 +290,7 @@ public class JenDB {
         int FactID = random.nextInt(231);
         try {
             System.out.println("PokeFact sent.");
-                 Connection con = DriverManager.getConnection(url, username, password);
+            Connection con = DriverManager.getConnection(url, username, password);
             Class.forName(driverForName);
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("select ADMIN.pokefacts.FACT from ADMIN.pokefacts WHERE FactID = " + FactID);
@@ -298,7 +298,7 @@ public class JenDB {
                 pokeFact = rs.getString("FACT");
 
             }
-                con.close();
+            con.close();
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println("There was a problem with your pokeFact.");
             e.printStackTrace(System.err);
@@ -339,16 +339,16 @@ public class JenDB {
 
             while (resultSet.next()) { idList.add(resultSet.getInt(1)); }
 
-                int GameID = idList.get(random.nextInt(idList.size())); // Get one of the entries in the list of GameIDs
+            int GameID = idList.get(random.nextInt(idList.size())); // Get one of the entries in the list of GameIDs
 
-                ResultSet rs = stmt.executeQuery("SELECT * FROM N64_REMAINING WHERE GAMEID = " + GameID);
+            ResultSet rs = stmt.executeQuery("SELECT * FROM N64_REMAINING WHERE GAMEID = " + GameID);
 
-                while (rs.next()) {
-                    n64Game.setId(rs.getString("GAMEID"))
-                    .setTitle(rs.getString("GAME"))
-                    .setGenre(rs.getString("GENRE"));
-                }
-                    con.close();
+            while (rs.next()) {
+                n64Game.setId(rs.getString("GAMEID"))
+                        .setTitle(rs.getString("GAME"))
+                        .setGenre(rs.getString("GENRE"));
+            }
+            con.close();
 
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println("There was an exception, chief.");
@@ -376,13 +376,13 @@ public class JenDB {
             ResultSet rs = stmt.executeQuery("select * from N64_GAMES WHERE GAMEID = " + GameID);
             while (rs.next()) {
                 n64Game.setTitle(rs.getString("GAME"))
-                .setYear(Integer.parseInt(rs.getString("YEAR")))
-                .setDeveloper(rs.getString("DEVELOPER"))
-                .setPublisher(rs.getString("PUBLISHER"))
-                .setRegion(rs.getString("REGION"))
-                .setGenre(rs.getString("GENRE"));
+                        .setYear(Integer.parseInt(rs.getString("YEAR")))
+                        .setDeveloper(rs.getString("DEVELOPER"))
+                        .setPublisher(rs.getString("PUBLISHER"))
+                        .setRegion(rs.getString("REGION"))
+                        .setGenre(rs.getString("GENRE"));
             }
-        con.close();
+            con.close();
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println("There was an exception, captain.");
             e.printStackTrace(System.err);
@@ -569,23 +569,23 @@ public class JenDB {
             preparedStatement.executeUpdate();
 
             int deleted = stmt.executeUpdate("DELETE FROM N64_CURRENT WHERE GAMEID = " + GameID[0]);
-                    con.close();
-                    if ( deleted > 0 ) { System.out.println(deleted + " records deleted.");} else {System.out.println("Nothing was deleted!");}
+            con.close();
+            if ( deleted > 0 ) { System.out.println(deleted + " records deleted.");} else {System.out.println("Nothing was deleted!");}
 
         } catch(SQLException | ClassNotFoundException e){
-                System.out.println("Error when inserting results into n64_results table.");
-                e.printStackTrace(System.err);
-                System.err.println("SQLState: " +
-                        ((SQLException) e).getSQLState());
+            System.out.println("Error when inserting results into n64_results table.");
+            e.printStackTrace(System.err);
+            System.err.println("SQLState: " +
+                    ((SQLException) e).getSQLState());
 
-                System.err.println("Error Code: " +
-                        ((SQLException) e).getErrorCode());
+            System.err.println("Error Code: " +
+                    ((SQLException) e).getErrorCode());
 
-                System.err.println("Message: " + e.getMessage());
+            System.err.println("Message: " + e.getMessage());
 
 
-            }
         }
+    }
 
     /**
      * Delete the current game and metadata from n64_current table
@@ -619,7 +619,7 @@ public class JenDB {
     public static String[] N64Lookup(String Lookup) { // Return the closest match based on input
         String[] result = new String[2];
         try {
-System.out.println("Lookup phrase: "+Lookup);
+            System.out.println("Lookup phrase: "+Lookup);
             Connection con = DriverManager.getConnection(url, username, password);
             Class.forName(driverForName);
             Lookup = Lookup
@@ -636,7 +636,7 @@ System.out.println("Lookup phrase: "+Lookup);
                 result[1] = rs.getString("GAME");
             }
             con.close();
-    System.out.println("result[0] is " + result[0] + " and result[1] is " + result[1]);
+            System.out.println("result[0] is " + result[0] + " and result[1] is " + result[1]);
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println("There was an exception in the lookup, chief.");
             e.printStackTrace(System.err);
@@ -654,47 +654,46 @@ System.out.println("Lookup phrase: "+Lookup);
     }
 
     private static void n64UpdateOBS() throws IOException {
-            int gameID = 0;
-            String game = "";
-            String year = "";
-            int count = 0;
-            try {
+        int gameID = 0;
+        String game = "";
+        String year = "";
+        int count = 0;
+        try {
 
-                       Connection con = DriverManager.getConnection(url, username, password);
-                Class.forName(driverForName);
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("select GameID from ADMIN.n64_current");
-                while (rs.next()) {
-                    gameID = rs.getInt("GameID");
-                    System.out.println(gameID);
-                }
-                ResultSet rt = stmt.executeQuery("SELECT GAME, YEAR FROM ADMIN.n64_games WHERE GameID = " + gameID);
-                while (rt.next()) {
-                    game = rt.getString("GAME");
-                    System.out.println(game);
-                    year = rt.getString("YEAR");
-                    System.out.println(year);
-                }
-                ResultSet rc = stmt.executeQuery("SELECT COUNT(GAME)+1 AS C FROM ADMIN.n64_results");
-                while (rc.next()) {
-                    count = rc.getInt("C");
-                }
-            con.close();
-            } catch (SQLException | ClassNotFoundException e) {
-                System.out.println("There was an exception, James.");
-                e.printStackTrace(System.err);
-                System.err.println("SQLState: " +
-                        ((SQLException) e).getSQLState());
-
-                System.err.println("Error Code: " +
-                        ((SQLException) e).getErrorCode());
-
-                System.err.println("Message: " + e.getMessage());
-
-
+            Connection con = DriverManager.getConnection(url, username, password);
+            Class.forName(driverForName);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("select GameID from ADMIN.n64_current");
+            while (rs.next()) {
+                gameID = rs.getInt("GameID");
+                System.out.println(gameID);
             }
+            ResultSet rt = stmt.executeQuery("SELECT GAME, YEAR FROM ADMIN.n64_games WHERE GameID = " + gameID);
+            while (rt.next()) {
+                game = rt.getString("GAME");
+                System.out.println(game);
+                year = rt.getString("YEAR");
+                System.out.println(year);
+            }
+            ResultSet rc = stmt.executeQuery("SELECT COUNT(GAME)+1 AS C FROM ADMIN.n64_results");
+            while (rc.next()) {
+                count = rc.getInt("C");
+            }
+            con.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("There was an exception, James.");
+            e.printStackTrace(System.err);
+            System.err.println("SQLState: " +
+                    ((SQLException) e).getSQLState());
+
+            System.err.println("Error Code: " +
+                    ((SQLException) e).getErrorCode());
+
+            System.err.println("Message: " + e.getMessage());
+
 
         }
-    }
 
+    }
+}
 

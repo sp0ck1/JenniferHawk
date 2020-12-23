@@ -33,9 +33,6 @@ dependencies {
     // Local fork
   // implementation project(":twitch4j")
 
-    // Oracle JDBC
-    compile 'com.oracle.database.jdbc:ojdbc10:19.3.0.0'
-
     compile 'com.github.pircbotx:pircbotx:2.2'
 
     // YAML Parser

@@ -10,9 +10,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.commons.lang3.StringUtils;
 
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static java.lang.Integer.parseInt;
@@ -26,7 +23,7 @@ public class DiscordCommands extends ListenerAdapter {
         // String chatter = String.format("%s", event.getAuthor().getName()); //Name of chatter
         String chatter = String.format("%s", event.getAuthor().getName()) + "_7k"; // temporary 7k version
         String original = event.getMessage().getContentDisplay(); //Original message, preserving caps
-        System.out.println(original);
+
         MessageChannel channel = event.getChannel();
         String[] word = StringUtils.split(original, "!, ");
         User author = event.getAuthor();
@@ -69,22 +66,22 @@ public class DiscordCommands extends ListenerAdapter {
     private String jenQuip(String game) {
         Random random = new Random();
         List<String> quipSet = new ArrayList<String>();
-//        quipSet.add("I wouldn't have chosen that one, but to each their own.");
-//        quipSet.add("That's on you, bud.");
-//        quipSet.add("This looks like trash, but what do I know?");
-//        quipSet.add("Do you own that one?");
-//        quipSet.add("Do you really want that on your record?");
-//        quipSet.add("Have you checked to see if there's a Gamecube version instead?");
-//        quipSet.add("I guess that's what you wanted, right?");
-//        quipSet.add("This could be good, I guess?");
-//        quipSet.add("Spock rented this once. He said it was fine.");
-//        quipSet.add("May Blockbuster bless your soul.");
-//        quipSet.add("Eat your heart out, Mario.");
-//        quipSet.add("Somehow, this one slipped by Miyamoto.");
-//        quipSet.add("Fancy! Or terrible, depending upon the circumstances.");
-//        quipSet.add("Can Flant farm us on this one?");
+        quipSet.add("I wouldn't have chosen that one, but to each their own.");
+        quipSet.add("That's on you, bud.");
+        quipSet.add("This looks like trash, but what do I know?");
+        quipSet.add("Do you own that one?");
+        quipSet.add("Do you really want that on your record?");
+        quipSet.add("Have you checked to see if there's a Gamecube version instead?");
+        quipSet.add("I guess that's what you wanted, right?");
+        quipSet.add("This could be good, I guess?");
+        quipSet.add("Spock rented this once. He said it was fine.");
+        quipSet.add("May Blockbuster bless your soul.");
+        quipSet.add("Eat your heart out, Mario.");
+        quipSet.add("Somehow, this one slipped by Miyamoto.");
+        quipSet.add("Fancy! Or terrible, depending upon the circumstances.");
+        quipSet.add("Can Flant farm us on this one?");
         quipSet.add("¯\\_(ツ)_/¯");
-//        quipSet.add("It's no Pilotwings but, I guess so.");
+        quipSet.add("It's no Pilotwings but, I guess so.");
 
 
         if (game.equalsIgnoreCase("Pilotwings 64")) {
@@ -93,14 +90,8 @@ public class DiscordCommands extends ListenerAdapter {
             game.equalsIgnoreCase("Gauntlet Legends")) {
                 return "@Hydromedia ";
             } else {
-            String quip = null;
-            try {
-                quip = new String(quipSet.get(random.nextInt(quipSet.size())).getBytes(), "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
 
-            return quip;
+                return quipSet.get(random.nextInt(quipSet.size()));
                 }
             }
         }
