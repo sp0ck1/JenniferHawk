@@ -18,6 +18,7 @@ public class JenDB {
     public static String password = Bot.configuration.getDatabase().get("password");
     private static String url = Bot.configuration.getDatabase().get("url");
     private static Logger LOG = LoggerFactory.getLogger(JenDB.class);
+    private static String driverForName = "oracle.jdbc.driver.OracleDriver";
 
     /**
      * Begin standard user command queries
@@ -25,14 +26,15 @@ public class JenDB {
 
     public static String queryHer(String whereClause) { // Retrieve the text of a command
         String result = "";
+        System.out.println(username+" : " + password);
 
             try {
                 Connection con = DriverManager.getConnection(url, username, password);
-                Class.forName("com.mysql.jdbc.Driver");
-                PreparedStatement stmt = con.prepareStatement("select * from JenniferHawk.COMMANDS WHERE COMMAND = ? ");
+                Class.forName(driverForName);
+                PreparedStatement stmt = con.prepareStatement("select * from ADMIN.COMMANDS WHERE COMMAND = ? ");
                 stmt.setString(1,whereClause);
                 ResultSet rs = stmt.executeQuery();
-//                ResultSet testSet = stmt.executeQuery("select * from JenniferHawk.COMMANDS WHERE COMMAND = '" + "dab"+"'");stmt.executeUpdate("DROP/**/TABLE/**/JenniferHawk.TAPIOCA");stmt.executeQuery("SELECT * from JenniferHawk.COMMANDS WHERE COMMAND = '"+ "cya" + "'");
+//                ResultSet testSet = stmt.executeQuery("select * from ADMIN.COMMANDS WHERE COMMAND = '" + "dab"+"'");stmt.executeUpdate("DROP/**/TABLE/**/ADMIN.TAPIOCA");stmt.executeQuery("SELECT * from ADMIN.COMMANDS WHERE COMMAND = '"+ "cya" + "'");
                 while (rs.next())
                     result = rs.getString(2);
                  con.close();
@@ -58,12 +60,13 @@ public class JenDB {
         try {
 
             Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName("com.mysql.jdbc.Driver");
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO JenniferHawk.COMMANDS(COMMAND, TEXT, AUTHOR) VALUES (?,?,?)");
+            Class.forName(driverForName);
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO COMMANDS (COMMAND, TEXT, AUTHOR) VALUES (?,?,?)");
 
 
             System.out.println("Attempting to add command: " + Text);
-            stmt.execute("SET NAMES utf8mb4"); // This is the only way the database will accept UNICODE characters like 
+
+            //stmt.execute("SET NAMES utf8mb4"); // This is the only way the database will accept UNICODE characters like
             stmt.setString(1,Command);
             stmt.setString(2,Text);
             stmt.setString(3,Author);
@@ -85,8 +88,8 @@ public class JenDB {
                 try {
 
                     Connection con = DriverManager.getConnection(url, username, password);
-                    Class.forName("com.mysql.jdbc.Driver");
-                    PreparedStatement stmt = con.prepareStatement("UPDATE JenniferHawk.COMMANDS SET TEXT = ? WHERE COMMAND = ? ");
+                    Class.forName(driverForName);
+                    PreparedStatement stmt = con.prepareStatement("UPDATE ADMIN.COMMANDS SET TEXT = ? WHERE COMMAND = ? ");
                     stmt.setString(1,Text);
                     stmt.setString(2,Command);
                     stmt.execute("SET NAMES utf8mb4");
@@ -113,9 +116,9 @@ public class JenDB {
         try {
 
             Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(driverForName);
             Statement stmt = con.createStatement();
-            stmt.executeUpdate("DELETE FROM JenniferHawk.COMMANDS WHERE COMMAND = '" + whereClause + "'");
+            stmt.executeUpdate("DELETE FROM ADMIN.COMMANDS WHERE COMMAND = '" + whereClause + "'");
             con.close();
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println("There was an error when deleting.");
@@ -134,8 +137,8 @@ public class JenDB {
         try {
 
             Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName("com.mysql.jdbc.Driver");
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO JenniferHawk.puns(PUN, TEXT, AUTHOR) VALUES (?,?,?)");
+            Class.forName(driverForName);
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO ADMIN.puns(PUN, TEXT, AUTHOR) VALUES (?,?,?)");
 
 
             System.out.println("Attempting to add pun: " + text);
@@ -161,8 +164,8 @@ public class JenDB {
                 try {
 
                     Connection con = DriverManager.getConnection(url, username, password);
-                    Class.forName("com.mysql.jdbc.Driver");
-                    PreparedStatement stmt = con.prepareStatement("UPDATE JenniferHawk.puns SET TEXT = ? WHERE PUN = ? ");
+                    Class.forName(driverForName);
+                    PreparedStatement stmt = con.prepareStatement("UPDATE ADMIN.puns SET TEXT = ? WHERE PUN = ? ");
                     stmt.setString(1,text);
                     stmt.setString(2,pun);
                     stmt.execute("SET NAMES utf8mb4");
@@ -193,10 +196,10 @@ public class JenDB {
         try {
 
             Connection con = DriverManager.getConnection(url, username,password);
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(driverForName);
             Statement stmt = con.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery("SELECT TEXT FROM JenniferHawk.puns");
+            rs = stmt.executeQuery("SELECT TEXT FROM ADMIN.puns");
             while (rs.next()) {
                 punList.add(rs.getString(1));
             }
@@ -224,9 +227,9 @@ public class JenDB {
         try {
 
             Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(driverForName);
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from JenniferHawk.forbidden WHERE COMMAND = '" + whereClause + "'");
+            ResultSet rs = stmt.executeQuery("select * from ADMIN.forbidden WHERE COMMAND = '" + whereClause + "'");
             while (rs.next())
                 result = rs.getString(2);
             con.close();
@@ -257,10 +260,10 @@ public class JenDB {
         try {
 
             Connection con = DriverManager.getConnection(url, username,password);
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(driverForName);
             Statement stmt = con.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery("SELECT TEXT FROM JenniferHawk.timed_commands WHERE TIMER = 1");
+            rs = stmt.executeQuery("SELECT TEXT FROM ADMIN.timed_commands WHERE TIMER = 1");
             while (rs.next()) {
                 commandList.add(rs.getString(1));
             }
@@ -288,9 +291,9 @@ public class JenDB {
         try {
             System.out.println("PokeFact sent.");
                  Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(driverForName);
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select JenniferHawk.pokefacts.FACT from JenniferHawk.pokefacts WHERE FactID = " + FactID);
+            ResultSet rs = stmt.executeQuery("select ADMIN.pokefacts.FACT from ADMIN.pokefacts WHERE FactID = " + FactID);
             while (rs.next()) {
                 pokeFact = rs.getString("FACT");
 
@@ -329,19 +332,19 @@ public class JenDB {
         try {
             System.out.println("rolln64 command fired.");
             Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(driverForName);
             Statement stmt = con.createStatement();
             List<Integer> idList = new ArrayList<>();
-            ResultSet resultSet = stmt.executeQuery("SELECT GameID as 'gameid' FROM JenniferHawk.n64_remaining");
+            ResultSet resultSet = stmt.executeQuery("SELECT GAMEID FROM N64_REMAINING");
 
             while (resultSet.next()) { idList.add(resultSet.getInt(1)); }
 
                 int GameID = idList.get(random.nextInt(idList.size())); // Get one of the entries in the list of GameIDs
 
-                ResultSet rs = stmt.executeQuery("SELECT * FROM JenniferHawk.n64_remaining WHERE GameID = " + GameID);
+                ResultSet rs = stmt.executeQuery("SELECT * FROM N64_REMAINING WHERE GAMEID = " + GameID);
 
                 while (rs.next()) {
-                    n64Game.setId(rs.getString("GameID"))
+                    n64Game.setId(rs.getString("GAMEID"))
                     .setTitle(rs.getString("GAME"))
                     .setGenre(rs.getString("GENRE"));
                 }
@@ -368,9 +371,9 @@ public class JenDB {
         N64Game n64Game = new N64Game();
         try {
             Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(driverForName);
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from JenniferHawk.n64_games WHERE GameID = " + GameID);
+            ResultSet rs = stmt.executeQuery("select * from N64_GAMES WHERE GAMEID = " + GameID);
             while (rs.next()) {
                 n64Game.setTitle(rs.getString("GAME"))
                 .setYear(Integer.parseInt(rs.getString("YEAR")))
@@ -401,9 +404,9 @@ public class JenDB {
         N64Game n64Game = new N64Game();
         try {
             Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(driverForName);
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select GAME from JenniferHawk.n64_games WHERE GameID = " + GameID);
+            ResultSet rs = stmt.executeQuery("select GAME from N64_GAMES WHERE GAMEID = " + GameID);
             while (rs.next()) {
                 n64Game.setTitle(rs.getString("GAME"));
             }
@@ -430,9 +433,9 @@ public class JenDB {
         try {
 
             Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(driverForName);
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from JenniferHawk.n64_current");
+            ResultSet rs = stmt.executeQuery("select * from N64_CURRENT");
             while (rs.next()) {
                 result[0] = rs.getString("GameID");
                 result[1] = rs.getString("GAME");
@@ -460,8 +463,8 @@ public class JenDB {
         try {
 
             Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName("com.mysql.jdbc.Driver");
-            PreparedStatement stmt = con.prepareStatement("UPDATE JenniferHawk.n64_current SET "+Column+" = ?");
+            Class.forName(driverForName);
+            PreparedStatement stmt = con.prepareStatement("UPDATE N64_CURRENT SET "+Column+" = ?");
             stmt.setString(1,Runner);
 
             System.out.println(Column + " place: "+ Runner);
@@ -490,22 +493,22 @@ public class JenDB {
         try {
 
             Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(driverForName);
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT GAME, YEAR FROM JenniferHawk.n64_games WHERE GameID = " + GameID);
+            ResultSet rs = stmt.executeQuery("SELECT GAME, YEAR FROM N64_GAMES WHERE GAMEID = " + GameID);
             while (rs.next()) {
                 game = rs.getString("GAME");
                 year = rs.getString("YEAR");
             }
             System.out.println("Game is "+game+". Year is: "+year+", GameID is: "+GameID);
-            PreparedStatement ps = con.prepareStatement("INSERT INTO JenniferHawk.n64_current(GameID,GAME) VALUES(?,?)");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO N64_CURRENT(GAMEID,GAME) VALUES(?,?)");
             ps.setInt(1,GameID);
             ps.setString(2,game);
             ps.executeUpdate();
 
             System.out.println("New game is: " + game);
 
-            ResultSet rc = stmt.executeQuery("SELECT COUNT(GAME)+1 AS C FROM JenniferHawk.n64_results");
+            ResultSet rc = stmt.executeQuery("SELECT COUNT(GAME)+1 AS C FROM N64_RESULTS");
             while (rc.next()) {
                 count = rc.getInt("C");
             }
@@ -534,9 +537,9 @@ public class JenDB {
 
 
         try { Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(driverForName);
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * from JenniferHawk.n64_current");
+            ResultSet rs = stmt.executeQuery("SELECT * from N64_CURRENT");
             while (rs.next()) {
                 GameID[0] = rs.getInt("GameID");
                 result[0] = rs.getString(2);
@@ -552,7 +555,7 @@ public class JenDB {
 
             if (result[6] == null) {result[6] = "";}
             PreparedStatement preparedStatement = con.prepareStatement(
-                    "INSERT INTO JenniferHawk.n64_results(GameID, GAME, FIRST, SECOND, THIRD, FOURTH, FIFTH, URL) VALUES( ?,?,?,?,?,?,?,?)");
+                    "INSERT INTO N64_RESULTS(GAMEID, GAME, FIRST, SECOND, THIRD, FOURTH, FIFTH, URL) VALUES( ?,?,?,?,?,?,?,?)");
 
             preparedStatement.setInt(1,GameID[0]);
             preparedStatement.setString(2,result[0]);
@@ -565,7 +568,7 @@ public class JenDB {
 
             preparedStatement.executeUpdate();
 
-            int deleted = stmt.executeUpdate("DELETE FROM JenniferHawk.n64_current WHERE GameID = " + GameID[0]);
+            int deleted = stmt.executeUpdate("DELETE FROM N64_CURRENT WHERE GAMEID = " + GameID[0]);
                     con.close();
                     if ( deleted > 0 ) { System.out.println(deleted + " records deleted.");} else {System.out.println("Nothing was deleted!");}
 
@@ -593,9 +596,9 @@ public class JenDB {
         try {
 
             Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(driverForName);
             Statement stmt = con.createStatement();
-            int deleted = stmt.executeUpdate("DELETE FROM JenniferHawk.n64_current WHERE TRUE");
+            int deleted = stmt.executeUpdate("DELETE FROM N64_CURRENT WHERE TRUE");
             con.close();
             if ( deleted > 0 ) { LOG.info(deleted + " records deleted.");} else {LOG.info("Nothing was deleted!");}
         } catch(SQLException | ClassNotFoundException e){
@@ -618,12 +621,12 @@ public class JenDB {
         try {
 System.out.println("Lookup phrase: "+Lookup);
             Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(driverForName);
             Lookup = Lookup
                     .replace("!", "!!")
                     .replace("_", "!_")
                     .replace("[", "![");
-            PreparedStatement stmt = con.prepareStatement("select GameID, GAME from JenniferHawk.n64_games WHERE GAME LIKE ?");
+            PreparedStatement stmt = con.prepareStatement("select GAMEID, GAME from N64_GAMES WHERE UPPER(GAME) LIKE UPPER(?)");
             stmt.setString(1,"%"+Lookup+"%");
 
             ResultSet rs = stmt.executeQuery();
@@ -658,21 +661,21 @@ System.out.println("Lookup phrase: "+Lookup);
             try {
 
                        Connection con = DriverManager.getConnection(url, username, password);
-                Class.forName("com.mysql.jdbc.Driver");
+                Class.forName(driverForName);
                 Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("select GameID from JenniferHawk.n64_current");
+                ResultSet rs = stmt.executeQuery("select GameID from ADMIN.n64_current");
                 while (rs.next()) {
                     gameID = rs.getInt("GameID");
                     System.out.println(gameID);
                 }
-                ResultSet rt = stmt.executeQuery("SELECT GAME, YEAR FROM JenniferHawk.n64_games WHERE GameID = " + gameID);
+                ResultSet rt = stmt.executeQuery("SELECT GAME, YEAR FROM ADMIN.n64_games WHERE GameID = " + gameID);
                 while (rt.next()) {
                     game = rt.getString("GAME");
                     System.out.println(game);
                     year = rt.getString("YEAR");
                     System.out.println(year);
                 }
-                ResultSet rc = stmt.executeQuery("SELECT COUNT(GAME)+1 AS C FROM JenniferHawk.n64_results");
+                ResultSet rc = stmt.executeQuery("SELECT COUNT(GAME)+1 AS C FROM ADMIN.n64_results");
                 while (rc.next()) {
                     count = rc.getInt("C");
                 }
