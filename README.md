@@ -2,8 +2,6 @@
 
 Project Information:
 
-[![Build Status](https://travis-ci.org/twitch4j/twitch4j-chatbot.svg?branch=master)](https://travis-ci.org/twitch4j/twitch4j-chatbot)
-
 Built with [Twitch4J](https://github.com/twitch4j/twitch4j):
 
 [![Discord](https://img.shields.io/badge/Join-Twitch4J-7289DA.svg?style=flat-square)](https://discord.gg/FQ5vgW3)
