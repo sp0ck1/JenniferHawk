@@ -19,6 +19,7 @@ import com.jenniferhawk.twitch.WriteChannelChatToConsole;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import oracle.jdbc.driver.OracleConnection;
 import org.pircbotx.exception.IrcException;
 
 import javax.security.auth.login.LoginException;
@@ -26,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collections;
+import java.util.Properties;
 
 public class Bot {
 
@@ -64,8 +66,12 @@ public class Bot {
         URL urlLoader = Bot.class.getProtectionDomain().getCodeSource().getLocation();
         String localDir = localPackage.getPath();
         String loaderDir = urlLoader.getPath();
-        System.out.printf("loaderDir = %s\n localDir = %s\n", loaderDir, localDir);
-
+        System.out.printf("loaderDir = %s\nlocalDir = %s\n", loaderDir, localDir);
+        Properties connectionProperties = new Properties();
+        connectionProperties.setProperty(
+                OracleConnection.CONNECTION_PROPERTY_TNS_ADMIN, "resources/Wallet_JenniferHawk");
+        connectionProperties.setProperty(
+                OracleConnection.CONNECTION_PROPERTY_FAN_ENABLED,"false");
 
         // Load Configuration
         loadConfiguration();
@@ -115,6 +121,8 @@ public class Bot {
      */
 
     public void registerFeatures() {
+
+
             // Register Event-based features
           new WriteChannelChatToConsole(twitchClient.getEventManager());
           new ChannelStateEventsHandler(twitchClient.getEventManager());

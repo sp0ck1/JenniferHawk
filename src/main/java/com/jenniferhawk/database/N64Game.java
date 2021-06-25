@@ -10,6 +10,19 @@ public class N64Game {
     private String id;
     private String developer;
     private String region;
+    private String winner;
+
+    public String getWinner() {
+        return winner;
+    }
+
+    public void setWinner(String winner) {
+        this.winner = winner;
+    }
+
+
+
+
 
     public String getRegion() {return region;}
 

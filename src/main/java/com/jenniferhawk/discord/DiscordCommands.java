@@ -21,7 +21,7 @@ public class DiscordCommands extends ListenerAdapter {
         System.out.println(event.getChannel().getIdLong());
         //Initializing a variable with segments[1] or higher causes a fatal error if message is shorter than two words.
         // String chatter = String.format("%s", event.getAuthor().getName()); //Name of chatter
-        String chatter = String.format("%s", event.getAuthor().getName()) + "_7k"; // temporary 7k version
+        String chatter = String.format("%s", event.getAuthor().getName()) + "_7k"; // temporary 7k version. !!! IF THIS IS CHANGED, REMOVE one set of \\ from each preceding \u005f in jenQuips() !!!
         String original = event.getMessage().getContentDisplay(); //Original message, preserving caps
 
         MessageChannel channel = event.getChannel();
@@ -80,7 +80,7 @@ public class DiscordCommands extends ListenerAdapter {
         quipSet.add("Somehow, this one slipped by Miyamoto.");
         quipSet.add("Fancy! Or terrible, depending upon the circumstances.");
         quipSet.add("Can Flant farm us on this one?");
-        quipSet.add("¯\\_(ツ)_/¯");
+        quipSet.add("\u00af\\\\\\\u005f\u0028\u30c4\u0029\\\u005f\u002f\u00af");
         quipSet.add("It's no Pilotwings but, I guess so.");
 
 

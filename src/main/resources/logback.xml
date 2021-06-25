@@ -1,15 +1,35 @@
 <configuration>
 
+    <!-- Insert the current time formatted as "yyyy-MMdd'T'HHmmss" under
+           the key "bySecond" into the logger context. This value will be
+           available to all subsequent configuration elements. -->
+    <timestamp key="byDay" datePattern="yyyy-MM-dd-'LocalTime'HH.mm.ss"/>
 
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <target>System.out</target>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>INFO</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+        </filter>
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} %msg%n</pattern>
         </encoder>
     </appender>
 
-    <root level="INFO">
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>jHawk-${byDay}.txt</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="DEBUG">
         <appender-ref ref="console"/>
+        <appender-ref ref="FILE"/>
     </root>
+
+
 
 </configuration>

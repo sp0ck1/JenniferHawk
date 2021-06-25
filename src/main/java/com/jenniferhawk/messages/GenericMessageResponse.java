@@ -12,6 +12,8 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.Set;
 
 
@@ -187,6 +189,18 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                     JenDB.addToHer(secondWord, phrase, user);
                     message = "I set the command...probably TehePelo";
                     break;
+                case "addunit":
+                    if (permissionType.contains(CommandPermission.MODERATOR)) {
+                        JenDB.addUEBSUnit(secondWord);
+                        message = "I added the unit to the unit list, probably!";
+                    }
+                    break;
+                case "getbattle":
+                    System.out.println("heard getBattle command");
+                    String team1 = JenDB.getBattleConfig();
+                    String team2 = JenDB.getBattleConfig();
+                    message = "How about " + team1 + " fights " + team2 + "?";
+                    break;
                 case "title":
                     if (permissionType.contains(CommandPermission.MODERATOR)) {
                         twitchClient.getKraken().updateTitle(OAUTH, BROADCASTER_ID,newTitle).execute();
@@ -238,6 +252,7 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                 case "truckmoney":
                     message = "Sp0ck1 has made $" + truckMoney + " trucking today.";
                     break;
+
                 case "rolln64":
                     N64Game n64Game = JenDB.rolln64();
                     if (messageType == MessageType.DISCORD) {
@@ -248,6 +263,37 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                                 ". For more info, use !gameid " +
                                 n64Game.getId();
                     }
+                    break;
+                case "runback":
+                    //TODO: assign positive and negative adjectives, so that the patterns
+                    // "[negative] one, but" and "[positive] one, and" can occur
+
+                    //TODO: Maybe if discrepency between the two numbers is large enough,
+                    // always generate a negative response, or maybe have neutral responses also
+                    String[] adjectives =
+                            {"long","wild","frosty","ridiculous","spicy","juicy",
+                            "kind of fun","stupid","short","hot","clammy","soft","hard",
+                            "chaotic","slow","fast","cursed","foggy","stinky","slippery",
+                            "bouncy","groan-inducing","hellish","silly","sticky",};
+                    String[] finishers =
+                            {"in my opinion","I'd say","no doubt about it","in my experience",
+                            "that's what I was told","but Hydromedia might like it","but it was no San Francisco Rush: Extreme Racing (unless it was)",
+                            "better than Kingdom Hearts at least","maybe good for a rainy day",
+                            "and probably better than SM64 Chaos Edition", "and otherwise we might end up playing " +
+                            JenDB.rolln64().getTitle()};
+                    Random random = new Random();
+                    int rating = random.nextInt(65);
+                    int outOf = rating + random.nextInt(65-rating);
+                    N64Game runbackGame = JenDB.rollRunback();
+                    if (messageType == MessageType.DISCORD) {
+                        user = user+"_7k";
+                    }
+                    message = user + ", would you suggest doing a runback of " +
+                            runbackGame.getTitle() + "? " +
+                            runbackGame.getWinner() + " won this race originally. " +
+                            "Personally, I'd give it a " + rating +
+                            " out of " + outOf + ". It was a " + adjectives[random.nextInt(adjectives.length)] +
+                            " one, " + finishers[random.nextInt(finishers.length)] + ".";
                     break;
                 case "gameid":
                     int ID = parseInt(secondWord);

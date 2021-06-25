@@ -27,8 +27,14 @@ public class ChannelGoLiveCheck {
 
     public ChannelGoLiveCheck() {
         Runnable goLiveRunnable = () -> {
-            goLiveCheck();
+            try {
+                goLiveCheck();
+            } catch (Exception e) {
+                e.printStackTrace();
+                LOG.error("ChannelGoLiveCheck encountered an error checking if the stream was live. Printed result.");
+            }
         };
+
         // Check every minute if streams in the list are online/offline
         goLiveScheduler.schedule(goLiveRunnable,1,2, TimeUnit.MINUTES);
     }

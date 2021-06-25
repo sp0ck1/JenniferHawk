@@ -28,8 +28,14 @@ dependencies {
     // Twitch4J
    // compile "com.github.twitch4j:twitch4j:1.0.0"
 
+//    // Oracle JDBC
+//    compile 'com.oracle.database.jdbc:ojdbc10:19.3.0.0'
+
+    // https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc8
 
 
+
+    compile files('D:\\JenniferHawk-Master\\src\\main\\resources\\ojdbc8.jar')
     // Local fork
   // implementation project(":twitch4j")
 
@@ -38,7 +44,7 @@ dependencies {
     // YAML Parser
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.0"
 
-    compile 'com.github.twitch4j:twitch4j:1.1.3'
+    compile 'com.github.twitch4j:twitch4j:1.5.0'
     // Logging
     compile "ch.qos.logback:logback-classic:1.1.8"
     compile "com.jcabi:jcabi-log:0.17.2"
@@ -50,6 +56,7 @@ dependencies {
     //Discord4J (removed for now)
     //implementation 'com.discord4j:discord4j-core:3.0.12'
 
+    
     //JDA
     compile group: 'net.dv8tion', name: 'JDA', version: '4.1.1_101'
 

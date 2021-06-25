@@ -2,7 +2,7 @@ package com.jenniferhawk.howlongtobeat;
 
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.springframework.http.MediaType;
-import io.micrometer.core.annotation.Timed;
+//import io.micrometer.core.annotation.Timed;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -21,8 +21,7 @@ public class HLTBServiceDefaultImpl implements HLTBService {
   private static final String HLTB_DETAIL_URL = "https://howlongtobeat.com/game.php";
 
   @Override
-  @Timed
-  public HLTBSearchResultPage search(String gameName) {
+   public HLTBSearchResultPage search(String gameName) {
     HttpResponse<String> response;
     try {
       response = Unirest.post(HLTB_SEARCH_URL).header("accept", "*/*")

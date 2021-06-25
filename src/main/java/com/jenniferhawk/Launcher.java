@@ -23,7 +23,7 @@ public class Launcher {
         bot.start();
 
         
-        Thread thread = new Thread( () -> {
+        Thread srlThread = new Thread( () -> {
 
 
             try {
@@ -32,7 +32,8 @@ public class Launcher {
                 e.printStackTrace();
             }
         });
-        thread.start();
+        srlThread.setName("SRL Thread");
+        srlThread.start();
 
 
     }

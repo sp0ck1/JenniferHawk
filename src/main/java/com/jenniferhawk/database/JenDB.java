@@ -1,8 +1,8 @@
 package com.jenniferhawk.database;
 
-
-
 import com.jenniferhawk.Bot;
+import oracle.jdbc.driver.OracleConnection;
+import oracle.jdbc.driver.OracleDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Random;
 
 
@@ -26,11 +27,12 @@ public class JenDB {
 
     public static String queryHer(String whereClause) { // Retrieve the text of a command
         String result = "";
-        System.out.println(username+" : " + password);
 
         try {
+            DriverManager.registerDriver(new OracleDriver());
             Connection con = DriverManager.getConnection(url, username, password);
             Class.forName(driverForName);
+
             PreparedStatement stmt = con.prepareStatement("select * from ADMIN.COMMANDS WHERE COMMAND = ? ");
             stmt.setString(1,whereClause);
             ResultSet rs = stmt.executeQuery();
@@ -83,22 +85,28 @@ public class JenDB {
 
             System.err.println("Message: " + e.getMessage());
 
-            if ((((SQLException) e).getErrorCode()) == 1062) { // If command cannot be inserted because it already exists, update the record
+            if (e.getMessage().contains("ORA-00001: unique constraint (ADMIN.COMMANDS_PK) violated")) { // If command cannot be inserted because it already exists, update the record
                 System.err.println("That one already exists. Attempting an update...");
                 try {
 
                     Connection con = DriverManager.getConnection(url, username, password);
                     Class.forName(driverForName);
                     PreparedStatement stmt = con.prepareStatement("UPDATE ADMIN.COMMANDS SET TEXT = ? WHERE COMMAND = ? ");
+
                     stmt.setString(1,Text);
+
                     stmt.setString(2,Command);
-                    stmt.execute("SET NAMES utf8mb4");
+                    // This was necessary in a MySQL database in order to display emoji characters.
+                    // Retaining as comment in case of later database migration.
+                    // stmt.execute("SET NAMES utf8mb4");
+
                     stmt.executeUpdate();
+
                     con.close();
                 } catch (SQLException | ClassNotFoundException f) {
                     System.out.println("There was still an error.");
-                    e.printStackTrace(System.err);
-                    assert f instanceof SQLException;
+                    // e.printStackTrace(System.err);
+
                     System.err.println("SQLState: " +
                             ((SQLException) f).getSQLState());
 
@@ -365,6 +373,51 @@ public class JenDB {
         }
         return n64Game;
     }
+
+    public static N64Game rollRunback() { // Return a random N64 game from the n64_results table
+
+        Random random = new Random();
+        N64Game n64Game = new N64Game();
+        try {
+            //TODO: Change to LOGGER
+            System.out.println("rolln64 command fired.");
+            Connection con = DriverManager.getConnection(url, username, password);
+            Class.forName(driverForName);
+            Statement stmt = con.createStatement();
+            List<Integer> idList = new ArrayList<>();
+            ResultSet resultSet = stmt.executeQuery("SELECT GAMEID FROM N64_RESULTS");
+
+            while (resultSet.next()) { idList.add(resultSet.getInt(1)); }
+
+            int GameID = idList.get(random.nextInt(idList.size())); // Get one of the entries in the list of GameIDs
+
+            ResultSet rs = stmt.executeQuery("SELECT * FROM N64_RESULTS WHERE GAMEID = " + GameID);
+
+            while (rs.next()) {
+                n64Game.setId(rs.getString("GAMEID"))
+                        .setTitle(rs.getString("GAME"))
+                        .setWinner(rs.getString("FIRST"));
+                        //.setGenre(rs.getString("GENRE"));
+            }
+            con.close();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            //TODO: Change to LOGGER
+            System.out.println("There was an exception, chief.");
+            e.printStackTrace(System.err);
+            System.err.println("SQLState: " +
+                    ((SQLException) e).getSQLState());
+
+            System.err.println("Error Code: " +
+                    ((SQLException) e).getErrorCode());
+
+            System.err.println("Message: " + e.getMessage());
+
+
+        }
+        return n64Game;
+    }
+
 
     public static N64Game getGameInfo(Integer GameID) {
 
@@ -694,6 +747,73 @@ public class JenDB {
 
         }
 
+    }
+
+    /*
+     ************************************
+     * Ultimate Epic Battle Simulator   *
+     ************************************
+     */
+
+    /*
+    Returns a random number of a random unit, in the form "n {unit}s"
+     */
+    public static String getBattleConfig() {
+            String result = "";
+            Random random = new Random();
+        System.out.println("getBattleConfig?");
+            try {
+                System.out.println("Trying to get name?");
+                DriverManager.registerDriver(new OracleDriver());
+                Connection con = DriverManager.getConnection(url, username, password);
+                Class.forName(driverForName);
+
+                PreparedStatement stmt = con.prepareStatement("SELECT UNIT FROM ( SELECT UNIT FROM ADMIN.UEBS_UNITS ORDER BY dbms_random.value ) WHERE rownum = 1");
+
+                ResultSet rs = stmt.executeQuery();
+                System.out.println("Still trying to get name?");
+
+                while (rs.next())
+                    result = rs.getString(1);
+                con.close();
+            } catch (SQLException | ClassNotFoundException e) {
+                System.out.println("There was an exception retrieving the unit from UEBS_UNITS.");
+                e.printStackTrace(System.err);
+                System.err.println("SQLState: " +
+                        ((SQLException) e).getSQLState());
+
+                System.err.println("Error Code: " +
+                        ((SQLException) e).getErrorCode());
+
+                System.err.println("Message: " + e.getMessage());
+
+
+            }
+            return random.nextInt(15000) + " " + result + "s";
+        }
+
+
+
+    public static void addUEBSUnit(String unit) {
+        try {
+            System.out.println("Trying to add unit " + unit);
+            Connection con = DriverManager.getConnection(url, username, password);
+            Class.forName(driverForName);
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO UEBS_UNITS (UNIT) VALUES (?)");
+            stmt.setString(1,unit);
+            stmt.executeUpdate();
+            con.close();
+        } catch (SQLException | ClassNotFoundException e) {
+
+            System.err.println("SQLState: " +
+                    ((SQLException) e).getSQLState());
+
+            System.err.println("Error Code: " +
+                    ((SQLException) e).getErrorCode());
+
+            System.err.println("Message: " + e.getMessage());
+
+        }
     }
 }
 
