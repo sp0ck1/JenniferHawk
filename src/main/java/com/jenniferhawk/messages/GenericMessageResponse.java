@@ -1,21 +1,20 @@
 package com.jenniferhawk.messages;
 
 import com.github.twitch4j.common.enums.CommandPermission;
-
 import com.jenniferhawk.database.JenDB;
 import com.jenniferhawk.database.N64Game;
-import com.jenniferhawk.twitch.ChannelGoLiveCheck;
 import com.jenniferhawk.howlongtobeat.HLTBEntry;
 import com.jenniferhawk.irc.SRLRaceListener;
+import com.jenniferhawk.speedrunslive.SRLComment;
+import com.jenniferhawk.twitch.ChannelGoLiveCheck;
 import com.jenniferhawk.utils.HLTBLookup;
 import net.dv8tion.jda.api.entities.MessageChannel;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
-
 
 import static com.jenniferhawk.Bot.*;
 import static com.jenniferhawk.Launcher.truckMoney;
@@ -202,7 +201,7 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                     message = "How about " + team1 + " fights " + team2 + "?";
                     break;
                 case "title":
-                    if (permissionType.contains(CommandPermission.MODERATOR)) {
+                    if (permissionType.contains(CommandPermission.MODERATOR) && sourceChannel.equals("sp0ck1")) {
                         twitchClient.getKraken().updateTitle(OAUTH, BROADCASTER_ID,newTitle).execute();
                         respond("Updated channel title to \"" + newTitle+"\"");
                     }
@@ -288,11 +287,40 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                     if (messageType == MessageType.DISCORD) {
                         user = user+"_7k";
                     }
+                    String commenter;
+                    String comment;
+                    String randomCommentPhrase = "";
+                    SRLComment srlComment;
+                    try {
+                        srlComment = runbackGame.getRandomComment();
+                        if (srlComment != null) {
+
+                            commenter = srlComment.getCommenter();
+                            comment = srlComment.getCommentPhrase();
+                            String finalCommentChar = String.valueOf(comment.charAt(comment.length() - 1));
+                            System.out.println("finalCommentChar is " + finalCommentChar);
+                            // If comment does not end in any punctuation, put a period on it.
+                            if ((finalCommentChar.equals(".")) ||
+                                    (finalCommentChar.equals("?")) ||
+                                    (finalCommentChar.equals("!"))) {
+                                // do nothing
+                            } else {
+                                comment = comment + ".";
+                            }
+                            randomCommentPhrase = commenter + " had this to say about the game: \"" + comment + "\" ";
+                        }
+                    }
+                     catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
                     message = user + ", would you suggest doing a runback of " +
                             runbackGame.getTitle() + "? " +
                             runbackGame.getWinner() + " won this race originally. " +
                             "Personally, I'd give it a " + rating +
-                            " out of " + outOf + ". It was a " + adjectives[random.nextInt(adjectives.length)] +
+                            " out of " + outOf + ". " + randomCommentPhrase +
+                            "It was a " + adjectives[random.nextInt(adjectives.length)] +
                             " one, " + finishers[random.nextInt(finishers.length)] + ".";
                     break;
                 case "gameid":

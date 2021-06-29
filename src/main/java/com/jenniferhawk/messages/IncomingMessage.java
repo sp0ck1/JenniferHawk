@@ -3,12 +3,14 @@ package com.jenniferhawk.messages;
 import com.github.twitch4j.chat.events.AbstractChannelEvent;
 import net.dv8tion.jda.internal.entities.AbstractMessage;
 
+import java.io.IOException;
+
 public interface IncomingMessage {
 
     /**
      * Interprets a message in order to determine the appropriate actions to be taken in response
      */
-    void receiveMessage();
+    void receiveMessage() throws IOException;
 
     /**
      * Returns the name of the user who sent the message

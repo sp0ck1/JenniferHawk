@@ -354,7 +354,8 @@ public class JenDB {
             while (rs.next()) {
                 n64Game.setId(rs.getString("GAMEID"))
                         .setTitle(rs.getString("GAME"))
-                        .setGenre(rs.getString("GENRE"));
+                        .setGenre(rs.getString("GENRE"))
+                        .setSrlURL("URL");
             }
             con.close();
 
@@ -378,9 +379,10 @@ public class JenDB {
 
         Random random = new Random();
         N64Game n64Game = new N64Game();
+        n64Game.setCompleted(true);
         try {
             //TODO: Change to LOGGER
-            System.out.println("rolln64 command fired.");
+            System.out.println("rollRunback command fired.");
             Connection con = DriverManager.getConnection(url, username, password);
             Class.forName(driverForName);
             Statement stmt = con.createStatement();
@@ -396,7 +398,8 @@ public class JenDB {
             while (rs.next()) {
                 n64Game.setId(rs.getString("GAMEID"))
                         .setTitle(rs.getString("GAME"))
-                        .setWinner(rs.getString("FIRST"));
+                        .setWinner(rs.getString("FIRST"))
+                        .setSrlURL(rs.getString("URL"));
                         //.setGenre(rs.getString("GENRE"));
             }
             con.close();

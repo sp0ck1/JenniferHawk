@@ -2,6 +2,8 @@ package com.jenniferhawk.messages;
 
 import com.github.twitch4j.common.enums.CommandPermission;
 import net.dv8tion.jda.api.entities.MessageChannel;
+
+import java.io.IOException;
 import java.util.Set;
 
 

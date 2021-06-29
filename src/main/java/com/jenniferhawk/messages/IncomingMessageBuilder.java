@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -51,7 +52,11 @@ public class IncomingMessageBuilder extends ListenerAdapter {
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
         if (!event.getAuthor().getName().toLowerCase().equals("jenniferhawk")) { // If Jennifer didn't send the message
-            parseMessageEvent(event);
+            try {
+                parseMessageEvent(event);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         List<Emote> emotes = event.getMessage().getEmotes();
@@ -101,7 +106,7 @@ public class IncomingMessageBuilder extends ListenerAdapter {
     }
 
 
-    public void parseMessageEvent(MessageReceivedEvent event){
+    public void parseMessageEvent(MessageReceivedEvent event) throws IOException {
         message = event.getMessage().getContentDisplay();
         splitMessage = message.split(" ",3);
         commandPhrase = isCommand() ? splitMessage[0].replaceAll("!","").toLowerCase() : null;
