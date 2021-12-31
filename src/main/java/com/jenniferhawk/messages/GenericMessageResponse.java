@@ -1,11 +1,12 @@
 package com.jenniferhawk.messages;
 
 import com.github.twitch4j.common.enums.CommandPermission;
+import com.jenniferhawk.N64Mania.N64ManiaComment;
+import com.jenniferhawk.N64Mania.N64ManiaCommentRetrievalTool;
 import com.jenniferhawk.database.JenDB;
-import com.jenniferhawk.database.N64Game;
+import com.jenniferhawk.N64Mania.N64Game;
 import com.jenniferhawk.howlongtobeat.HLTBEntry;
 import com.jenniferhawk.irc.SRLRaceListener;
-import com.jenniferhawk.speedrunslive.SRLComment;
 import com.jenniferhawk.twitch.ChannelGoLiveCheck;
 import com.jenniferhawk.utils.HLTBLookup;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -34,7 +35,13 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
     MessageChannel discordChannel;
     Set<CommandPermission> permissionType;
     String newTitle;
+    String[] argumentList;
 
+    @Override
+    public GenericCommandResponse setArgumentList(String[] argumentList) {
+        this.argumentList = argumentList;
+        return this;
+    }
 
     @Override
     public GenericCommandResponse setNewCommandName(String newCommandName) {
@@ -253,75 +260,69 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                     break;
 
                 case "rolln64":
-                    N64Game n64Game = JenDB.rolln64();
                     if (messageType == MessageType.DISCORD) {
-                    message = "";
-                    } else {
-                        message = user + ", you are responsible for suggesting " +
+                        message = "";
+                        break;
+                    }
+                    N64Game n64Game;
+                    if (argumentList != null)
+                        n64Game = JenDB.rolln64(argumentList);
+                    else n64Game = JenDB.rolln64();
+
+                    message = user + ", you are responsible for suggesting " +
                                 n64Game.getTitle() +
                                 ". For more info, use !gameid " +
                                 n64Game.getId();
-                    }
+
                     break;
                 case "runback":
-                    //TODO: assign positive and negative adjectives, so that the patterns
-                    // "[negative] one, but" and "[positive] one, and" can occur
-
-                    //TODO: Maybe if discrepency between the two numbers is large enough,
-                    // always generate a negative response, or maybe have neutral responses also
-                    String[] adjectives =
-                            {"long","wild","frosty","ridiculous","spicy","juicy",
-                            "kind of fun","stupid","short","hot","clammy","soft","hard",
-                            "chaotic","slow","fast","cursed","foggy","stinky","slippery",
-                            "bouncy","groan-inducing","hellish","silly","sticky",};
-                    String[] finishers =
-                            {"in my opinion","I'd say","no doubt about it","in my experience",
-                            "that's what I was told","but Hydromedia might like it","but it was no San Francisco Rush: Extreme Racing (unless it was)",
-                            "better than Kingdom Hearts at least","maybe good for a rainy day",
-                            "and probably better than SM64 Chaos Edition", "and otherwise we might end up playing " +
-                            JenDB.rolln64().getTitle()};
-                    Random random = new Random();
-                    int rating = random.nextInt(65);
-                    int outOf = rating + random.nextInt(65-rating);
-                    N64Game runbackGame = JenDB.rollRunback();
-                    if (messageType == MessageType.DISCORD) {
-                        user = user+"_7k";
-                    }
                     String commenter;
                     String comment;
                     String randomCommentPhrase = "";
-                    SRLComment srlComment;
-                    try {
-                        srlComment = runbackGame.getRandomComment();
-                        if (srlComment != null) {
+                    N64ManiaComment n64ManiaComment = null;
+                    N64Game runbackGame = null;
 
-                            commenter = srlComment.getCommenter();
-                            comment = srlComment.getCommentPhrase();
-                            String finalCommentChar = String.valueOf(comment.charAt(comment.length() - 1));
-                            System.out.println("finalCommentChar is " + finalCommentChar);
-                            // If comment does not end in any punctuation, put a period on it.
-                            if ((finalCommentChar.equals(".")) ||
-                                    (finalCommentChar.equals("?")) ||
-                                    (finalCommentChar.equals("!"))) {
-                                // do nothing
-                            } else {
-                                comment = comment + ".";
-                            }
-                            randomCommentPhrase = commenter + " had this to say about the game: \"" + comment + "\" ";
-                        }
-                    }
-                     catch (IOException e) {
-                        e.printStackTrace();
+                    if (messageType == MessageType.DISCORD) {
+                        user = user+"_7k";
                     }
 
+                    int counter = 1;
+                    boolean tryagain = true;
 
+                    // If a game has no comments, or if SRL or Racetime are being weird, try again until you get a race that has comments.
+                    while (tryagain) {
+                        System.out.println("Attempt number " + counter + " to draw a game with comments.");
+                        runbackGame = JenDB.rollRunback();
+                        N64ManiaCommentRetrievalTool commentRetrievalTool = new N64ManiaCommentRetrievalTool();
+                        n64ManiaComment = commentRetrievalTool.getRandomComment(runbackGame);
+                        tryagain = (n64ManiaComment == null);
+                        counter++;
+                    }
+
+                    commenter = n64ManiaComment.getCommenter();
+                    comment = n64ManiaComment.getCommentPhrase();
+                    String finalCommentChar = String.valueOf(comment.charAt(comment.length() - 1));
+                    System.out.println("finalCommentChar is " + finalCommentChar);
+                    // If comment does not end in any punctuation, put a period on it.
+                    if ((finalCommentChar.equals(".")) ||
+                            (finalCommentChar.equals("?")) ||
+                            (finalCommentChar.equals("!"))) {
+                        // do nothing
+                    } else {
+                        comment = comment + ".";
+                    }
+                    randomCommentPhrase = commenter + " had this to say about the game: \"" + comment + "\" ";
+            
+
+                    //--
                     message = user + ", would you suggest doing a runback of " +
                             runbackGame.getTitle() + "? " +
                             runbackGame.getWinner() + " won this race originally. " +
-                            "Personally, I'd give it a " + rating +
-                            " out of " + outOf + ". " + randomCommentPhrase +
-                            "It was a " + adjectives[random.nextInt(adjectives.length)] +
-                            " one, " + finishers[random.nextInt(finishers.length)] + ".";
+//                            "Personally, I'd give it a " + rating +
+//                            " out of " + outOf + ". " +
+                              randomCommentPhrase;
+//                            "It was a " + adjectives[random.nextInt(adjectives.length)] +
+//                            " one, " + finishers[random.nextInt(finishers.length)] + ".";
                     break;
                 case "gameid":
                     int ID = parseInt(secondWord);

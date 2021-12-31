@@ -1,13 +1,12 @@
 package com.jenniferhawk.discord;
 
 import com.jenniferhawk.database.JenDB;
-import com.jenniferhawk.database.N64Game;
+import com.jenniferhawk.N64Mania.N64Game;
 import com.jenniferhawk.howlongtobeat.*;
 import com.jenniferhawk.utils.HLTBLookup;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.apache.commons.lang3.StringUtils;
 
 
 import java.util.*;
@@ -22,14 +21,18 @@ public class DiscordCommands extends ListenerAdapter {
         //Initializing a variable with segments[1] or higher causes a fatal error if message is shorter than two words.
         // String chatter = String.format("%s", event.getAuthor().getName()); //Name of chatter
         String chatter = String.format("%s", event.getAuthor().getName()) + "_7k"; // temporary 7k version. !!! IF THIS IS CHANGED, REMOVE one set of \\ from each preceding \u005f in jenQuips() !!!
-        String original = event.getMessage().getContentDisplay(); //Original message, preserving caps
-
+        String original = event.getMessage().getContentDisplay(); //Original message, preserving caps\
         MessageChannel channel = event.getChannel();
-        String[] word = StringUtils.split(original, "!, ");
-        User author = event.getAuthor();
 
         if (original.toLowerCase().startsWith("!rolln64")) {
-            N64Game n64Game = JenDB.rolln64();
+
+            String[] argumentList;
+            N64Game n64Game;
+            if (original.contains("--")) {
+                argumentList = original.split(" ");
+                n64Game = JenDB.rolln64(argumentList);
+            } else n64Game = JenDB.rolln64();
+
             String game = n64Game.getTitle();
 
             System.out.println("I looked for " + game + " on HLTB.");

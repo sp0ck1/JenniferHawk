@@ -4,7 +4,7 @@ import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 import com.github.twitch4j.common.enums.CommandPermission;
-import com.jenniferhawk.Bot;
+import com.jenniferhawk.N64Mania.N64ManiaMessageResponse;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -33,7 +33,7 @@ public class IncomingMessageBuilder extends ListenerAdapter {
     String[] splitMessage;
     Set<CommandPermission> permissionType;
     GenericCommandResponse response;
-
+    String[] argumentList;
     /**
      * Empty constructor used to instantiate class for <code>Bot#discordClient</code>
      */
@@ -102,6 +102,9 @@ public class IncomingMessageBuilder extends ListenerAdapter {
         if (messageType == IncomingMessage.MessageType.DISCORD) {
             response.setDiscordChannel(discordChannel);
         }
+        if (argumentList != null) {
+            response.setArgumentList(argumentList);
+        }
         response.receiveMessage();
     }
 
@@ -117,11 +120,21 @@ public class IncomingMessageBuilder extends ListenerAdapter {
         sourceChannel = event.getChannel().getName();
         discordChannel = event.getChannel();
         messageType = IncomingMessage.MessageType.DISCORD;
+
+        if (message.contains("--")) {
+            argumentList = message.split(" ");
+        } else argumentList = null;
+
         buildMessageResponse();
-        User author = event.getAuthor();
-        Guild guild = event.getGuild();
-        Member member = guild.getMember(author);
-        List<Role> roles = member.getRoles();
+
+        // Currently unused block to obtain a Discord user's roles. Probably doesn't fit in this class.
+        // ---------
+        // User author = event.getAuthor();
+        // Guild guild = event.getGuild();
+        // Member member = guild.getMember(author);
+        // List<Role> roles = member.getRoles();
+        // ---------
+
         //event.getMessage().getEmotes().forEach(emote -> System.out.println(emote.toString()));
     }
 
@@ -136,6 +149,12 @@ public class IncomingMessageBuilder extends ListenerAdapter {
         sourceChannel = event.getChannel().getName();
         permissionType = event.getPermissions();
         messageType = IncomingMessage.MessageType.TWITCH;
+        event.getTwitchChat().ban("","","");
+
+        if (message.contains("--")) {
+            argumentList = message.split(" "); // If this works, change MessageReceivedEvent as well
+
+        } else argumentList = null;
         buildMessageResponse();
     }
 

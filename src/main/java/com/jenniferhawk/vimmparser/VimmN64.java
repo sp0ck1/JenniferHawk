@@ -15,7 +15,11 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-
+/**
+ * This code is outdated.
+ * It would probably work as a starting point for new code to be developed, but as of right now, Vimm has changed the site so that it will not function.
+ * Use at your own risk.
+ */
 public class VimmN64 {
 
     private String link;

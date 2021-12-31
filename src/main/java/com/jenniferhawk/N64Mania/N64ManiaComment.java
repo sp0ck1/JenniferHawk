@@ -1,15 +1,14 @@
-package com.jenniferhawk.speedrunslive;
-
+package com.jenniferhawk.N64Mania;
 import lombok.NonNull;
 
-public class SRLComment {
+public class N64ManiaComment {
 
     String game;
     String comment;
     String commenter;
 
     @NonNull
-    public SRLComment(String game, String comment, String commenter) {
+    public N64ManiaComment(String game, String comment, String commenter) {
         setGame(game);
         setComment(comment);
         setCommenter(commenter);
@@ -39,7 +38,4 @@ public class SRLComment {
         this.commenter = commenter;
     }
 
-
 }
-
-

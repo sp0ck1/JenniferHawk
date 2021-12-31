@@ -1,13 +1,8 @@
 package com.jenniferhawk;
 
-import com.jenniferhawk.database.JenDB;
-import com.jenniferhawk.database.N64Game;
 import com.jenniferhawk.howlongtobeat.HLTBEntry;
 import com.jenniferhawk.howlongtobeat.HLTBTestLookup;
-import com.jenniferhawk.utils.HLTBLookup;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.internal.entities.GuildImpl;
-import net.dv8tion.jda.internal.entities.TextChannelImpl;
 import org.junit.Test;
 
 import static com.jenniferhawk.Bot.discordClient;

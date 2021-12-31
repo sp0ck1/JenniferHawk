@@ -3,7 +3,7 @@ package com.jenniferhawk.speedrunslive;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-public class SRLRaceResultEntry {
+public class SRLRaceEntrant {
 
     public Integer getRace() {
         return race;
@@ -13,9 +13,6 @@ public class SRLRaceResultEntry {
         this.race = race;
     }
 
-    @JsonProperty("race")
-    Integer race;
-
     public int getPlace() {
         return place;
     }
@@ -24,9 +21,7 @@ public class SRLRaceResultEntry {
         this.place = place;
     }
 
-    public String getPlayer() {
-        return player;
-    }
+    public String getPlayer() { return player; }
 
     public void setPlayer(String player) {
         this.player = player;
@@ -48,6 +43,8 @@ public class SRLRaceResultEntry {
         this.comment = comment;
     }
 
+    @JsonProperty("race")
+    Integer race;
     @JsonProperty("place")
     int place;
     @JsonProperty("player")

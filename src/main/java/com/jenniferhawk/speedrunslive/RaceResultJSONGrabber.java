@@ -2,11 +2,17 @@ package com.jenniferhawk.speedrunslive;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 
+@Getter
+@Setter
 public class RaceResultJSONGrabber {
 
-    private final String jsonResult;
+    private String jsonResult;
+
+    private void setJsonResult(String jsonResult) {this.jsonResult = jsonResult;}
 
     public RaceResultJSONGrabber(String raceID) {
 
@@ -25,7 +31,9 @@ public class RaceResultJSONGrabber {
             System.out.println(jsonResult);
         } catch (
                 UnirestException e) {
-            throw new ContextedRuntimeException("Sp0ck1 SRL Placeholder error", e).addContextValue("errorId", "SRL BEING WEIRD");
+            setJsonResult(null);
+            System.out.println("SRL Error: " + e.getMessage());
+            // throw new ContextedRuntimeException("Sp0ck1 SRL Placeholder error", e).addContextValue("errorId", "SRL BEING WEIRD. " + e.getMessage());
         }
     }
 

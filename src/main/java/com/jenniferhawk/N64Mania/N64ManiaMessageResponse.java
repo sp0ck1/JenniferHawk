@@ -1,7 +1,9 @@
-package com.jenniferhawk.messages;
+package com.jenniferhawk.N64Mania;
 
 import com.github.twitch4j.common.enums.CommandPermission;
 import com.jenniferhawk.database.JenDB;
+import com.jenniferhawk.messages.GenericCommandResponse;
+import com.jenniferhawk.messages.IncomingMessage;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +29,14 @@ public class N64ManiaMessageResponse implements GenericCommandResponse {
     MessageChannel discordChannel;
     Set<CommandPermission> permissionType;
     String newTitle;
+    String argumentString;
+    String[] argumentList;
+
+    @Override
+    public GenericCommandResponse setArgumentList(String[] argumentList) {
+        this.argumentList = argumentList;
+        return this;
+    }
 
     @Override
     public GenericCommandResponse setNewCommandName(String newCommandName) {
@@ -158,6 +168,9 @@ public class N64ManiaMessageResponse implements GenericCommandResponse {
         }
     }
 
+    public void setArgumentString(String argumentString) {
+        this.argumentString = argumentString;
+    }
 
     @Override
     public void receiveMessage() {

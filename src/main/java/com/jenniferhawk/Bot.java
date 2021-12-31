@@ -1,5 +1,6 @@
 package com.jenniferhawk;
 
+import com.github.twitch4j.auth.providers.TwitchIdentityProvider;
 import com.jenniferhawk.discord.DiscordPrivateMessages;
 import com.jenniferhawk.discord.N64RoleAssigner;
 import com.jenniferhawk.discord.VulcanRoleAssigner;
@@ -20,12 +21,14 @@ import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import oracle.jdbc.driver.OracleConnection;
+import org.openapitools.client.api.RacetimeApi;
 import org.pircbotx.exception.IrcException;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Properties;
 

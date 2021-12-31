@@ -10,23 +10,19 @@ import java.util.List;
 public class SRLObjectMapper {
 
 
-    public SRLResultList mapRaceResultJSON(String raceID) throws IOException {
+    public SRLRaceEntrantList mapRaceResultJSON(String raceID) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(
                 DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         String jsonArrayFromURL = new RaceResultJSONGrabber(raceID).getJsonResult();
 
-        List<SRLRaceResultEntry> srlRaceResultEntryList;
-        srlRaceResultEntryList = objectMapper.readValue(jsonArrayFromURL ,new TypeReference<List<SRLRaceResultEntry>>(){});
+        if (jsonArrayFromURL != null) {
+            List<SRLRaceEntrant> srlRaceEntrantList;
+            srlRaceEntrantList = objectMapper.readValue(jsonArrayFromURL, new TypeReference<List<SRLRaceEntrant>>() {
+            });
 
-        // Example of returning a new SRLResultList as the end result of some method that takes a race ID as an input
-        // Also example of how to get a random entry; do not actually return all of this as one output. Example purposes only.
-        // Make sure that the entry returned actually has a comment.
-        return new SRLResultList(srlRaceResultEntryList);
-
-
-
-
+            return new SRLRaceEntrantList(srlRaceEntrantList);
+        } else return null;
     }
 }

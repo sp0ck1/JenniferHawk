@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Set;
 
 
-interface GenericCommandResponse {
+public interface GenericCommandResponse {
 
     GenericCommandResponse setNewCommandName(String newCommandName);
 
@@ -74,4 +74,6 @@ interface GenericCommandResponse {
 
 
     void receiveMessage();
+
+    GenericCommandResponse setArgumentList(String[] argumentList);
 }

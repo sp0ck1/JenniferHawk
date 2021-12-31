@@ -1,7 +1,8 @@
 package com.jenniferhawk.database;
 
 import com.jenniferhawk.Bot;
-import oracle.jdbc.driver.OracleConnection;
+import com.jenniferhawk.N64Mania.N64Game;
+import lombok.SneakyThrows;
 import oracle.jdbc.driver.OracleDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,9 +11,9 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.Random;
 
+//TODO: Update Jendb pass
 
 public class JenDB {
     public static String username = Bot.configuration.getDatabase().get("username");
@@ -20,6 +21,18 @@ public class JenDB {
     private static String url = Bot.configuration.getDatabase().get("url");
     private static Logger LOG = LoggerFactory.getLogger(JenDB.class);
     private static String driverForName = "oracle.jdbc.driver.OracleDriver";
+    private static BasicConnectionPool connectionPool;
+
+    static {
+        try {
+            connectionPool = BasicConnectionPool.create(url,username,password);
+            // Does this need to exist? Test on remote server
+         //   DriverManager.registerDriver(new OracleDriver());
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
 
     /**
      * Begin standard user command queries
@@ -29,9 +42,8 @@ public class JenDB {
         String result = "";
 
         try {
-            DriverManager.registerDriver(new OracleDriver());
-            Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName(driverForName);
+
+            Connection con = connectionPool.getConnection();
 
             PreparedStatement stmt = con.prepareStatement("select * from ADMIN.COMMANDS WHERE COMMAND = ? ");
             stmt.setString(1,whereClause);
@@ -39,8 +51,8 @@ public class JenDB {
 //                ResultSet testSet = stmt.executeQuery("select * from ADMIN.COMMANDS WHERE COMMAND = '" + "dab"+"'");stmt.executeUpdate("DROP/**/TABLE/**/ADMIN.TAPIOCA");stmt.executeQuery("SELECT * from ADMIN.COMMANDS WHERE COMMAND = '"+ "cya" + "'");
             while (rs.next())
                 result = rs.getString(2);
-            con.close();
-        } catch (SQLException | ClassNotFoundException e) {
+            connectionPool.releaseConnection(con);
+        } catch (SQLException e) {
             System.out.println("There was an exception, chief.");
             e.printStackTrace(System.err);
             System.err.println("SQLState: " +
@@ -53,16 +65,18 @@ public class JenDB {
 
 
         }
+        
         return result;
     }
 
 
 
+    @SneakyThrows
     public static void addToHer(String Command, String Text, String Author) { //Add to Jennifer's commands list
+
         try {
 
-            Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName(driverForName);
+            Connection con = connectionPool.getConnection();
             PreparedStatement stmt = con.prepareStatement("INSERT INTO COMMANDS (COMMAND, TEXT, AUTHOR) VALUES (?,?,?)");
 
 
@@ -73,8 +87,8 @@ public class JenDB {
             stmt.setString(2,Text);
             stmt.setString(3,Author);
             stmt.executeUpdate();
-            con.close();
-        } catch (SQLException | ClassNotFoundException e) {
+            connectionPool.releaseConnection(con);
+        } catch (SQLException e) {
             //System.out.print ("There was an error when inserting.");
             //e.printStackTrace(System.err);
             System.err.println("SQLState: " +
@@ -89,8 +103,7 @@ public class JenDB {
                 System.err.println("That one already exists. Attempting an update...");
                 try {
 
-                    Connection con = DriverManager.getConnection(url, username, password);
-                    Class.forName(driverForName);
+                    Connection con = connectionPool.getConnection();
                     PreparedStatement stmt = con.prepareStatement("UPDATE ADMIN.COMMANDS SET TEXT = ? WHERE COMMAND = ? ");
 
                     stmt.setString(1,Text);
@@ -102,8 +115,8 @@ public class JenDB {
 
                     stmt.executeUpdate();
 
-                    con.close();
-                } catch (SQLException | ClassNotFoundException f) {
+                    connectionPool.releaseConnection(con);
+                } catch (SQLException f) {
                     System.out.println("There was still an error.");
                     // e.printStackTrace(System.err);
 
@@ -123,12 +136,11 @@ public class JenDB {
     public static void deleteFromHer(String whereClause) { // Delete a command. Only accessible by sp0ck1
         try {
 
-            Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName(driverForName);
+            Connection con = connectionPool.getConnection();
             Statement stmt = con.createStatement();
             stmt.executeUpdate("DELETE FROM ADMIN.COMMANDS WHERE COMMAND = '" + whereClause + "'");
-            con.close();
-        } catch (SQLException | ClassNotFoundException e) {
+            connectionPool.releaseConnection(con);
+        } catch (SQLException e) {
             System.out.println("There was an error when deleting.");
             e.printStackTrace(System.err);
             System.err.println("SQLState: " +
@@ -144,19 +156,18 @@ public class JenDB {
     public static void addPun(String pun, String text, String author) { //Add to Jennifer's puns list
         try {
 
-            Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName(driverForName);
+            Connection con = connectionPool.getConnection();
             PreparedStatement stmt = con.prepareStatement("INSERT INTO ADMIN.puns(PUN, TEXT, AUTHOR) VALUES (?,?,?)");
 
 
             System.out.println("Attempting to add pun: " + text);
-            stmt.execute("SET NAMES utf8mb4"); // This is the only way the database will accept UNICODE characters like
+            // stmt.execute("SET NAMES utf8mb4"); // This is the only way the database will accept UNICODE characters in MySQL
             stmt.setString(1,pun);
             stmt.setString(2,text);
             stmt.setString(3,author);
             stmt.executeUpdate();
-            con.close();
-        } catch (SQLException | ClassNotFoundException e) {
+            connectionPool.releaseConnection(con);
+        } catch (SQLException e) {
             //System.out.print ("There was an error when inserting.");
             //e.printStackTrace(System.err);
             System.err.println("SQLState: " +
@@ -171,18 +182,16 @@ public class JenDB {
                 System.err.println("That pun already exists. Attempting an update...");
                 try {
 
-                    Connection con = DriverManager.getConnection(url, username, password);
-                    Class.forName(driverForName);
+                    Connection con = connectionPool.getConnection();
                     PreparedStatement stmt = con.prepareStatement("UPDATE ADMIN.puns SET TEXT = ? WHERE PUN = ? ");
                     stmt.setString(1,text);
                     stmt.setString(2,pun);
                     stmt.execute("SET NAMES utf8mb4");
                     stmt.executeUpdate();
-                    con.close();
-                } catch (SQLException | ClassNotFoundException f) {
+                    connectionPool.releaseConnection(con);
+                } catch (SQLException f) {
                     System.out.println("There was still a pun error.");
                     e.printStackTrace(System.err);
-                    assert f instanceof SQLException;
                     System.err.println("SQLState: " +
                             ((SQLException) f).getSQLState());
 
@@ -203,16 +212,15 @@ public class JenDB {
         List<String> punList = new ArrayList<>();
         try {
 
-            Connection con = DriverManager.getConnection(url, username,password);
-            Class.forName(driverForName);
+            Connection con = connectionPool.getConnection();
             Statement stmt = con.createStatement();
             ResultSet rs;
             rs = stmt.executeQuery("SELECT TEXT FROM ADMIN.puns");
             while (rs.next()) {
                 punList.add(rs.getString(1));
             }
-            con.close();
-        } catch (SQLException | ClassNotFoundException e) {
+            connectionPool.releaseConnection(con);
+        } catch (SQLException e) {
 
             e.printStackTrace(System.err);
             System.err.println("SQLState: " +
@@ -228,20 +236,19 @@ public class JenDB {
         return result;
     }
 
-    // TODO: Make the forbidden table a view of all commands where sp0ck1 is the author and all commands listed in timed_commands
+    // TODO: Make the forbidden table a view of all commands where sp0ck1 is the author + all commands listed in timed_commands
     public static boolean checkQuery(String whereClause) { // If query is on the list of forbidden commands, return true
         boolean tf;
         String result = "";
         try {
 
-            Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName(driverForName);
+            Connection con = connectionPool.getConnection();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("select * from ADMIN.forbidden WHERE COMMAND = '" + whereClause + "'");
             while (rs.next())
                 result = rs.getString(2);
-            con.close();
-        } catch (SQLException | ClassNotFoundException e) {
+            connectionPool.releaseConnection(con);
+        } catch (SQLException e) {
             System.out.println("There was an exception, chief.");
             e.printStackTrace(System.err);
             System.err.println("SQLState: " +
@@ -267,16 +274,15 @@ public class JenDB {
         List<String> commandList = new ArrayList<>();
         try {
 
-            Connection con = DriverManager.getConnection(url, username,password);
-            Class.forName(driverForName);
+            Connection con = connectionPool.getConnection();
             Statement stmt = con.createStatement();
             ResultSet rs;
             rs = stmt.executeQuery("SELECT TEXT FROM ADMIN.timed_commands WHERE TIMER = 1");
             while (rs.next()) {
                 commandList.add(rs.getString(1));
             }
-            con.close();
-        } catch (SQLException | ClassNotFoundException e) {
+            connectionPool.releaseConnection(con);
+        } catch (SQLException e) {
 
             e.printStackTrace(System.err);
             System.err.println("SQLState: " +
@@ -298,16 +304,15 @@ public class JenDB {
         int FactID = random.nextInt(231);
         try {
             System.out.println("PokeFact sent.");
-            Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName(driverForName);
+            Connection con = connectionPool.getConnection();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("select ADMIN.pokefacts.FACT from ADMIN.pokefacts WHERE FactID = " + FactID);
             while (rs.next()) {
                 pokeFact = rs.getString("FACT");
 
             }
-            con.close();
-        } catch (SQLException | ClassNotFoundException e) {
+            connectionPool.releaseConnection(con);
+        } catch (SQLException e) {
             System.out.println("There was a problem with your pokeFact.");
             e.printStackTrace(System.err);
             System.err.println("SQLState: " +
@@ -339,8 +344,7 @@ public class JenDB {
         N64Game n64Game = new N64Game();
         try {
             System.out.println("rolln64 command fired.");
-            Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName(driverForName);
+            Connection con = connectionPool.getConnection();
             Statement stmt = con.createStatement();
             List<Integer> idList = new ArrayList<>();
             ResultSet resultSet = stmt.executeQuery("SELECT GAMEID FROM N64_REMAINING");
@@ -355,11 +359,14 @@ public class JenDB {
                 n64Game.setId(rs.getString("GAMEID"))
                         .setTitle(rs.getString("GAME"))
                         .setGenre(rs.getString("GENRE"))
-                        .setSrlURL("URL");
+                        .setRaceURL("URL");
+                //TODO: .setURLType if www.speedrunslive, type = SRL, if www.racetime, type = RACETIME
+                //  and rename .setSrlURL to .setRaceResultsURL
+                //TODO: Create enum for RACESOURCE, RACESOURCE.SRL and RACESOURCE.RACETIME
             }
-            con.close();
+            connectionPool.releaseConnection(con);
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             System.out.println("There was an exception, chief.");
             e.printStackTrace(System.err);
             System.err.println("SQLState: " +
@@ -374,17 +381,81 @@ public class JenDB {
         }
         return n64Game;
     }
+    /**
+     * Returns an unplayed n64 game with the given arguments taken into account
+     *
+     * @param   args  An array of argument strings. Should be only the arguments, i.e. {"--nosports", "--nofighting",}
+     *
+     * @return  An as yet unplayed <code>N64Game</code>.
+     */
+    public static N64Game rolln64(String[] args) {
+        StringBuilder initialQuery = new StringBuilder();
+        String genreNotLike = " AND LOWER (GENRE) NOT LIKE ";
+        Random random = new Random();
+        N64Game n64Game = new N64Game();
+        try {
+            System.out.println("rolln64 command fired.");
+            Connection con = connectionPool.getConnection();
+            Statement stmt = con.createStatement();
+            List<Integer> idList = new ArrayList<>();
+            initialQuery.append("SELECT GAMEID FROM N64_REMAINING WHERE 1 = 1");
+
+            // Argument string should include --
+            // Example: If the command, !rolln64 --nosports --nofighting, is sent,
+            for (String argument : args) {
+                if (argument.substring(2,4).equalsIgnoreCase("no")) {
+                    initialQuery
+                            .append(genreNotLike).append("'%")
+                            .append(argument.substring(argument.indexOf("no") + 2).toLowerCase())
+                            .append("%'");
+                }
+
+            }
+            ResultSet resultSet = stmt.executeQuery(initialQuery.toString());
+
+            while (resultSet.next()) { idList.add(resultSet.getInt(1)); }
+
+            int GameID = idList.get(random.nextInt(idList.size())); // Get one of the entries in the list of GameIDs
+
+            ResultSet rs = stmt.executeQuery("SELECT * FROM N64_REMAINING WHERE GAMEID = " + GameID);
+
+            while (rs.next()) {
+                n64Game.setId(rs.getString("GAMEID"))
+                        .setTitle(rs.getString("GAME"))
+                        .setGenre(rs.getString("GENRE"))
+                        .setRaceURL("URL");
+            }
+            connectionPool.releaseConnection(con);
+
+        } catch (SQLException e) {
+            System.out.println("There was an exception, chief.");
+            e.printStackTrace(System.err);
+            System.err.println("SQLState: " +
+                    ((SQLException) e).getSQLState());
+
+            System.err.println("Error Code: " +
+                    ((SQLException) e).getErrorCode());
+
+            System.err.println("Message: " + e.getMessage());
+
+
+        }
+        return n64Game;
+
+
+    }
 
     public static N64Game rollRunback() { // Return a random N64 game from the n64_results table
 
         Random random = new Random();
         N64Game n64Game = new N64Game();
         n64Game.setCompleted(true);
+
         try {
-            //TODO: Change to LOGGER
-            System.out.println("rollRunback command fired.");
-            Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName(driverForName);
+
+            LOG.info("rollRunback command fired.");
+
+            Connection con = connectionPool.getConnection();
             Statement stmt = con.createStatement();
             List<Integer> idList = new ArrayList<>();
             ResultSet resultSet = stmt.executeQuery("SELECT GAMEID FROM N64_RESULTS");
@@ -399,22 +470,22 @@ public class JenDB {
                 n64Game.setId(rs.getString("GAMEID"))
                         .setTitle(rs.getString("GAME"))
                         .setWinner(rs.getString("FIRST"))
-                        .setSrlURL(rs.getString("URL"));
+                        .setRaceURL(rs.getString("URL"));
                         //.setGenre(rs.getString("GENRE"));
             }
-            con.close();
+            connectionPool.releaseConnection(con);
 
-        } catch (SQLException | ClassNotFoundException e) {
-            //TODO: Change to LOGGER
-            System.out.println("There was an exception, chief.");
+        } catch (SQLException e) {
+
+            LOG.error("SQL Exception while attempting to fetch a runback game.");
             e.printStackTrace(System.err);
-            System.err.println("SQLState: " +
-                    ((SQLException) e).getSQLState());
+            LOG.error("SQLState: " +
+                    e.getSQLState());
 
-            System.err.println("Error Code: " +
-                    ((SQLException) e).getErrorCode());
+            LOG.error("Error Code: " +
+                    e.getErrorCode());
 
-            System.err.println("Message: " + e.getMessage());
+            LOG.error("Message: " + e.getMessage());
 
 
         }
@@ -426,8 +497,7 @@ public class JenDB {
 
         N64Game n64Game = new N64Game();
         try {
-            Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName(driverForName);
+            Connection con = connectionPool.getConnection();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("select * from N64_GAMES WHERE GAMEID = " + GameID);
             while (rs.next()) {
@@ -438,8 +508,8 @@ public class JenDB {
                         .setRegion(rs.getString("REGION"))
                         .setGenre(rs.getString("GENRE"));
             }
-            con.close();
-        } catch (SQLException | ClassNotFoundException e) {
+            connectionPool.releaseConnection(con);
+        } catch (SQLException e) {
             System.out.println("There was an exception, captain.");
             e.printStackTrace(System.err);
             System.err.println("SQLState: " +
@@ -459,15 +529,14 @@ public class JenDB {
 
         N64Game n64Game = new N64Game();
         try {
-            Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName(driverForName);
+            Connection con = connectionPool.getConnection();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("select GAME from N64_GAMES WHERE GAMEID = " + GameID);
             while (rs.next()) {
                 n64Game.setTitle(rs.getString("GAME"));
             }
-            con.close();
-        } catch (SQLException | ClassNotFoundException e) {
+            connectionPool.releaseConnection(con);
+        } catch (SQLException e) {
             System.out.println("There was an exception when retrieving the game name.");
             e.printStackTrace(System.err);
             System.err.println("SQLState: " +
@@ -488,16 +557,15 @@ public class JenDB {
 
         try {
 
-            Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName(driverForName);
+            Connection con = connectionPool.getConnection();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("select * from N64_CURRENT");
             while (rs.next()) {
                 result[0] = rs.getString("GameID");
                 result[1] = rs.getString("GAME");
             }
-            con.close();
-        } catch (SQLException | ClassNotFoundException e) {
+            connectionPool.releaseConnection(con);
+        } catch (SQLException e) {
             System.out.println("There was an exception, captain.");
             e.printStackTrace(System.err);
             System.err.println("SQLState: " +
@@ -518,16 +586,15 @@ public class JenDB {
 
         try {
 
-            Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName(driverForName);
+            Connection con = connectionPool.getConnection();
             PreparedStatement stmt = con.prepareStatement("UPDATE N64_CURRENT SET "+Column+" = ?");
             stmt.setString(1,Runner);
 
             System.out.println(Column + " place: "+ Runner);
             stmt.executeUpdate(); // + " where GameID = TRUE");
-            con.close();
+            connectionPool.releaseConnection(con);
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             System.out.println("Runner may not have been inserted.");
             e.printStackTrace(System.err);
             System.err.println("SQLState: " +
@@ -548,8 +615,7 @@ public class JenDB {
         int count = 0;
         try {
 
-            Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName(driverForName);
+            Connection con = connectionPool.getConnection();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT GAME, YEAR FROM N64_GAMES WHERE GAMEID = " + GameID);
             while (rs.next()) {
@@ -569,8 +635,8 @@ public class JenDB {
                 count = rc.getInt("C");
             }
             System.out.println("Writing " + GameID +" "+game+" "+year+" "+count);
-            con.close();
-        } catch (SQLException | ClassNotFoundException e) {
+            connectionPool.releaseConnection(con);
+        } catch (SQLException e) {
             System.out.println("Game may not have been inserted.");
             e.printStackTrace(System.err);
             System.err.println("SQLState: " +
@@ -592,8 +658,7 @@ public class JenDB {
         int[] GameID = new int[1];
 
 
-        try { Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName(driverForName);
+        try { Connection con = connectionPool.getConnection();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * from N64_CURRENT");
             while (rs.next()) {
@@ -625,10 +690,10 @@ public class JenDB {
             preparedStatement.executeUpdate();
 
             int deleted = stmt.executeUpdate("DELETE FROM N64_CURRENT WHERE GAMEID = " + GameID[0]);
-            con.close();
+            connectionPool.releaseConnection(con);
             if ( deleted > 0 ) { System.out.println(deleted + " records deleted.");} else {System.out.println("Nothing was deleted!");}
 
-        } catch(SQLException | ClassNotFoundException e){
+        } catch(SQLException e){
             System.out.println("Error when inserting results into n64_results table.");
             e.printStackTrace(System.err);
             System.err.println("SQLState: " +
@@ -651,13 +716,12 @@ public class JenDB {
 
         try {
 
-            Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName(driverForName);
+            Connection con = connectionPool.getConnection();
             Statement stmt = con.createStatement();
             int deleted = stmt.executeUpdate("DELETE FROM N64_CURRENT WHERE TRUE");
-            con.close();
+            connectionPool.releaseConnection(con);
             if ( deleted > 0 ) { LOG.info(deleted + " records deleted.");} else {LOG.info("Nothing was deleted!");}
-        } catch(SQLException | ClassNotFoundException e){
+        } catch(SQLException e){
             System.out.println("Error when clearing results from n64_current table.");
             e.printStackTrace(System.err);
             System.err.println("SQLState: " +
@@ -676,8 +740,7 @@ public class JenDB {
         String[] result = new String[2];
         try {
             System.out.println("Lookup phrase: "+Lookup);
-            Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName(driverForName);
+            Connection con = connectionPool.getConnection();
             Lookup = Lookup
                     .replace("!", "!!")
                     .replace("_", "!_")
@@ -691,9 +754,9 @@ public class JenDB {
                 result[0] = rs.getString("GameID");
                 result[1] = rs.getString("GAME");
             }
-            con.close();
+            connectionPool.releaseConnection(con);
             System.out.println("result[0] is " + result[0] + " and result[1] is " + result[1]);
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             System.out.println("There was an exception in the lookup, chief.");
             e.printStackTrace(System.err);
             System.err.println("SQLState: " +
@@ -716,8 +779,7 @@ public class JenDB {
         int count = 0;
         try {
 
-            Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName(driverForName);
+            Connection con = connectionPool.getConnection();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("select GameID from ADMIN.n64_current");
             while (rs.next()) {
@@ -735,8 +797,8 @@ public class JenDB {
             while (rc.next()) {
                 count = rc.getInt("C");
             }
-            con.close();
-        } catch (SQLException | ClassNotFoundException e) {
+            connectionPool.releaseConnection(con);
+        } catch (SQLException e) {
             System.out.println("There was an exception, James.");
             e.printStackTrace(System.err);
             System.err.println("SQLState: " +
@@ -768,8 +830,7 @@ public class JenDB {
             try {
                 System.out.println("Trying to get name?");
                 DriverManager.registerDriver(new OracleDriver());
-                Connection con = DriverManager.getConnection(url, username, password);
-                Class.forName(driverForName);
+                Connection con = connectionPool.getConnection();
 
                 PreparedStatement stmt = con.prepareStatement("SELECT UNIT FROM ( SELECT UNIT FROM ADMIN.UEBS_UNITS ORDER BY dbms_random.value ) WHERE rownum = 1");
 
@@ -778,8 +839,8 @@ public class JenDB {
 
                 while (rs.next())
                     result = rs.getString(1);
-                con.close();
-            } catch (SQLException | ClassNotFoundException e) {
+                connectionPool.releaseConnection(con);
+            } catch (SQLException e) {
                 System.out.println("There was an exception retrieving the unit from UEBS_UNITS.");
                 e.printStackTrace(System.err);
                 System.err.println("SQLState: " +
@@ -800,13 +861,12 @@ public class JenDB {
     public static void addUEBSUnit(String unit) {
         try {
             System.out.println("Trying to add unit " + unit);
-            Connection con = DriverManager.getConnection(url, username, password);
-            Class.forName(driverForName);
+            Connection con = connectionPool.getConnection();
             PreparedStatement stmt = con.prepareStatement("INSERT INTO UEBS_UNITS (UNIT) VALUES (?)");
             stmt.setString(1,unit);
             stmt.executeUpdate();
-            con.close();
-        } catch (SQLException | ClassNotFoundException e) {
+            connectionPool.releaseConnection(con);
+        } catch (SQLException e) {
 
             System.err.println("SQLState: " +
                     ((SQLException) e).getSQLState());

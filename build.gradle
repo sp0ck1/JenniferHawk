@@ -56,7 +56,9 @@ dependencies {
     //Discord4J (removed for now)
     //implementation 'com.discord4j:discord4j-core:3.0.12'
 
-    
+    //Racetime4J OpenAPI
+    compile "org.openapitools:openapi-java-client:1.0.0"
+
     //JDA
     compile group: 'net.dv8tion', name: 'JDA', version: '4.1.1_101'
 
@@ -98,6 +100,9 @@ dependencies {
     // jUnit
     testImplementation('junit:junit:4.13')
 
+    test {
+        useJUnitPlatform()
+    }
 
 
 

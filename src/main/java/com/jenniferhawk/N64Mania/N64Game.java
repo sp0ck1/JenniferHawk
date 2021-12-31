@@ -1,14 +1,11 @@
-package com.jenniferhawk.database;
+package com.jenniferhawk.N64Mania;
 
 
-import com.jenniferhawk.speedrunslive.SRLComment;
 import com.jenniferhawk.speedrunslive.SRLObjectMapper;
-import com.jenniferhawk.speedrunslive.SRLRaceResultEntry;
-import com.jenniferhawk.speedrunslive.SRLResultList;
+import com.jenniferhawk.speedrunslive.SRLRaceEntrant;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -23,21 +20,27 @@ public class N64Game {
     private String region;
     private String winner;
     boolean completed;
-    private String srlURL;
+    private String raceURL;
     private String srlRaceID;
+    private String racetimeSlug;
 
-    public String getSrlURL() {
-        return srlURL;
+    public String getRaceURL() {
+        return raceURL;
     }
 
-    public void setSrlURL(String srlURL) {
-        if (srlURL != null && srlURL.length() > 6) {
-            setSrlRaceID(srlURL);
-        }
-        this.srlURL = srlURL;
-        System.out.println("srlURL : " + srlURL);
+    public void setRaceURL(String raceURL) {
+
+        this.raceURL = raceURL;
+        System.out.println("raceURL : " + raceURL);
     }
 
+    private void setRacetimeSlug(String raceURL)  {
+        this.racetimeSlug = raceURL.substring(raceURL.indexOf("n64mania/") + 9);
+    }
+
+    public String getRacetimeSlug() {
+        return this.racetimeSlug;
+    }
     private void setSrlRaceID(String srlURL) {
 
         srlURL = srlURL.substring(srlURL.length() - 6);
@@ -125,31 +128,4 @@ public class N64Game {
         return this;
     }
 
-    public SRLComment getRandomComment() throws IOException {
-        ArrayList<SRLComment> commentList = new ArrayList<>();
-
-        if (srlURL != null) {
-            List<SRLRaceResultEntry> entries = new SRLObjectMapper().mapRaceResultJSON(srlRaceID).getEntries();
-            entries.forEach(srlRaceResultEntry -> {
-                if (!srlRaceResultEntry.getComment().equals("")) {
-                    SRLComment newComment = new SRLComment(title, srlRaceResultEntry.getComment(), srlRaceResultEntry.getPlayer());
-                    commentList.add(newComment);
-                }
-            });
-
-            // commentList.size = 0 means no comments
-            // commentList.size = 1 means 1 comment
-            // commentList.get(random.nextInt(0)) would return the first comment
-            if (commentList.size() != 0) {
-                Random random = new Random();
-                // This would always get at least 1, and never 0.
-                // But if it's not + 1, it won't ever get the last entry, either.
-                // No, if commentList.size = 2, this will get random.nextInt(3), which could still get 0.
-                SRLComment randomComment = commentList.get(random.nextInt(commentList.size()));
-
-                return randomComment;
-            } else return null;
-        } else return null;
-
-    }
 }
