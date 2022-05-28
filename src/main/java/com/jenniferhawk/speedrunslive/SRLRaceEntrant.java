@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SRLRaceEntrant {
 
-    public Integer getRace() {
-        return race;
-    }
-
-    public void setRace(Integer race) {
-        this.race = race;
-    }
+//    public Integer getRace() {
+//        return race;
+//    }
+//
+//    public void setRace(Integer race) {
+//        this.race = race;
+//    }
 
     public int getPlace() {
         return place;
@@ -43,11 +43,11 @@ public class SRLRaceEntrant {
         this.comment = comment;
     }
 
-    @JsonProperty("race")
-    Integer race;
+//    @JsonProperty("race")
+//    Integer race;
     @JsonProperty("place")
     int place;
-    @JsonProperty("player")
+    @JsonProperty("playerName")
     String player;
     @JsonProperty("time")
     int time;

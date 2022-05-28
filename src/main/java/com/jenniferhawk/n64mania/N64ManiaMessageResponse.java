@@ -1,4 +1,4 @@
-package com.jenniferhawk.N64Mania;
+package com.jenniferhawk.n64mania;
 
 import com.github.twitch4j.common.enums.CommandPermission;
 import com.jenniferhawk.database.JenDB;

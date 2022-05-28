@@ -1,13 +1,5 @@
-package com.jenniferhawk.N64Mania;
+package com.jenniferhawk.n64mania;
 
-
-import com.jenniferhawk.speedrunslive.SRLObjectMapper;
-import com.jenniferhawk.speedrunslive.SRLRaceEntrant;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class N64Game {
 
@@ -21,8 +13,6 @@ public class N64Game {
     private String winner;
     boolean completed;
     private String raceURL;
-    private String srlRaceID;
-    private String racetimeSlug;
 
     public String getRaceURL() {
         return raceURL;
@@ -34,19 +24,6 @@ public class N64Game {
         System.out.println("raceURL : " + raceURL);
     }
 
-    private void setRacetimeSlug(String raceURL)  {
-        this.racetimeSlug = raceURL.substring(raceURL.indexOf("n64mania/") + 9);
-    }
-
-    public String getRacetimeSlug() {
-        return this.racetimeSlug;
-    }
-    private void setSrlRaceID(String srlURL) {
-
-        srlURL = srlURL.substring(srlURL.length() - 6);
-
-        this.srlRaceID = srlURL;
-    }
 
     public boolean isCompleted() {
         return completed;

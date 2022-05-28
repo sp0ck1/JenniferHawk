@@ -1,7 +1,7 @@
 package com.jenniferhawk.database;
 
 import com.jenniferhawk.Bot;
-import com.jenniferhawk.N64Mania.N64Game;
+import com.jenniferhawk.n64mania.N64Game;
 import lombok.SneakyThrows;
 import oracle.jdbc.driver.OracleDriver;
 import org.slf4j.Logger;
@@ -362,7 +362,7 @@ public class JenDB {
                         .setRaceURL("URL");
                 //TODO: .setURLType if www.speedrunslive, type = SRL, if www.racetime, type = RACETIME
                 //  and rename .setSrlURL to .setRaceResultsURL
-                //TODO: Create enum for RACESOURCE, RACESOURCE.SRL and RACESOURCE.RACETIME
+
             }
             connectionPool.releaseConnection(con);
 
@@ -736,17 +736,17 @@ public class JenDB {
         }
     }
 
-    public static String[] N64Lookup(String Lookup) { // Return the closest match based on input
+    public static String[] N64Lookup(String lookupPhrase) { // Return the closest match based on input
         String[] result = new String[2];
         try {
-            System.out.println("Lookup phrase: "+Lookup);
+            System.out.println("Lookup phrase: "+lookupPhrase);
             Connection con = connectionPool.getConnection();
-            Lookup = Lookup
+            lookupPhrase = lookupPhrase
                     .replace("!", "!!")
                     .replace("_", "!_")
                     .replace("[", "![");
             PreparedStatement stmt = con.prepareStatement("select GAMEID, GAME from N64_GAMES WHERE UPPER(GAME) LIKE UPPER(?)");
-            stmt.setString(1,"%"+Lookup+"%");
+            stmt.setString(1,"%"+lookupPhrase+"%");
 
             ResultSet rs = stmt.executeQuery();
             System.out.println(stmt);
@@ -877,6 +877,94 @@ public class JenDB {
             System.err.println("Message: " + e.getMessage());
 
         }
+    }
+
+    public static void insertRole(String roleId, String roleName, String roleEmoteId) {
+        try {
+            Connection con = connectionPool.getConnection();
+            PreparedStatement stmt = con.prepareStatement( "INSERT INTO ROLES (ROLE_ID, ROLE_NAME, ROLE_EMOTE) VALUES(?, ?, ?)" );
+            stmt.setString(1, roleId);
+            stmt.setString(2, roleName);
+            stmt.setString(3, roleEmoteId);
+            stmt.executeUpdate();
+            connectionPool.releaseConnection(con);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public static ArrayList<String> getRoleMessages() {
+        ArrayList<String> resultList = new ArrayList<>();
+
+        try {
+
+                Connection con = connectionPool.getConnection();
+                PreparedStatement stmt = con.prepareStatement("SELECT MSG_ID FROM ROLE_MESSAGES");
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    resultList.add(rs.getString("MSG_ID"));
+                }
+                connectionPool.releaseConnection(con);
+            return resultList;
+            } catch (SQLException e) {
+
+                System.err.println("SQLState: " +
+                        ((SQLException) e).getSQLState());
+
+                System.err.println("Error Code: " +
+                        ((SQLException) e).getErrorCode());
+
+                System.err.println("Message: " + e.getMessage());
+
+            }
+        return null;
+    }
+
+    public static void addRoleMessage(String messageId) {
+        try {
+            Connection con = connectionPool.getConnection();
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO ROLE_MESSAGES (MSG_ID) VALUES (?)");
+            stmt.setString(1, messageId);
+            stmt.executeUpdate();
+            connectionPool.releaseConnection(con);
+        } catch (SQLException e) {
+
+            System.err.println("SQLState: " +
+                    ((SQLException) e).getSQLState());
+
+            System.err.println("Error Code: " +
+                    ((SQLException) e).getErrorCode());
+
+            System.err.println("Message: " + e.getMessage());
+
+        }
+    }
+
+    public static String getReactionEmoteIdForMessageId(String msgId) {
+        try {
+            Connection con = connectionPool.getConnection();
+            PreparedStatement stmt = con.prepareStatement("SELECT ROLE_ID FROM ROLE_MESSAGES WHERE MSG_ID = ?");
+            stmt.setString(1, msgId);
+            stmt.executeUpdate();
+            connectionPool.releaseConnection(con);
+        } catch (SQLException e) {
+
+            System.err.println("SQLState: " +
+                    ((SQLException) e).getSQLState());
+
+            System.err.println("Error Code: " +
+                    ((SQLException) e).getErrorCode());
+
+            System.err.println("Message: " + e.getMessage());
+
+        }
+        return null; //TODO: Finish this method
+    }
+
+            private static Statement createStatement() throws SQLException {
+        Connection con = connectionPool.getConnection();
+        return con.createStatement();
+        // TODO: Integrate a way to release connections
     }
 }
 

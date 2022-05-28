@@ -1,20 +1,18 @@
 package com.jenniferhawk.messages;
 
 import com.github.twitch4j.common.enums.CommandPermission;
-import com.jenniferhawk.N64Mania.N64ManiaComment;
-import com.jenniferhawk.N64Mania.N64ManiaCommentRetrievalTool;
+import com.jenniferhawk.n64mania.N64ManiaComment;
+import com.jenniferhawk.n64mania.N64ManiaCommentRetrievalTool;
 import com.jenniferhawk.database.JenDB;
-import com.jenniferhawk.N64Mania.N64Game;
+import com.jenniferhawk.n64mania.N64Game;
 import com.jenniferhawk.howlongtobeat.HLTBEntry;
 import com.jenniferhawk.irc.SRLRaceListener;
 import com.jenniferhawk.twitch.ChannelGoLiveCheck;
 import com.jenniferhawk.utils.HLTBLookup;
 import net.dv8tion.jda.api.entities.MessageChannel;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Random;
 import java.util.Set;
 
 import static com.jenniferhawk.Bot.*;

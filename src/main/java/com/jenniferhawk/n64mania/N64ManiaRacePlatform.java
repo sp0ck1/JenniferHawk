@@ -1,4 +1,4 @@
-package com.jenniferhawk.N64Mania;
+package com.jenniferhawk.n64mania;
 
 public enum N64ManiaRacePlatform {
 

@@ -38,7 +38,7 @@ public class Launcher {
             }
         });
         srlThread.setName("SRL Thread");
-        srlThread.start();
+     //   srlThread.start(); // Don't start SRL thread
 
 
     }

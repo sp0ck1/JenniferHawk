@@ -1,9 +1,8 @@
 package com.jenniferhawk;
 
-import com.github.twitch4j.auth.providers.TwitchIdentityProvider;
 import com.jenniferhawk.discord.DiscordPrivateMessages;
-import com.jenniferhawk.discord.N64RoleAssigner;
-import com.jenniferhawk.discord.VulcanRoleAssigner;
+import com.jenniferhawk.discord.N64ManiaRoleAssigner;
+import com.jenniferhawk.discord.VulcanRoleManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
@@ -13,6 +12,7 @@ import com.jenniferhawk.discord.DiscordCommands;
 import com.jenniferhawk.irc.IRCBot;
 import com.jenniferhawk.messages.IncomingMessageBuilder;
 import com.jenniferhawk.messages.ScheduledMessages;
+import com.jenniferhawk.racetime.RacetimeClient;
 import com.jenniferhawk.twitch.ChannelGoLiveCheck;
 import com.jenniferhawk.twitch.ChannelStateEventsHandler;
 import com.jenniferhawk.twitch.SubscriptionActions;
@@ -20,17 +20,12 @@ import com.jenniferhawk.twitch.WriteChannelChatToConsole;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import oracle.jdbc.driver.OracleConnection;
-import org.openapitools.client.api.RacetimeApi;
 import org.pircbotx.exception.IrcException;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Properties;
 
 public class Bot {
 
@@ -57,6 +52,7 @@ public class Bot {
 
     public static String BROADCASTER_ID;
 
+    public static RacetimeClient racetimeClient;
 
 
     /**
@@ -70,11 +66,6 @@ public class Bot {
         String localDir = localPackage.getPath();
         String loaderDir = urlLoader.getPath();
         System.out.printf("loaderDir = %s\nlocalDir = %s\n", loaderDir, localDir);
-        Properties connectionProperties = new Properties();
-        connectionProperties.setProperty(
-                OracleConnection.CONNECTION_PROPERTY_TNS_ADMIN, "resources/Wallet_JenniferHawk");
-        connectionProperties.setProperty(
-                OracleConnection.CONNECTION_PROPERTY_FAN_ENABLED,"false");
 
         // Load Configuration
         loadConfiguration();
@@ -108,11 +99,16 @@ public class Bot {
                 .addEventListeners(new DiscordCommands())
                 .addEventListeners(new DiscordPrivateMessages())
                 .addEventListeners(new IncomingMessageBuilder())
-                .addEventListeners(new N64RoleAssigner())
-                .addEventListeners(new VulcanRoleAssigner())
+                .addEventListeners(new N64ManiaRoleAssigner())
+                .addEventListeners(new VulcanRoleManager())
                 .build();
         discordClient.awaitReady();
         //endregion
+
+        //region RacetimeClient
+        racetimeClient = new RacetimeClient();
+        racetimeClient.start();
+        //endRgion
 
     }
 
@@ -179,6 +175,8 @@ public class Bot {
         goLiveCheck.addChannel("sp0ck1");
      //   twitchClient.getClientHelper().enableStreamEventListener("sp0ck1");
         twitchClient.getChat().sendMessage("sp0ck1","I am live!");
+        twitchClient.getChat().sendMessage("sp0ck1","/announce JHawk Anouncement");
+
     }
 
 

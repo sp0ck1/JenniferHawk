@@ -24,8 +24,7 @@ public class BasicConnectionPool {
         List<Connection> pool = new ArrayList<>(INITIAL_POOL_SIZE);
         for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
             Connection connection = createConnection(url,user,password);
-//            connectionProperties.setProperty("oracle.jdbc.fanEnabled","false");
-//            connection.set
+            connectionProperties.setProperty("oracle.jdbc.fanEnabled","false");
             pool.add(connection);
         }
 

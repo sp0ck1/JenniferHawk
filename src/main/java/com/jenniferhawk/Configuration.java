@@ -27,6 +27,12 @@ public class Configuration {
 
     private Map<String, String> irc;
 
+    private Map<String, String> racetime;
+
+    public Map<String, String> getRacetime() { return racetime; }
+
+    public void setRacetime(Map<String, String> racetime) { this.racetime = racetime; }
+
     public Boolean getDebug() {
         return debug;
     }
@@ -63,17 +69,23 @@ public class Configuration {
         return channels;
     }
 
+    public void setChannels(List<String> channels) {
+        this.channels = channels;
+    }
+
     public Map<String, String> getDiscord () {
         return discord;
     }
 
+    public void setDiscord(Map<String, String> discord) { this.discord = discord; }
+
     public Map<String, String> getDatabase() { return database; }
+
+    public void setDatabase(Map<String, String> database) { this.database = database; }
 
     public Map<String, String> getIRC() { return irc; }
 
-    public void setChannels(List<String> channels) {
-        this.channels = channels;
-    }
+    public void setIrc(Map<String, String> irc) { this.irc = irc; }
 
     @Override
     public String toString() {
@@ -85,6 +97,7 @@ public class Configuration {
                 ", discord =" + discord +
                 ", database ="+ database +
                 ", irc =" + irc +
+                ", racetime = " + racetime +
                 '}';
     }
 }

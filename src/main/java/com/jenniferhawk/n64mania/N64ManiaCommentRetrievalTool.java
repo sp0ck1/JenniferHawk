@@ -1,4 +1,4 @@
-package com.jenniferhawk.N64Mania;
+package com.jenniferhawk.n64mania;
 
 import com.jenniferhawk.speedrunslive.SRLObjectMapper;
 import com.jenniferhawk.speedrunslive.SRLRaceEntrant;
@@ -14,7 +14,6 @@ import org.openapitools.client.model.Race;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 @NoArgsConstructor

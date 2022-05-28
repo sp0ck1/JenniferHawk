@@ -1,7 +1,7 @@
 package com.jenniferhawk.discord;
 
 import com.jenniferhawk.database.JenDB;
-import com.jenniferhawk.N64Mania.N64Game;
+import com.jenniferhawk.n64mania.N64Game;
 import com.jenniferhawk.howlongtobeat.*;
 import com.jenniferhawk.utils.HLTBLookup;
 import net.dv8tion.jda.api.entities.*;
@@ -30,7 +30,8 @@ public class DiscordCommands extends ListenerAdapter {
             N64Game n64Game;
             if (original.contains("--")) {
                 argumentList = original.split(" ");
-                n64Game = JenDB.rolln64(argumentList);
+                n64Game = JenDB.rolln64(argumentList); // only asking if it has an argument list, and if so it's split on spaces
+                System.out.println(Arrays.stream(argumentList));
             } else n64Game = JenDB.rolln64();
 
             String game = n64Game.getTitle();
