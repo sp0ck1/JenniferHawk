@@ -378,5 +378,5 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                 respond(message);
             }
         }
-    }
+   }
 }

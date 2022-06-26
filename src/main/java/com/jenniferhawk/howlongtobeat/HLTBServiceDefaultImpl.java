@@ -25,10 +25,23 @@ public class HLTBServiceDefaultImpl implements HLTBService {
     HttpResponse<String> response;
     try {
       response = Unirest.post(HLTB_SEARCH_URL).header("accept", "*/*")
-          .header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE).queryString("page", "1")
-          .field("queryString", gameName).field("t", "games").field("sorthead", "popular")
-          .field("sortd", "Normal Order").field("plat", "").field("length_type", "main").field("length_min", "")
-          .field("length_max", "").field("detail", "0").asString();
+          .header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+              .header("origin", "https://howlongtobeat.com")
+              .header("referer","https://howlongtobeat.com")
+              .queryString("page", "1")
+          .field("queryString", gameName)
+              .field("t", "games")
+              .field("sorthead", "popular")
+          .field("sortd", "0")
+              .field("plat", "")
+              .field("length_type", "main")
+              .field("length_min", "")
+          .field("length_max", "")
+              .field("v", "")
+              .field("f", "")
+              .field("g", "")
+              .field("detail", "")
+              .field("randomize", "0").asString();
       return new HLTBSearchResultPage(gameName, response.getBody());
     } catch (UnirestException e) {
       throw new ContextedRuntimeException("Howlongtobeat not available", e).addContextValue("errorId", ERROR_HLTB_GONE)

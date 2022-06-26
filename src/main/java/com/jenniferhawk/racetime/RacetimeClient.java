@@ -105,7 +105,7 @@ public class RacetimeClient {
                 });
 //                System.out.println("Access token is: " + tokenInfo.get("access_token")); // Confirmed works 9:30 PM 1/1/2022
                 this.oAuth2Credential = new OAuth2Credential("racetime",tokenInfo.get("access_token").toString());
-                System.out.println("Added " + oAuth2Credential.getAccessToken() + " to OAuth2Credential");
+                //System.out.println("Added " + oAuth2Credential.getAccessToken() + " to OAuth2Credential");
             }
         } catch (
                 JsonProcessingException e) {

@@ -20,7 +20,7 @@ public class GetHLTBTimeTest {
 
             MessageChannel channel = discordClient.getTextChannelById(673447079552483358L);
 
-            HLTBEntry entry = HLTBTestLookup.searchGame("Madden 99");
+            HLTBEntry entry = HLTBTestLookup.searchGame("re-volt");
             if (entry != null) {
                 String game = entry.getName();
                 String checkHLTB = !entry.getMainStoryTime().equals("0") ? " HLTB says " + entry.getName() + " takes " + entry.getMainStoryTime() + " to beat the main story." : "";

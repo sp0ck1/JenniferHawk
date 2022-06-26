@@ -4,10 +4,11 @@ public class HLTBTestLookup {
 
     private static HLTBService service = new HLTBServiceDefaultImpl();
 
+
     public static HLTBEntry searchGame(String game) {
 
         HLTBTestSearchResultPage result = new HLTBTestSearchResultPage(game, service.search(game).getHtmlFragment());
-
+        System.out.println("Fragment: " + result.getHtmlFragment());
         if (result.getEntries().size() != 0) { // Search returned something
 
 

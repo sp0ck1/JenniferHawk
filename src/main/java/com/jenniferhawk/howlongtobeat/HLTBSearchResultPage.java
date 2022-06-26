@@ -94,7 +94,7 @@ public class HLTBSearchResultPage {
 		for (Element element : liElements) {
 			entrySet.add(handleHltbResultLi(element));
 		}
-		this.entries = new ArrayList<>(entrySet); // Randomized ordering TODO: Create non-randomized ordering
+		this.entries = new ArrayList<>(entrySet);
 	}
 
 	private void handleResultList(Document html) {
@@ -110,7 +110,7 @@ public class HLTBSearchResultPage {
 		for (Element element : liElements) {
 			entryList.add(handleHltbResultLi(element));
 		}
-		this.entries = new ArrayList<>(entryList); // Randomized ordering TODO: Test to get the same result every time
+		this.entries = new ArrayList<>(entryList); // Randomized ordering
 	}
 
 	private HLTBSearchResultEntry handleHltbResultLi(Element liElement) { // This one parses the search results page

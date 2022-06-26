@@ -13,7 +13,6 @@ mainClassName = 'com.jenniferhawk.Launcher'
 
 // Repositories
 
-// Dependencies
 
     repositories {
         jcenter()
@@ -22,7 +21,7 @@ mainClassName = 'com.jenniferhawk.Launcher'
         mavenLocal()
     }
 
-
+// Dependencies
 
 dependencies {
     // Twitch4J
@@ -44,7 +43,7 @@ dependencies {
     // YAML Parser
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.0"
 
-    compile 'com.github.twitch4j:twitch4j:1.5.0'
+    compile 'com.github.twitch4j:twitch4j:1.10.0'
     // Logging
     compile "ch.qos.logback:logback-classic:1.1.8"
     compile "com.jcabi:jcabi-log:0.17.2"
