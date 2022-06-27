@@ -16,7 +16,7 @@ public class SRLObjectMapper {
                 DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         String jsonArrayFromURL = new RaceResultJSONGrabber(raceID).getJsonResult();
-
+        System.out.println("The jsonArray is: " + jsonArrayFromURL);
         if (jsonArrayFromURL != null) {
             List<SRLRaceEntrant> srlRaceEntrantList;
             srlRaceEntrantList = objectMapper.readValue(jsonArrayFromURL, new TypeReference<List<SRLRaceEntrant>>() {

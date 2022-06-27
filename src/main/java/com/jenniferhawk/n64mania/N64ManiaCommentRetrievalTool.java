@@ -27,12 +27,12 @@ public class N64ManiaCommentRetrievalTool {
         System.out.println("getCommentFromSRL. srlRaceID: " + srlRaceID + " for game " + gameName);
         SRLRaceEntrantList srlRaceEntrantList = new SRLObjectMapper().mapRaceResultJSON(srlRaceID);
 
-            if (srlRaceEntrantList != null) {
+            if (srlRaceEntrantList != null) { // If no entrants, return null
                 List<SRLRaceEntrant> entries = srlRaceEntrantList.getEntrants();
 
                 entries.forEach(srlRaceEntrant -> {
-                    System.out.println("loop");
-                    if (!srlRaceEntrant.getComment().equals("")) {
+                    System.out.println("For each srlRaceEntrant, did they comment? Add entrant to commentList if so.");
+                    if (!(srlRaceEntrant.getComment() == null)) {
                         System.out.println("has_srl_comment:true");
                         N64ManiaComment newComment = new N64ManiaComment(gameName, srlRaceEntrant.getComment(), srlRaceEntrant.getPlayer());
                         commentList.add(newComment);

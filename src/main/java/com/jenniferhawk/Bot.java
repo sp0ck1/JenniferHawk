@@ -173,9 +173,9 @@ public class Bot {
         }
 
         goLiveCheck.addChannel("sp0ck1");
-     //   twitchClient.getClientHelper().enableStreamEventListener("sp0ck1");
-   //     twitchClient.getChat().sendMessage("sp0ck1","I am live!");
-   //     twitchClient.getChat().sendMessage("sp0ck1","/announce JHawk Anouncement");
+    //   twitchClient.getClientHelper().enableStreamEventListener("sp0ck1");
+    //   twitchClient.getChat().sendMessage("sp0ck1","I am live!");
+    //   twitchClient.getChat().sendMessage("sp0ck1","/announce JHawk Anouncement");
 
     }
 

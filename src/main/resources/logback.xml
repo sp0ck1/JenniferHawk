@@ -8,7 +8,7 @@
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <target>System.out</target>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
-                <level>DEBUG</level> <!-- Change to DEBUG, INFO, WARN, -->
+                <level>ERROR</level> <!-- Change to DEBUG, INFO, WARN, -->
                 <onMatch>ACCEPT</onMatch>
                 <onMismatch>DENY</onMismatch>
         </filter>
@@ -26,7 +26,7 @@
     </appender>
 
     <root level="DEBUG">
-       <!-- <appender-ref ref="console"/> -->
+        <appender-ref ref="console"/>
         <appender-ref ref="FILE"/>
     </root>
 

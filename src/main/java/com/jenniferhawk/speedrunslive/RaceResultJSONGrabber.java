@@ -49,7 +49,7 @@ public class RaceResultJSONGrabber {
         Unirest.setHttpClient(httpclient);
     }
 
-    private void setJsonResult(String jsonResult) {this.jsonResult = jsonResult;}
+    private void setJsonResult(String jsonResult) {this.jsonResult = jsonResult; }
 
     public RaceResultJSONGrabber(String raceID) {
 
@@ -78,11 +78,13 @@ public class RaceResultJSONGrabber {
         try {
             response = Unirest.get(SRL_RACE_URL)
             .asString();
+         //   System.out.println("SRL Unirest Response: " + response.getBody());
+           // System.out.println("Index of `\"entrants\": [{` is " + response.getBody().indexOf("\"entrants\":[{"));
             this.jsonResult = response.getBody().substring(response.getBody().indexOf(
-                    "\"entrants\": [\n"+
-                    "{\n")+14, // Get text from this point...
+                    "\"entrants\":["+
+                    "{")+11, // Get text from this point...
                     response.getBody().indexOf(
-                            "],")+2); // ...to this point.
+                            "]")+1); // ...to this point.
             //System.out.println("Grabbed JSON result of race " + raceID);
             System.out.println(jsonResult);
         } catch (
