@@ -38,7 +38,9 @@ public class DiscordCommands extends ListenerAdapter {
 
             System.out.println("I looked for " + game + " on HLTB.");
 
-            HLTBEntry entry = HLTBLookup.searchGame(game);
+            /* Temporary Rework until HLTB API can be worked with */
+            /*
+            //  HLTBEntry entry = HLTBLookup.searchGame(game);
 
             if (entry != null && !entry.getMainStoryTime().equals("--")) {
                 String checkHLTB = !entry.getMainStoryTime().equals("0") ? " HLTB says " + entry.getName() + " takes " + entry.getMainStoryTime() + " to beat the main story." : "";
@@ -48,10 +50,11 @@ public class DiscordCommands extends ListenerAdapter {
                                 game +
                                 ". " + jenQuip(game) + checkHLTB)
                         .queue();
-            } else {
+            } else {**/
+
                 channel.sendMessage(chatter + ", you are responsible for suggesting " + game + ". " + jenQuip(game) + ". ").queue();
             }
-        }
+
         else if (original.toLowerCase().startsWith("!gameid"))
         {
 //
@@ -86,6 +89,12 @@ public class DiscordCommands extends ListenerAdapter {
         quipSet.add("Can Flant farm us on this one?");
         quipSet.add("\u00af\\\\\\\u005f\u0028\u30c4\u0029\\\u005f\u002f\u00af");
         quipSet.add("It's no Pilotwings but, I guess so.");
+        quipSet.add("I pity the fool who rolled this game.");
+        quipSet.add("You know it's totally okay if you want to reroll this one, right?");
+        quipSet.add("It's been _at least_ a month since I thought about this game.");
+        quipSet.add("It's been _at most_ six years since I last pondered this video game's existence.");
+        quipSet.add("The beginning of this game, it's good. But that end? What an end!");
+        quipSet.add("I think that this one is really only good in the midgame. Just my opinion.");
 
 
         if (game.equalsIgnoreCase("Pilotwings 64")) {

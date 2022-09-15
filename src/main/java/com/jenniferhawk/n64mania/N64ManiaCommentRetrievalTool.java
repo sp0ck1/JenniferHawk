@@ -101,6 +101,10 @@ public class N64ManiaCommentRetrievalTool {
 
             return comment;
 
+        } else if (n64Game.getRaceURL() == null) {
+            // Case for Turok being drawn
+            comment = new N64ManiaComment("Turok", "I win.", "Turok");
+            return comment;
         }
 
         else return null;
