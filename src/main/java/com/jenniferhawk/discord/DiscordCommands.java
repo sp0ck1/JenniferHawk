@@ -3,6 +3,7 @@ package com.jenniferhawk.discord;
 import com.jenniferhawk.database.JenDB;
 import com.jenniferhawk.n64mania.N64Game;
 import com.jenniferhawk.howlongtobeat.*;
+import com.jenniferhawk.n64mania.N64ManiaAPI;
 import com.jenniferhawk.utils.HLTBLookup;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -24,8 +25,11 @@ public class DiscordCommands extends ListenerAdapter {
         String original = event.getMessage().getContentDisplay(); //Original message, preserving caps\
         MessageChannel channel = event.getChannel();
 
+        N64ManiaAPI api = new N64ManiaAPI();
+
         if (original.toLowerCase().startsWith("!rolln64")) {
 
+            /**
             String[] argumentList;
             N64Game n64Game;
             if (original.contains("--")) {
@@ -33,10 +37,8 @@ public class DiscordCommands extends ListenerAdapter {
                 n64Game = JenDB.rolln64(argumentList); // only asking if it has an argument list, and if so it's split on spaces
                 System.out.println(Arrays.stream(argumentList));
             } else n64Game = JenDB.rolln64();
-
-            String game = n64Game.getTitle();
-
-            System.out.println("I looked for " + game + " on HLTB.");
+            **/
+            String game = api.getRandomGameName();
 
             /* Temporary Rework until HLTB API can be worked with */
             /*
@@ -52,7 +54,7 @@ public class DiscordCommands extends ListenerAdapter {
                         .queue();
             } else {**/
 
-                channel.sendMessage(chatter + ", you are responsible for suggesting " + game + ". " + jenQuip(game) + ". ").queue();
+                channel.sendMessage(chatter + ", you are responsible for suggesting " + game + ". " + jenQuip(game)).queue();
             }
 
         else if (original.toLowerCase().startsWith("!gameid"))
@@ -91,17 +93,21 @@ public class DiscordCommands extends ListenerAdapter {
         quipSet.add("It's no Pilotwings but, I guess so.");
         quipSet.add("I pity the fool who rolled this game.");
         quipSet.add("You know it's totally okay if you want to reroll this one, right?");
-        quipSet.add("It's been _at least_ a month since I thought about this game.");
-        quipSet.add("It's been _at most_ six years since I last pondered this video game's existence.");
         quipSet.add("The beginning of this game, it's good. But that end? What an end!");
         quipSet.add("I think that this one is really only good in the midgame. Just my opinion.");
+        quipSet.add("I played this with the birds last week. Pretty good.");
+        quipSet.add("I don't know, what if you put this in Spocktober instead?");
+        quipSet.add("Maybe for next Gamerade, I don't know.");
+        quipSet.add("Not quite right now, but there may be a surprise for you in your stocking!");
+        quipSet.add("You might have to USE some BS to get through this one. Maybe, maybe not.");
+        quipSet.add("Have you played or checked out Pizza Tower instead? I don't know if that's really your type of thing, but it is a platformer and--");
 
 
         if (game.equalsIgnoreCase("Pilotwings 64")) {
             return "That's a damn fine video game.";
         } else if (
             game.equalsIgnoreCase("Gauntlet Legends")) {
-                return "@Hydromedia ";
+                return "@Hydromedia.";
             } else {
 
                 return quipSet.get(random.nextInt(quipSet.size()));

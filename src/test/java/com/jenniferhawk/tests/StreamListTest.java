@@ -5,7 +5,12 @@ import com.github.twitch4j.helix.domain.Stream;
 import com.github.twitch4j.helix.domain.StreamList;
 import com.github.twitch4j.helix.domain.UserList;
 import com.jenniferhawk.Bot;
-import org.junit.Test;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.HttpRequestWithBody;
+import com.mashape.unirest.request.body.Body;
+import org.junit.jupiter.api.Test;
+import com.mashape.unirest.http.HttpResponse;
 
 import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
@@ -52,4 +57,7 @@ public class StreamListTest {
                         Collections.singletonList("sp0ck1"))
                 .execute();
     }
-}
+
+
+    }
+

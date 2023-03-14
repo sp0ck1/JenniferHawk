@@ -3,7 +3,7 @@ package com.jenniferhawk;
 import com.jenniferhawk.howlongtobeat.HLTBEntry;
 import com.jenniferhawk.howlongtobeat.HLTBTestLookup;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;;
 
 import static com.jenniferhawk.Bot.discordClient;
 
