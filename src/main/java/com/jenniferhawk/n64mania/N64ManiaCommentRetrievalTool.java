@@ -10,7 +10,6 @@ import org.openapitools.client.ApiException;
 import org.openapitools.client.Configuration;
 import org.openapitools.client.api.RacetimeApi;
 import org.openapitools.client.model.Race;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

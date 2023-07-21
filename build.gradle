@@ -18,6 +18,9 @@ mainClassName = 'com.jenniferhawk.Launcher'
         jcenter()
         maven { url "https://oss.jfrog.org/artifactory/libs-release" }
         maven { url "https://jitpack.io/" }
+        flatDir {
+            dirs("libs")
+        }
         mavenLocal()
     }
 
@@ -28,13 +31,14 @@ dependencies {
    // compile "com.github.twitch4j:twitch4j:1.0.0"
 
 //    // Oracle JDBC
-//    compile 'com.oracle.database.jdbc:ojdbc10:19.3.0.0'
+    compile 'com.oracle.database.jdbc:ojdbc10:19.3.0.0'
 
     // https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc8
+    compile files("E:\\JenniferHawk-Master\\src\\main\\resources\\ojdbc8.jar")
 
 
+    compile files("E:\\JAVA_Projects\\JenniferHawk-Master\\lib\\openapi-java-client-1.0.0.jar")
 
-    compile files('D:\\JenniferHawk-Master\\src\\main\\resources\\ojdbc8.jar')
     // Local fork
   // implementation project(":twitch4j")
 
@@ -58,7 +62,8 @@ dependencies {
     //implementation 'com.discord4j:discord4j-core:3.0.12'
 
     //Racetime4J OpenAPI
-    compile "org.openapitools:openapi-java-client:1.0.0"
+    //compile "org.openapitools:openapi-java-client:1.0.0"
+
 
     //JDA
     compile group: 'net.dv8tion', name: 'JDA', version: '4.1.1_101'
@@ -94,7 +99,13 @@ dependencies {
     compile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
 
     compileOnly 'org.projectlombok:lombok:1.18.20'
-
+    sourceSets {
+        main {
+            resources {
+                srcDirs "src/main/resources"
+            }
+        }
+    }
 
     testCompileOnly 'org.projectlombok:lombok:1.18.20'
 

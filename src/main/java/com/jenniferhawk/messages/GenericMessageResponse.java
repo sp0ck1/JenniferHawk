@@ -1,10 +1,8 @@
 package com.jenniferhawk.messages;
 
 import com.github.twitch4j.common.enums.CommandPermission;
-import com.jenniferhawk.n64mania.N64ManiaComment;
-import com.jenniferhawk.n64mania.N64ManiaCommentRetrievalTool;
+import com.jenniferhawk.n64mania.*;
 import com.jenniferhawk.database.JenDB;
-import com.jenniferhawk.n64mania.N64Game;
 import com.jenniferhawk.howlongtobeat.HLTBEntry;
 import com.jenniferhawk.irc.SRLRaceListener;
 import com.jenniferhawk.twitch.ChannelGoLiveCheck;
@@ -277,28 +275,27 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                     String commenter;
                     String comment;
                     String randomCommentPhrase = "";
-                    N64ManiaComment n64ManiaComment = null;
-                    N64Game runbackGame = null;
+                    N64ManiaAPI n64ManiaAPI = new N64ManiaAPI();
+                    N64ManiaRunback n64ManiaRunback = null;
 
                     if (messageType == MessageType.DISCORD) {
-                        user = user+"_7k";
+                        user = user + "_7k";
                     }
 
                     int counter = 1;
                     boolean tryagain = true;
 
-                    // If a game has no comments, or if SRL or Racetime are being weird, try again until you get a race that has comments.
+                    // If a game has no comments, try again until you get a race that has comments.
                     while (tryagain) {
                         System.out.println("Attempt number " + counter + " to draw a game with comments.");
-                        runbackGame = JenDB.rollRunback();
-                        N64ManiaCommentRetrievalTool commentRetrievalTool = new N64ManiaCommentRetrievalTool();
-                        n64ManiaComment = commentRetrievalTool.getRandomComment(runbackGame);
-                        tryagain = (n64ManiaComment == null);
+
+                        n64ManiaRunback = n64ManiaAPI.getRunback();
+                        tryagain = (n64ManiaRunback.getComment() == null);
                         counter++;
                     }
 
-                    commenter = n64ManiaComment.getCommenter();
-                    comment = n64ManiaComment.getCommentPhrase();
+                    commenter = n64ManiaRunback.getCommenter();
+                    comment = n64ManiaRunback.getComment();
                     String finalCommentChar = String.valueOf(comment.charAt(comment.length() - 1));
                     System.out.println("finalCommentChar is " + finalCommentChar);
                     // If comment does not end in any punctuation, put a period on it.
@@ -314,8 +311,8 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
 
                     //--
                     message = user + ", would you suggest doing a runback of " +
-                            runbackGame.getTitle() + "? " +
-                            runbackGame.getWinner() + " won this race originally. " +
+                            n64ManiaRunback.getGame() + "? " +
+                            n64ManiaRunback.getWinner() + " won this race originally. " +
 //                            "Personally, I'd give it a " + rating +
 //                            " out of " + outOf + ". " +
                               randomCommentPhrase;

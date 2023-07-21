@@ -2,7 +2,7 @@ package com.jenniferhawk;
 
 import com.jenniferhawk.irc.IRCBot;
 import com.jenniferhawk.messages.ScheduledMessages;
-import oracle.jdbc.OracleDriver;
+//import oracle.jdbc.OracleDriver;
 import org.pircbotx.exception.IrcException;
 import javax.security.auth.login.LoginException;
 import javax.swing.*;
