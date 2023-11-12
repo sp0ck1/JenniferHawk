@@ -173,6 +173,7 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
     @Override
     public void receiveMessage() {
         String message = "";
+        N64ManiaAPI n64ManiaAPI = new N64ManiaAPI();
 
         if(isCommand) {
             switch (command) {
@@ -275,7 +276,7 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                     String commenter;
                     String comment;
                     String randomCommentPhrase = "";
-                    N64ManiaAPI n64ManiaAPI = new N64ManiaAPI();
+
                     N64ManiaRunback n64ManiaRunback = null;
 
                     if (messageType == MessageType.DISCORD) {
@@ -369,7 +370,7 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                     }
                     break;
                 default:
-                    message = JenDB.queryHer(command);
+                    message = n64ManiaAPI.getCommandResponse(command);
             }
             if (!message.equals("")) {
                 respond(message);

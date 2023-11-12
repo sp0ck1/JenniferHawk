@@ -108,6 +108,7 @@ public class Bot {
         //region RacetimeClient
         racetimeClient = new RacetimeClient();
         racetimeClient.start();
+        racetimeClient.startRace("Testing Game", "TEsting Race");
         //endRgion
 
     }

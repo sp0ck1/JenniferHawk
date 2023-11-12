@@ -25,37 +25,48 @@ public class VulcanRoleManager extends ListenerAdapter {
     public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
         String msgid = event.getMessageId();
 
-        if (JenDB.getRoleMessages().contains(msgid)) {
-            if (event.getReactionEmote().getId().equals(JenDB.getReactionEmoteIdForMessageId(msgid))) {
+            if (msgid.equals("882431872385286217")) { // N64Mania movie message
+                if (event.getReactionEmote().getId().equals("754627638101803011")) { // N64Controller
 
-            }
-            User user = event.getUser();
-            Role assignable = event.getGuild().getRoleById(""); //TODO: put in real role ID
-        }
-        if (msgid.equals("737279981540999268")) { // Vulcan PingMe message
-            User user = event.getUser();
-            Role pingMe = event.getGuild().getRoleById("737267159926833212"); // PingMe role
+                    User user = event.getUser();
+                    Role movie = event.getGuild().getRoleById("988252348939911198"); // Movie watching role
+                    event.getGuild().addRoleToMember(user.getId(), movie).complete();
+                }
+            } else if
+                (msgid.equals("737279981540999268")) { // Vulcan PingMe message
+                    User user = event.getUser();
+                    Role pingMe = event.getGuild().getRoleById("737267159926833212"); // PingMe role
 
-            if (event.getReactionEmote().getId().equals("690167711182880813")) { // sp0ck1Bread
-                event.getGuild().addRoleToMember(user.getId(), pingMe).complete();
+                if (event.getReactionEmote().getId().equals("690167711182880813")) { // sp0ck1Bread
+                    event.getGuild().addRoleToMember(user.getId(), pingMe).complete();
+                }
             }
         }
-    }
 
 
     @Override
     public void onMessageReactionRemove(@NotNull MessageReactionRemoveEvent event) {
         String msgid = event.getMessageId();
+        User user = event.getUser();
+            if (msgid.equals("737279981540999268")) { // Vulcan PingMe message
 
-        if (event.getMessageId().equals("737279981540999268")) { // Vulcan PingMe message
-            User user = event.getUser();
-            Role pingMe = event.getGuild().getRoleById("737267159926833212"); // PingMe role
+                Role pingMe = event.getGuild().getRoleById("737267159926833212"); // PingMe role
 
-            if (event.getReactionEmote().getId().equals("690167711182880813")) { // sp0ck1Bread
-                event.getGuild().removeRoleFromMember(user.getId(), pingMe).complete();
+                if (event.getReactionEmote().getId().equals("690167711182880813")) { // sp0ck1Bread
+                    event.getGuild().removeRoleFromMember(user.getId(), pingMe).complete();
+                }
+            } else if
+            (msgid.equals("882431872385286217")) { // N64Mania movie message
+                Role movie = event.getGuild().getRoleById("988252348939911198"); // Movie watching role
+                if (event.getReactionEmote().getId().equals("754627638101803011")) { // N64Controller
+
+                    event.getGuild().removeRoleFromMember(user.getId(), movie).complete();
+
+                }
             }
         }
-    }
+
+
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {

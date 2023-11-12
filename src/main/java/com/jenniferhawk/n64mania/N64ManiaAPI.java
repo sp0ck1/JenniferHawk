@@ -2,6 +2,7 @@ package com.jenniferhawk.n64mania;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jenniferhawk.commands.Command;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.HttpResponse;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -25,26 +26,44 @@ public class N64ManiaAPI {
     public N64ManiaRunback getRunback() {
         String result = getAPIResult(n64maniaUrl + "api/races/runback");
         ObjectMapper objectMapper = new ObjectMapper();
-        
+
         N64ManiaRunback n64ManiaRunback = null;
         try {
             n64ManiaRunback = objectMapper.readValue(result, N64ManiaRunback.class);
         } catch (JsonProcessingException j) {
             j.printStackTrace();
         }
-        
+
         return n64ManiaRunback;
     }
+
     private String getAPIResult(String url) {
         HttpResponse<String> response;
 
         try {
             response = Unirest.get(url).asString();
             return StringEscapeUtils.unescapeHtml(response.getBody());
-        } catch (UnirestException e) {e.printStackTrace(); }
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
 
         return null;
     }
 
+    public String getCommandResponse(String command) {
+        ObjectMapper objectMapper = new ObjectMapper();
 
+        String result = getAPIResult(n64maniaUrl + "api/commands/" + command);
+        System.out.println("The result is" + result);
+        if (result.equals("null")) {
+            return "Command not valid. Try a different command!";
+        } else {
+            try {
+                return objectMapper.readValue(result, Command.class).getText();
+            } catch (JsonProcessingException j) {
+                j.printStackTrace();
+            }
+        }
+        return null;
+    }
 }
