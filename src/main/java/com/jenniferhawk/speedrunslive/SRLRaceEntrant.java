@@ -45,7 +45,7 @@ public class SRLRaceEntrant {
 
 //    @JsonProperty("race")
 //    Integer race;
-    @JsonProperty("place")
+    @JsonProperty("place") // @JsonProperty is not necessary if the variable has the same name as the JsonProperty
     int place;
     @JsonProperty("playerName")
     String player;

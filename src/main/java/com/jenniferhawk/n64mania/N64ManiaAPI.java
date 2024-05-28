@@ -42,7 +42,7 @@ public class N64ManiaAPI {
 
         try {
             response = Unirest.get(url).asString();
-            return StringEscapeUtils.unescapeHtml(response.getBody());
+            return StringEscapeUtils.unescapeHtml(response.getBody()); // Prevent special characters from being ASCII-ized
         } catch (UnirestException e) {
             e.printStackTrace();
         }
@@ -56,10 +56,27 @@ public class N64ManiaAPI {
         String result = getAPIResult(n64maniaUrl + "api/commands/" + command);
         System.out.println("The result is" + result);
         if (result.equals("null")) {
-            return "Command not valid. Try a different command!";
+            return "";
         } else {
             try {
                 return objectMapper.readValue(result, Command.class).getText();
+            } catch (JsonProcessingException j) {
+                j.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public String sendUpdateRequest() {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        String result = getAPIResult(n64maniaUrl + "api/attempt-update");
+
+        if (result.equals("null")) {
+            return "";
+        } else {
+            try {
+                N64ManiaUpdateResult n64ManiaUpdateResult = objectMapper.readValue(result, N64ManiaUpdateResult.class);
             } catch (JsonProcessingException j) {
                 j.printStackTrace();
             }

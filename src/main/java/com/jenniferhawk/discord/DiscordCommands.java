@@ -27,49 +27,49 @@ public class DiscordCommands extends ListenerAdapter {
 
         N64ManiaAPI api = new N64ManiaAPI();
 
-        if (original.toLowerCase().startsWith("!rolln64")) {
-
-            /**
-            String[] argumentList;
-            N64Game n64Game;
-            if (original.contains("--")) {
-                argumentList = original.split(" ");
-                n64Game = JenDB.rolln64(argumentList); // only asking if it has an argument list, and if so it's split on spaces
-                System.out.println(Arrays.stream(argumentList));
-            } else n64Game = JenDB.rolln64();
-            **/
-            String game = api.getRandomGameName();
-
-            /* Temporary Rework until HLTB API can be worked with */
-            /*
-            //  HLTBEntry entry = HLTBLookup.searchGame(game);
-
-            if (entry != null && !entry.getMainStoryTime().equals("--")) {
-                String checkHLTB = !entry.getMainStoryTime().equals("0") ? " HLTB says " + entry.getName() + " takes " + entry.getMainStoryTime() + " to beat the main story." : "";
-                channel.sendMessage(
-                        chatter +
-                                ", you are responsible for suggesting " +
-                                game +
-                                ". " + jenQuip(game) + checkHLTB)
-                        .queue();
-            } else {**/
-
-                channel.sendMessage(chatter + ", you are responsible for suggesting " + game + ". " + jenQuip(game)).queue();
-            }
-
-        else if (original.toLowerCase().startsWith("!gameid"))
-        {
+//        if (original.toLowerCase().startsWith("!rolln64")) {
 //
-//            int ID = parseInt(word[1]);
-//            N64Game game = JenDB.getGameInfo(ID);
-//            channel.sendMessage(
-//                    game.getTitle() +
-//                            " was released in " + game.getYear() +
-//                            ". "+ game.getDeveloper() +
-//                            " developed it and " + game.getPublisher() +
-//                            " published it. It was released in " + game.getRegion() +
-//                            " . It's in the " + game.getGenre() + " genre.").queue();
-        }
+//            /**
+//            String[] argumentList;
+//            N64Game n64Game;
+//            if (original.contains("--")) {
+//                argumentList = original.split(" ");
+//                n64Game = JenDB.rolln64(argumentList); // only asking if it has an argument list, and if so it's split on spaces
+//                System.out.println(Arrays.stream(argumentList));
+//            } else n64Game = JenDB.rolln64();
+//            **/
+//            String game = api.getRandomGameName();
+//
+//            /* Temporary Rework until HLTB API can be worked with */
+//            /*
+//            //  HLTBEntry entry = HLTBLookup.searchGame(game);
+//
+//            if (entry != null && !entry.getMainStoryTime().equals("--")) {
+//                String checkHLTB = !entry.getMainStoryTime().equals("0") ? " HLTB says " + entry.getName() + " takes " + entry.getMainStoryTime() + " to beat the main story." : "";
+//                channel.sendMessage(
+//                        chatter +
+//                                ", you are responsible for suggesting " +
+//                                game +
+//                                ". " + jenQuip(game) + checkHLTB)
+//                        .queue();
+//            } else {**/
+//
+//                channel.sendMessage(chatter + ", you are responsible for suggesting " + game + ". " + jenQuip(game)).queue();
+//            }
+//
+//        else if (original.toLowerCase().startsWith("!gameid"))
+//        {
+////
+////            int ID = parseInt(word[1]);
+////            N64Game game = JenDB.getGameInfo(ID);
+////            channel.sendMessage(
+////                    game.getTitle() +
+////                            " was released in " + game.getYear() +
+////                            ". "+ game.getDeveloper() +
+////                            " developed it and " + game.getPublisher() +
+////                            " published it. It was released in " + game.getRegion() +
+////                            " . It's in the " + game.getGenre() + " genre.").queue();
+//        }
     }
     // TODO: Change to take N64Game object in order to specify quips by genre.
     private String jenQuip(String game) {

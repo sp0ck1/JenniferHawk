@@ -814,49 +814,6 @@ public class JenDB {
 
     }
 
-    /*
-     ************************************
-     * Ultimate Epic Battle Simulator   *
-     ************************************
-     */
-
-    /*
-    Returns a random number of a random unit, in the form "n {unit}s"
-     */
-    public static String getBattleConfig() {
-            String result = "";
-            Random random = new Random();
-        System.out.println("getBattleConfig?");
-            try {
-                System.out.println("Trying to get name?");
-                DriverManager.registerDriver(new OracleDriver());
-                Connection con = connectionPool.getConnection();
-
-                PreparedStatement stmt = con.prepareStatement("SELECT UNIT FROM ( SELECT UNIT FROM ADMIN.UEBS_UNITS ORDER BY dbms_random.value ) WHERE rownum = 1");
-
-                ResultSet rs = stmt.executeQuery();
-                System.out.println("Still trying to get name?");
-
-                while (rs.next())
-                    result = rs.getString(1);
-                connectionPool.releaseConnection(con);
-            } catch (SQLException e) {
-                System.out.println("There was an exception retrieving the unit from UEBS_UNITS.");
-                e.printStackTrace(System.err);
-                System.err.println("SQLState: " +
-                        ((SQLException) e).getSQLState());
-
-                System.err.println("Error Code: " +
-                        ((SQLException) e).getErrorCode());
-
-                System.err.println("Message: " + e.getMessage());
-
-
-            }
-            return random.nextInt(15000) + " " + result + "s";
-        }
-
-
 
     public static void addUEBSUnit(String unit) {
         try {

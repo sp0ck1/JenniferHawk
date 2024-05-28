@@ -45,7 +45,7 @@ dependencies {
     compile 'com.github.pircbotx:pircbotx:2.2'
 
     // YAML Parser
-    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.0"
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.0'
 
     compile 'com.github.twitch4j:twitch4j:1.5.0'
     // Logging

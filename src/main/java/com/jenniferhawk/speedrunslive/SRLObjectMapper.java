@@ -13,7 +13,7 @@ public class SRLObjectMapper {
     public SRLRaceEntrantList mapRaceResultJSON(String raceID) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(
-                DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); // This is a silly customization for SRL code
 
         String jsonArrayFromURL = new RaceResultJSONGrabber(raceID).getJsonResult();
         System.out.println("The jsonArray is: " + jsonArrayFromURL);

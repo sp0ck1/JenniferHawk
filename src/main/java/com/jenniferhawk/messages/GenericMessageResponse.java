@@ -7,6 +7,7 @@ import com.jenniferhawk.howlongtobeat.HLTBEntry;
 import com.jenniferhawk.irc.SRLRaceListener;
 import com.jenniferhawk.twitch.ChannelGoLiveCheck;
 import com.jenniferhawk.utils.HLTBLookup;
+import com.jenniferhawk.utils.JenQuip;
 import net.dv8tion.jda.api.entities.MessageChannel;
 
 import java.sql.Timestamp;
@@ -198,12 +199,7 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                         message = "I added the unit to the unit list, probably!";
                     }
                     break;
-                case "getbattle":
-                    System.out.println("heard getBattle command");
-                    String team1 = JenDB.getBattleConfig();
-                    String team2 = JenDB.getBattleConfig();
-                    message = "How about " + team1 + " fights " + team2 + "?";
-                    break;
+
                 case "title":
                     if (permissionType.contains(CommandPermission.MODERATOR) && sourceChannel.equals("sp0ck1")) {
                         twitchClient.getKraken().updateTitle(OAUTH, BROADCASTER_ID,newTitle).execute();
@@ -253,23 +249,17 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                     message = "!truckmoney has been reset to $0";
                     break;
                 case "truckmoney":
-                    message = "Sp0ck1 has made $" + truckMoney + " trucking today.";
+                    message = "Sp0ck1 has made $" + truckMoney + " trucking today. Animals.";
                     break;
 
                 case "rolln64":
-                    if (messageType == MessageType.DISCORD) {
-                        message = "";
-                        break;
-                    }
-                    N64Game n64Game;
-                    if (argumentList != null)
-                        n64Game = JenDB.rolln64(argumentList);
-                    else n64Game = JenDB.rolln64();
+                    N64ManiaAPI api = new N64ManiaAPI();
+                    JenQuip quip = new JenQuip();
+                    String game = api.getRandomGameName();
 
                     message = user + ", you are responsible for suggesting " +
-                                n64Game.getTitle() +
-                                ". For more info, use !gameid " +
-                                n64Game.getId();
+                                game + ". " + quip.getQuip(game) +
+                                ".";
 
                     break;
                 case "runback":
@@ -320,18 +310,7 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
 //                            "It was a " + adjectives[random.nextInt(adjectives.length)] +
 //                            " one, " + finishers[random.nextInt(finishers.length)] + ".";
                     break;
-                case "gameid":
-                    int ID = parseInt(secondWord);
-                    N64Game game = JenDB.getGameInfo(ID);
-                    message =
-                            game.getTitle() +
-                                    " is an N64 game in the " + game.getGenre() + " genre." +
-                                    " It was developed by "+ game.getDeveloper() +
-                                    " and published by " + game.getPublisher() +
-                                    " in " + game.getYear() + ", " +
-                                    " where it was released in " + game.getRegion() +
-                                    ".";
-                    break;
+
                 case "joinsrl":
                     new SRLRaceListener(secondWord);
                     break;
