@@ -18,6 +18,7 @@ public class DiscordPrivateMessages extends ListenerAdapter {
         super.onPrivateMessageReceived(event);
         User author = event.getAuthor();
         String original = event.getMessage().getContentDisplay();
+        String cleaned_m = original.toLowerCase();
 
         if (original.toLowerCase().startsWith("!gamestop")) {
             String searchTerm = original.substring(original.lastIndexOf("!gamestop") + 10);
@@ -40,7 +41,13 @@ public class DiscordPrivateMessages extends ListenerAdapter {
             }
         } else if (original.toLowerCase().startsWith("!tellthem")) {
             String message = original.substring(9);
-            TextChannel channel =  event.getJDA().getTextChannelById("673055022501855253");
+            TextChannel channel = event.getJDA().getTextChannelById("673055022501855253");
+            assert channel != null;
+            channel.sendMessage(message).queue();
+            // Send message to #stream-and-announcements
+        } else if (cleaned_m.startsWith("!tellstream")) {
+            String message = original.substring(11);
+            TextChannel channel = event.getJDA().getTextChannelById("719182745565266010");
             assert channel != null;
             channel.sendMessage(message).queue();
         }

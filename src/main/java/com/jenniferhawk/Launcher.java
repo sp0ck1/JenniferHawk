@@ -25,8 +25,8 @@ public class Launcher {
 
         bot.registerFeatures();
         bot.start();
-        Properties connectionProperties = new Properties();
-        connectionProperties.setProperty("oracle.jdbc.fanEnabled","false");
+        //Properties connectionProperties = new Properties();
+        //connectionProperties.setProperty("oracle.jdbc.fanEnabled","false");
 
         Thread srlThread = new Thread( () -> {
 

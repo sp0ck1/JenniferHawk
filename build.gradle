@@ -27,14 +27,13 @@ mainClassName = 'com.jenniferhawk.Launcher'
 // Dependencies
 
 dependencies {
-    // Twitch4J
-   // compile "com.github.twitch4j:twitch4j:1.0.0"
+
 
 //    // Oracle JDBC
-    compile 'com.oracle.database.jdbc:ojdbc10:19.3.0.0'
+    //compile 'com.oracle.database.jdbc:ojdbc10:19.3.0.0'
 
     // https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc8
-    compile files("E:\\JenniferHawk-Master\\src\\main\\resources\\ojdbc8.jar")
+   // compile files("E:\\JenniferHawk-Master\\src\\main\\resources\\ojdbc8.jar")
 
 
     compile files("E:\\JAVA_Projects\\JenniferHawk-Master\\lib\\openapi-java-client-1.0.0.jar")
@@ -47,6 +46,7 @@ dependencies {
     // YAML Parser
     compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.0'
 
+    // Twitch4J
     compile 'com.github.twitch4j:twitch4j:1.5.0'
     // Logging
     compile "ch.qos.logback:logback-classic:1.1.8"

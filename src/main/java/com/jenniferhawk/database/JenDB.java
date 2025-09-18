@@ -3,7 +3,7 @@ package com.jenniferhawk.database;
 import com.jenniferhawk.Bot;
 import com.jenniferhawk.n64mania.N64Game;
 import lombok.SneakyThrows;
-import oracle.jdbc.driver.OracleDriver;
+//import oracle.jdbc.driver.OracleDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

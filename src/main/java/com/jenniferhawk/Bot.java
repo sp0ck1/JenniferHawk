@@ -106,9 +106,9 @@ public class Bot {
         //endregion
 
         //region RacetimeClient
-        racetimeClient = new RacetimeClient();
-        racetimeClient.start();
-        racetimeClient.startRace("Testing Game", "TEsting Race");
+//        racetimeClient = new RacetimeClient();
+//        racetimeClient.start();
+//        racetimeClient.startRace("Testing Game", "TEsting Race");
         //endRgion
 
     }

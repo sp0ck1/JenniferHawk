@@ -190,7 +190,8 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                     message = "The Elder Scrolls III: Prince Street Pizza";
                     break;
                 case "set":
-                    JenDB.addToHer(secondWord, phrase, user);
+
+                    n64ManiaAPI.addCommand(secondWord, phrase, user);
                     message = "I set the command...probably TehePelo";
                     break;
                 case "addunit":
@@ -253,9 +254,9 @@ public class GenericMessageResponse implements IncomingMessage, GenericCommandRe
                     break;
 
                 case "rolln64":
-                    N64ManiaAPI api = new N64ManiaAPI();
+
                     JenQuip quip = new JenQuip();
-                    String game = api.getRandomGameName();
+                    String game = n64ManiaAPI.getRandomGameName();
 
                     message = user + ", you are responsible for suggesting " +
                                 game + ". " + quip.getQuip(game) +
