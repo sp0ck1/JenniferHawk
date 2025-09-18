@@ -83,4 +83,20 @@ public class N64ManiaAPI {
         }
         return null;
     }
+
+
+    public void addCommand(String command, String text, String author) {
+        try {
+            HttpResponse<String> response = Unirest.post("https://n64mania.com/api/add_command")
+                    .header("Content-Type", "application/json")
+                    .body("{\"command\":\"" + command + "\", \"text\":\"" + text + "\", \"author\":\"" + author + "\"}")
+                    .asString();
+
+            System.out.println("Response Code: " + response.getStatus());
+            System.out.println("Response Body: " + response.getBody());
+        } catch (UnirestException e) {
+            System.err.println("Error while sending POST request: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }
